@@ -66,9 +66,12 @@ export default function Header() {
               )}
             >
               {link.name}
-              {activeSection === link.href.substring(1) && (
-                <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-4/5 h-0.5 bg-primary rounded-full" />
-              )}
+              <span 
+                className={cn(
+                  "absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-0.5 bg-primary rounded-full transition-all duration-300",
+                  activeSection === link.href.substring(1) ? "w-4/5" : "w-0"
+                )}
+              />
             </Link>
           ))}
         </nav>
@@ -77,7 +80,7 @@ export default function Header() {
             {externalLinks.map((link) => (
               <Button asChild key={link.name} variant="ghost">
                 <Link href={link.href}>
-                  <UserCircle className="mr-2" /> {link.name}
+                  <UserCircle className="mr-2 h-5 w-5" /> {link.name}
                 </Link>
               </Button>
             ))}
@@ -114,10 +117,10 @@ export default function Header() {
                         href={link.href} 
                         className={cn(
                             "text-lg font-medium text-muted-foreground hover:text-primary transition-colors w-full text-left py-2 flex items-center gap-3",
-                            link.name === 'Acceso' && "bg-primary/5 rounded-md px-3"
+                            link.name === 'Acceder' && "bg-primary/5 rounded-md px-3"
                         )}
                         >
-                         {link.name === 'Acceso' && <UserCircle />}
+                         {link.name === 'Acceder' && <UserCircle />}
                         {link.name}
                       </Link>
                     </SheetClose>

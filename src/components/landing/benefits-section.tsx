@@ -41,7 +41,7 @@ export default function BenefitsSection() {
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-20">
           {stats.map((stat, index) => (
-            <Card key={index} className="text-center p-6 bg-card/80 backdrop-blur-sm border-border/50 shadow-lg hover:shadow-primary/20 transition-shadow">
+            <Card key={index} className="text-center p-6 bg-card/80 backdrop-blur-sm border-border/50 shadow-lg hover:shadow-primary/20 transition-shadow duration-300 hover:-translate-y-1">
               <CardContent className="p-0 flex flex-col items-center justify-center gap-2">
                 <stat.icon className="h-10 w-10 text-accent mb-2" />
                 <p className="text-3xl font-bold text-primary">{stat.value}</p>
@@ -53,7 +53,7 @@ export default function BenefitsSection() {
 
         <div className="grid md:grid-cols-1 gap-8 max-w-3xl mx-auto">
           {features.map((feature, index) => (
-            <Card key={index} className="flex flex-col md:flex-row items-center p-6 bg-card/80 backdrop-blur-sm border-border/50 shadow-lg hover:shadow-primary/20 transition-shadow">
+            <Card key={index} className="flex flex-col md:flex-row items-center p-6 bg-card/80 backdrop-blur-sm border-border/50 shadow-lg hover:shadow-primary/20 transition-shadow duration-300 hover:-translate-y-1">
               <CardContent className="p-0 flex flex-col md:flex-row items-center gap-6 text-center md:text-left">
                 <div className="bg-primary/10 p-4 rounded-full">
                    <feature.icon className="h-8 w-8 text-primary" />

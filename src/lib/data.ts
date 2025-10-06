@@ -9,7 +9,7 @@ export const navLinks = [
   { name: 'Centros', href: '#centros' },
   { name: 'Árboles', href: '#arboles' },
   { name: 'Comunidad', href: '#comunidad' },
-  { name: 'Acceso', href: '/login' },
+  { name: 'Acceder', href: '/login' },
 ];
 
 export const centers = [

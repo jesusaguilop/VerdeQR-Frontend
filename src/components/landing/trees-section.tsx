@@ -38,7 +38,7 @@ export default function TreesSection() {
                 <p className="text-sm text-muted-foreground">{tree.description}</p>
               </CardContent>
               <CardFooter>
-                <Button variant="outline" className="w-full border-primary text-primary hover:bg-primary hover:text-primary-foreground">
+                <Button variant="outline" className="w-full border-primary text-primary hover:bg-primary hover:text-primary-foreground transition-colors duration-300">
                   Ver más
                 </Button>
               </CardFooter>

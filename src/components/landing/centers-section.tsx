@@ -17,7 +17,7 @@ export default function CentersSection() {
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
           {centers.map((center) => (
-            <Card key={center.name} className="overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
+            <Card key={center.name} className="overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 hover:-translate-y-1">
               {center.image && (
                 <div className="aspect-w-3 aspect-h-2">
                    <Image
