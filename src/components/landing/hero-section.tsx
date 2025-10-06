@@ -7,9 +7,10 @@ import QrScanner from './qr-scanner';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { useTheme } from 'next-themes';
 import { useEffect, useState } from 'react';
+import { cn } from '@/lib/utils';
 
 export default function HeroSection() {
-  const { theme } = useTheme();
+  const { theme, systemTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
   const heroBgDark = PlaceHolderImages.find((p) => p.id === 'hero-background-dark');
   const heroBgLight = PlaceHolderImages.find((p) => p.id === 'hero-background-light');
@@ -18,13 +19,9 @@ export default function HeroSection() {
     setMounted(true);
   }, []);
 
-  if (!mounted) {
-    return (
-      <section id="inicio" className="relative h-screen min-h-[700px] flex items-center justify-center pt-20">
-        <div className="absolute inset-0 bg-background" />
-      </section>
-    );
-  }
+  const currentTheme = theme === 'system' ? systemTheme : theme;
+  const showDark = mounted && currentTheme === 'dark';
+  const showLight = mounted && currentTheme === 'light';
 
   return (
     <section id="inicio" className="relative h-screen min-h-[700px] flex items-center justify-center pt-20">
@@ -33,7 +30,11 @@ export default function HeroSection() {
           src={heroBgDark.imageUrl}
           alt={heroBgDark.description}
           fill
-          className="object-cover hidden dark:block"
+          className={cn(
+            'object-cover',
+            showDark ? 'opacity-100' : 'opacity-0'
+          )}
+          style={{ transition: 'opacity 0.5s ease-in-out' }}
           priority
           quality={80}
           data-ai-hint={heroBgDark.imageHint}
@@ -44,13 +45,30 @@ export default function HeroSection() {
           src={heroBgLight.imageUrl}
           alt={heroBgLight.description}
           fill
-          className="object-cover dark:hidden"
+          className={cn(
+            'object-cover',
+            showLight ? 'opacity-100' : 'opacity-0'
+          )}
+          style={{ transition: 'opacity 0.5s ease-in-out' }}
           priority
           quality={80}
           data-ai-hint={heroBgLight.imageHint}
         />
       )}
-      <div className="absolute inset-0 bg-background/70 dark:bg-background/70" />
+      {/* Fallback for initial load */}
+      {!mounted && heroBgLight && (
+        <Image
+          src={heroBgLight.imageUrl}
+          alt={heroBgLight.description}
+          fill
+          className="object-cover"
+          priority
+          quality={80}
+          data-ai-hint={heroBgLight.imageHint}
+        />
+      )}
+
+      <div className="absolute inset-0 bg-background/80 dark:bg-background/80" />
 
       <div className="container mx-auto px-4 relative z-10">
         <div className="grid md:grid-cols-2 gap-12 items-center">
