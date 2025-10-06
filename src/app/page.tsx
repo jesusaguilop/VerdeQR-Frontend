@@ -1,7 +1,9 @@
 import Header from '@/components/landing/header';
 import HeroSection from '@/components/landing/hero-section';
+import BenefitsSection from '@/components/landing/benefits-section';
 import CentersSection from '@/components/landing/centers-section';
 import TreesSection from '@/components/landing/trees-section';
+import CommunitySection from '@/components/landing/community-section';
 import AccessSection from '@/components/landing/access-section';
 import Footer from '@/components/landing/footer';
 
@@ -11,8 +13,10 @@ export default function Home() {
       <Header />
       <main className="flex-grow">
         <HeroSection />
+        <BenefitsSection />
         <CentersSection />
         <TreesSection />
+        <CommunitySection />
         <AccessSection />
       </main>
       <Footer />

@@ -5,8 +5,10 @@ const getImage = (id: string): ImagePlaceholder | undefined => PlaceHolderImages
 
 export const navLinks = [
   { name: 'Inicio', href: '#inicio' },
+  { name: 'Beneficios', href: '#beneficios' },
   { name: 'Centros', href: '#centros' },
   { name: 'Árboles', href: '#arboles' },
+  { name: 'Comunidad', href: '#comunidad' },
   { name: 'Acceso', href: '#acceso' },
 ];
 

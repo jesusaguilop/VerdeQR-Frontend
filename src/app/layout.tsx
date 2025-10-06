@@ -2,6 +2,7 @@ import type {Metadata} from 'next';
 import './globals.css';
 import { Toaster } from "@/components/ui/toaster";
 import { ThemeProvider } from '@/components/theme-provider';
+import FloatingPlants from '@/components/landing/floating-plants';
 
 export const metadata: Metadata = {
   title: 'VerdeQR - Identifica la Naturaleza',
@@ -27,6 +28,7 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
+          <FloatingPlants />
           {children}
           <Toaster />
         </ThemeProvider>
