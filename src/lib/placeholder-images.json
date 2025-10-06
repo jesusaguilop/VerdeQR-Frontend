@@ -2,9 +2,9 @@
   "placeholderImages": [
     {
       "id": "hero-background",
-      "description": "A blurry background of a lush forest.",
-      "imageUrl": "https://images.unsplash.com/photo-1718867806808-89e282ecb4f6?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHxmb3Jlc3QlMjBibHVyfGVufDB8fHx8MTc1OTc2MzU1OXww&ixlib=rb-4.1.0&q=80&w=1080",
-      "imageHint": "forest blur"
+      "description": "A beautiful path in a forest with tall trees.",
+      "imageUrl": "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxmb3Jlc3R8ZW58MHx8fHwxNzYwMTg0MTIyfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "forest path"
     },
     {
       "id": "cbc-campus",
