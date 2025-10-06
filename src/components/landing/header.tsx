@@ -6,6 +6,7 @@ import { Menu, Trees, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger, SheetClose } from "@/components/ui/sheet";
 import { navLinks } from "@/lib/data";
+import { ThemeToggle } from "../theme-toggle";
 
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
@@ -24,9 +25,11 @@ export default function Header() {
               {link.name}
             </Link>
           ))}
+          <ThemeToggle />
         </nav>
 
-        <div className="md:hidden">
+        <div className="md:hidden flex items-center gap-2">
+          <ThemeToggle />
           <Sheet open={isOpen} onOpenChange={setIsOpen}>
             <SheetTrigger asChild>
               <Button variant="ghost" size="icon">
