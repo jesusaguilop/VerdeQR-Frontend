@@ -25,30 +25,40 @@ import { Input } from '@/components/ui/input';
 import { toast } from '@/hooks/use-toast';
 import Header from '@/components/landing/header';
 import Footer from '@/components/landing/footer';
-import { LogIn } from 'lucide-react';
+import { UserPlus } from 'lucide-react';
 
-const formSchema = z.object({
-  email: z.string().email({ message: 'Por favor, introduce un email válido.' }),
-  password: z
-    .string()
-    .min(6, { message: 'La contraseña debe tener al menos 6 caracteres.' }),
-});
+const formSchema = z
+  .object({
+    name: z
+      .string()
+      .min(2, { message: 'El nombre debe tener al menos 2 caracteres.' }),
+    email: z.string().email({ message: 'Por favor, introduce un email válido.' }),
+    password: z
+      .string()
+      .min(6, { message: 'La contraseña debe tener al menos 6 caracteres.' }),
+    confirmPassword: z.string(),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: 'Las contraseñas no coinciden.',
+    path: ['confirmPassword'],
+  });
 
-export default function LoginPage() {
+export default function RegisterPage() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
+      name: '',
       email: '',
       password: '',
+      confirmPassword: '',
     },
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    // Aquí iría la lógica de autenticación
     console.log(values);
     toast({
-      title: '¡Inicio de sesión exitoso!',
-      description: `Bienvenido, ${values.email}.`,
+      title: '¡Registro exitoso!',
+      description: `Bienvenido a VerdeQR, ${values.name}.`,
     });
   }
 
@@ -58,12 +68,12 @@ export default function LoginPage() {
       <main className="flex-grow flex items-center justify-center px-4 py-24 sm:py-32">
         <Card className="w-full max-w-md bg-card/80 backdrop-blur-sm border-border/50 shadow-xl">
           <CardHeader className="text-center space-y-2">
-            <LogIn className="mx-auto h-8 w-8 text-primary" />
+            <UserPlus className="mx-auto h-8 w-8 text-primary" />
             <CardTitle className="text-3xl font-bold font-headline text-primary">
-              Iniciar Sesión
+              Crear Cuenta
             </CardTitle>
             <CardDescription>
-              Introduce tus credenciales para acceder a tu cuenta.
+              Regístrate para unirte a la comunidad VerdeQR.
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -72,6 +82,23 @@ export default function LoginPage() {
                 onSubmit={form.handleSubmit(onSubmit)}
                 className="space-y-6"
               >
+                <FormField
+                  control={form.control}
+                  name="name"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Nombre Completo</FormLabel>
+                      <FormControl>
+                        <Input
+                          placeholder="Tu nombre"
+                          {...field}
+                          className="bg-input/50"
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
                 <FormField
                   control={form.control}
                   name="email"
@@ -107,26 +134,41 @@ export default function LoginPage() {
                     </FormItem>
                   )}
                 />
+                <FormField
+                  control={form.control}
+                  name="confirmPassword"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Confirmar Contraseña</FormLabel>
+                      <FormControl>
+                        <Input
+                          type="password"
+                          placeholder="********"
+                          {...field}
+                          className="bg-input/50"
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
                 <Button
                   type="submit"
                   size="lg"
                   className="w-full bg-primary hover:bg-primary/90 text-primary-foreground transition-transform duration-300 hover:scale-105"
                 >
-                  Entrar
+                  Registrarse
                 </Button>
               </form>
             </Form>
           </CardContent>
-          <CardFooter className="flex-col gap-4 text-sm">
+          <CardFooter className="flex justify-center text-sm">
             <div className="text-center">
-              <span className="text-muted-foreground">¿No tienes una cuenta? </span>
+              <span className="text-muted-foreground">¿Ya tienes una cuenta? </span>
               <Button variant="link" asChild className="p-0">
-                <Link href="/register">Regístrate aquí</Link>
+                <Link href="/login">Inicia sesión</Link>
               </Button>
             </div>
-            <Button variant="link" asChild className="p-0 text-muted-foreground">
-                <Link href="#">¿Olvidaste tu contraseña?</Link>
-            </Button>
           </CardFooter>
         </Card>
       </main>
