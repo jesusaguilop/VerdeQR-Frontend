@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Menu, Trees, X, UserCircle } from "lucide-react";
+import { Menu, Trees, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger, SheetClose } from "@/components/ui/sheet";
 import { navLinks } from "@/lib/data";
@@ -50,13 +50,20 @@ export default function Header() {
     };
   }, [isHomePage]);
 
-  const internalLinks = navLinks.filter(link => link.href.startsWith('#'));
-  const externalLinks = navLinks.filter(link => !link.href.startsWith('#'));
-
   const getLinkHref = (href: string) => {
     if (isHomePage) return href;
     return href.startsWith('#') ? `/${href}` : href;
   };
+  
+  const navItems = navLinks.map(link => {
+      if (link.href === '/') {
+          return { ...link, href: getLinkHref(link.href) };
+      }
+      return link.href.startsWith('#') && !isHomePage
+          ? { ...link, href: `/${link.href}` }
+          : link;
+  });
+
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-sm border-b border-border/50">
@@ -67,20 +74,20 @@ export default function Header() {
         </Link>
         
         <nav className="hidden md:flex items-center gap-1">
-          {internalLinks.map((link) => (
+          {navItems.filter(l => l.name !== 'Acceder').map((link) => (
             <Link 
               key={link.name} 
-              href={getLinkHref(link.href)} 
+              href={link.href}
               className={cn(
                 "px-3 py-2 text-sm font-medium text-muted-foreground hover:text-primary transition-colors relative",
-                activeSection === link.href.substring(1) && isHomePage && "text-primary"
+                isHomePage && (activeSection === link.href.substring(1) || (link.href === '/' && activeSection === 'inicio')) && "text-primary"
               )}
             >
               {link.name}
               <span 
                 className={cn(
                   "absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-0.5 bg-primary rounded-full transition-all duration-300",
-                  activeSection === link.href.substring(1) && isHomePage ? "w-4/5" : "w-0"
+                  isHomePage && (activeSection === link.href.substring(1) || (link.href === '/' && activeSection === 'inicio')) ? "w-4/5" : "w-0"
                 )}
               />
             </Link>
@@ -88,13 +95,9 @@ export default function Header() {
         </nav>
 
         <div className="hidden md:flex items-center gap-2">
-            {externalLinks.map((link) => (
-              <Button asChild key={link.name} variant="ghost">
-                <Link href={getLinkHref(link.href)}>
-                  <UserCircle className="mr-2 h-5 w-5" /> {link.name}
-                </Link>
-              </Button>
-            ))}
+          <Button asChild variant="ghost">
+             <Link href="/login">Acceder</Link>
+          </Button>
           <ThemeToggle />
         </div>
 
@@ -122,16 +125,12 @@ export default function Header() {
                   </SheetClose>
                 </div>
                 <nav className="flex flex-col items-start gap-4 mt-8">
-                  {navLinks.map((link) => (
+                  {navItems.map((link) => (
                     <SheetClose asChild key={link.name}>
                       <Link 
-                        href={getLinkHref(link.href)}
-                        className={cn(
-                            "text-lg font-medium text-muted-foreground hover:text-primary transition-colors w-full text-left py-2 flex items-center gap-3",
-                            link.name === 'Acceder' && "bg-primary/5 rounded-md px-3"
-                        )}
+                        href={link.href}
+                        className="text-lg font-medium text-muted-foreground hover:text-primary transition-colors w-full text-left py-2"
                         >
-                         {link.name === 'Acceder' && <UserCircle />}
                         {link.name}
                       </Link>
                     </SheetClose>
