@@ -19,7 +19,7 @@ html {
     --primary-foreground: 120 60% 98%; /* almost white */
     --secondary: 130 30% 65%; /* muted green */
     --secondary-foreground: 120 25% 15%;
-    --muted: 130 30% 94%; /* lighter green-gray */
+    --muted: 120 10% 95%; /* very light gray */
     --muted-foreground: 120 15% 40%;
     --accent: 140 50% 55%; /* brighter sea green */
     --accent-foreground: 0 0% 100%;
@@ -44,25 +44,25 @@ html {
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
   .dark {
-    --background: 120 25% 10%; /* dark green-gray */
+    --background: 120 5% 5%; /* very dark green */
     --foreground: 120 30% 96%; /* off-white */
-    --card: 120 25% 15%; /* very dark green */
+    --card: 120 10% 10%; /* almost black green */
     --card-foreground: 120 30% 96%;
-    --popover: 120 25% 10%;
+    --popover: 120 5% 5%;
     --popover-foreground: 120 30% 96%;
-    --primary: 130 45% 55%; /* brighter green */
+    --primary: 130 40% 50%; /* brighter green */
     --primary-foreground: 120 25% 10%;
-    --secondary: 130 30% 35%;
+    --secondary: 130 20% 30%;
     --secondary-foreground: 120 30% 96%;
-    --muted: 130 20% 25%;
-    --muted-foreground: 120 30% 70%;
+    --muted: 120 10% 15%;
+    --muted-foreground: 120 20% 60%;
     --accent: 140 50% 60%; /* brighter sea green */
-    --accent-foreground: 120 25% 10%;
+    --accent-foreground: 120 5% 5%;
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 98%;
-    --border: 130 20% 35%;
-    --input: 130 20% 25%;
-    --ring: 130 45% 55%;
+    --border: 130 15% 25%;
+    --input: 130 15% 20%;
+    --ring: 130 40% 50%;
     --chart-1: 220 70% 50%;
     --chart-2: 160 60% 45%;
     --chart-3: 30 80% 55%;
