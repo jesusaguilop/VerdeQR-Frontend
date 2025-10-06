@@ -1,42 +1,134 @@
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { ArrowRight } from "lucide-react";
-import Header from "@/components/landing/header";
-import Footer from "@/components/landing/footer";
+'use client';
+
+import Link from 'next/link';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import * as z from 'zod';
+import { Button } from '@/components/ui/button';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { toast } from '@/hooks/use-toast';
+import Header from '@/components/landing/header';
+import Footer from '@/components/landing/footer';
+import { LogIn } from 'lucide-react';
+
+const formSchema = z.object({
+  email: z.string().email({ message: 'Por favor, introduce un email válido.' }),
+  password: z
+    .string()
+    .min(6, { message: 'La contraseña debe tener al menos 6 caracteres.' }),
+});
 
 export default function LoginPage() {
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      email: '',
+      password: '',
+    },
+  });
+
+  function onSubmit(values: z.infer<typeof formSchema>) {
+    // Aquí iría la lógica de autenticación
+    console.log(values);
+    toast({
+      title: '¡Inicio de sesión exitoso!',
+      description: `Bienvenido, ${values.email}.`,
+    });
+  }
+
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col min-h-screen bg-background">
       <Header />
-      <main className="flex-grow flex items-center justify-center">
-        <section id="acceso" className="py-20 lg:py-32 w-full">
-          <div className="container mx-auto px-4">
-            <div className="max-w-md mx-auto">
-              <Card className="bg-card/80 backdrop-blur-sm border-border/50">
-                <CardHeader className="text-center">
-                  <CardTitle className="text-3xl font-bold font-headline text-primary">Acceso al Sistema</CardTitle>
-                  <CardDescription className="pt-2">
-                    Ingresa a tu cuenta o crea una nueva para administrar el contenido de VerdeQR.
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="flex flex-col space-y-4">
-                  <Button asChild size="lg" className="w-full bg-primary hover:bg-primary/90 text-primary-foreground">
-                    <Link href="/login">
-                      Iniciar Sesión
-                      <ArrowRight className="ml-2 h-5 w-5" />
-                    </Link>
-                  </Button>
-                  <Button asChild size="lg" variant="outline" className="w-full border-primary text-primary hover:bg-primary hover:text-primary-foreground">
-                    <Link href="/register">
-                      Registrarse
-                    </Link>
-                  </Button>
-                </CardContent>
-              </Card>
+      <main className="flex-grow flex items-center justify-center px-4">
+        <Card className="w-full max-w-md bg-card/80 backdrop-blur-sm border-border/50 shadow-xl">
+          <CardHeader className="text-center space-y-2">
+            <LogIn className="mx-auto h-8 w-8 text-primary" />
+            <CardTitle className="text-3xl font-bold font-headline text-primary">
+              Iniciar Sesión
+            </CardTitle>
+            <CardDescription>
+              Introduce tus credenciales para acceder a tu cuenta.
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Form {...form}>
+              <form
+                onSubmit={form.handleSubmit(onSubmit)}
+                className="space-y-6"
+              >
+                <FormField
+                  control={form.control}
+                  name="email"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Correo Electrónico</FormLabel>
+                      <FormControl>
+                        <Input
+                          placeholder="tu@email.com"
+                          {...field}
+                          className="bg-input/50"
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="password"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Contraseña</FormLabel>
+                      <FormControl>
+                        <Input
+                          type="password"
+                          placeholder="********"
+                          {...field}
+                          className="bg-input/50"
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <Button
+                  type="submit"
+                  size="lg"
+                  className="w-full bg-primary hover:bg-primary/90 text-primary-foreground transition-transform duration-300 hover:scale-105"
+                >
+                  Entrar
+                </Button>
+              </form>
+            </Form>
+          </CardContent>
+          <CardFooter className="flex-col gap-4 text-sm">
+            <div className="text-center">
+              <span className="text-muted-foreground">¿No tienes una cuenta? </span>
+              <Button variant="link" asChild className="p-0">
+                <Link href="/register">Regístrate aquí</Link>
+              </Button>
             </div>
-          </div>
-        </section>
+            <Button variant="link" asChild className="p-0 text-muted-foreground">
+                <Link href="#">¿Olvidaste tu contraseña?</Link>
+            </Button>
+          </CardFooter>
+        </Card>
       </main>
       <Footer />
     </div>
