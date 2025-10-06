@@ -19,7 +19,11 @@ export default function HeroSection() {
   }, []);
 
   if (!mounted) {
-    return null;
+    return (
+      <section id="inicio" className="relative h-screen min-h-[700px] flex items-center justify-center pt-20">
+        <div className="absolute inset-0 bg-background" />
+      </section>
+    );
   }
 
   return (
