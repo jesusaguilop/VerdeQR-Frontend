@@ -1,3 +1,46 @@
 {
-  "placeholderImages": []
+  "placeholderImages": [
+    {
+      "id": "hero-background",
+      "description": "A blurry background of a lush forest.",
+      "imageUrl": "https://images.unsplash.com/photo-1718867806808-89e282ecb4f6?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHxmb3Jlc3QlMjBibHVyfGVufDB8fHx8MTc1OTc2MzU1OXww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "forest blur"
+    },
+    {
+      "id": "cbc-campus",
+      "description": "Campus of Centro Biotecnológico del Caribe",
+      "imageUrl": "https://images.unsplash.com/photo-1592280771190-3e2e4d571952?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHx1bml2ZXJzaXR5JTIwY2FtcHVzfGVufDB8fHx8MTc1OTczNjYxOXww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "university campus"
+    },
+    {
+      "id": "cigec-campus",
+      "description": "Campus of Centro de Innovación de Gestión Empresarial y Cultural",
+      "imageUrl": "https://images.unsplash.com/photo-1582647509711-c8aa8a8bda71?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxtb2Rlcm4lMjBidWlsZGluZ3xlbnwwfHx8fDE3NTk3MTUxMTh8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "modern building"
+    },
+    {
+      "id": "tree-1",
+      "description": "A tall Ceiba Pentandra tree.",
+      "imageUrl": "https://images.unsplash.com/photo-1521895847034-400e1c8c6b46?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHx0YWxsJTIwdHJlZXxlbnwwfHx8fDE3NTk3NjM1NTl8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "tall tree"
+    },
+    {
+      "id": "tree-2",
+      "description": "A flowering Guayacán tree.",
+      "imageUrl": "https://images.unsplash.com/photo-1493589976221-c2357c31ad77?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxmbG93ZXJpbmclMjB0cmVlfGVufDB8fHx8MTc1OTc2MzU1OXww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "flowering tree"
+    },
+    {
+      "id": "tree-3",
+      "description": "A robust Oak tree.",
+      "imageUrl": "https://images.unsplash.com/photo-1528183429752-a97d0bf99b5a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxvYWslMjB0cmVlfGVufDB8fHx8MTc1OTY4OTQwM3ww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "oak tree"
+    },
+    {
+      "id": "tree-4",
+      "description": "A Saman tree with a wide canopy.",
+      "imageUrl": "https://images.unsplash.com/photo-1747649888769-40a2244c18c9?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHxzYW1hbiUyMHRyZWV8ZW58MHx8fHwxNzU5NzYzNTU5fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "saman tree"
+    }
+  ]
 }
