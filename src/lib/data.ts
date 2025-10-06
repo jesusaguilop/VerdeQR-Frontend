@@ -4,7 +4,7 @@ import { PlaceHolderImages } from './placeholder-images';
 const getImage = (id: string): ImagePlaceholder | undefined => PlaceHolderImages.find(img => img.id === id);
 
 export const navLinks = [
-  { name: 'Inicio', href: '#inicio' },
+  { name: 'Inicio', href: '/' },
   { name: 'Beneficios', href: '#beneficios' },
   { name: 'Centros', href: '#centros' },
   { name: 'Árboles', href: '#arboles' },
