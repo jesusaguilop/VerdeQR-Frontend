@@ -4,7 +4,6 @@ import BenefitsSection from '@/components/landing/benefits-section';
 import CentersSection from '@/components/landing/centers-section';
 import TreesSection from '@/components/landing/trees-section';
 import CommunitySection from '@/components/landing/community-section';
-import AccessSection from '@/components/landing/access-section';
 import Footer from '@/components/landing/footer';
 
 export default function Home() {
@@ -17,7 +16,6 @@ export default function Home() {
         <CentersSection />
         <TreesSection />
         <CommunitySection />
-        <AccessSection />
       </main>
       <Footer />
     </div>
