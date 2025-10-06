@@ -46,7 +46,7 @@ export default function HeroSection() {
           data-ai-hint={heroBgLight.imageHint}
         />
       )}
-      <div className="absolute inset-0 bg-background/50 dark:bg-background/70" />
+      <div className="absolute inset-0 bg-background/70 dark:bg-background/70" />
 
       <div className="container mx-auto px-4 relative z-10">
         <div className="grid md:grid-cols-2 gap-12 items-center">
