@@ -5,7 +5,6 @@ import CentersSection from '@/components/landing/centers-section';
 import TreesSection from '@/components/landing/trees-section';
 import CommunitySection from '@/components/landing/community-section';
 import Footer from '@/components/landing/footer';
-import ScrollToTop from '@/components/landing/scroll-to-top';
 
 export default function Home() {
   return (
@@ -19,7 +18,6 @@ export default function Home() {
         <CommunitySection />
       </main>
       <Footer />
-      <ScrollToTop />
     </div>
   );
 }

@@ -36,8 +36,8 @@ export default function ScrollToTop() {
       size="icon"
       onClick={scrollToTop}
       className={cn(
-        'fixed bottom-8 right-8 z-50 rounded-full bg-primary/80 text-primary-foreground backdrop-blur-sm transition-opacity duration-300 hover:bg-primary',
-        isVisible ? 'opacity-100' : 'opacity-0 pointer-events-none'
+        'fixed bottom-8 right-8 z-50 rounded-full bg-primary/80 text-primary-foreground backdrop-blur-sm transition-all duration-300 hover:bg-primary',
+        isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-0 pointer-events-none'
       )}
       aria-label="Ir arriba"
     >
