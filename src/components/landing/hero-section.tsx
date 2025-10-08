@@ -8,6 +8,7 @@ import { useTheme } from 'next-themes';
 import { useEffect, useState } from 'react';
 import { cn } from '@/lib/utils';
 import { QrCode } from 'lucide-react';
+import QrScanner from './qr-scanner';
 
 export default function HeroSection() {
   const { theme, systemTheme } = useTheme();
@@ -70,32 +71,37 @@ export default function HeroSection() {
       <div className="absolute inset-0 bg-background/80 dark:bg-background/80" />
 
       <div className="container mx-auto px-4 relative z-10">
-        <div className="text-center">
-            <h1 className="text-4xl lg:text-6xl font-extrabold font-headline text-primary tracking-tight">
-              Descubre la naturaleza, <br /> escanea un árbol
-            </h1>
-            <p className="mt-6 text-lg text-foreground max-w-2xl mx-auto">
-              Con VerdeQR, puedes escanear códigos para obtener información detallada sobre los árboles que encuentres en tu camino, explorar consejos y aprender sobre la vida que te rodea.
-            </p>
-            <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
-              <Button
-                asChild
-                size="lg"
-                className="bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg transition-transform duration-300 hover:scale-105"
-              >
-                <Link href="#arboles">Explorar Árboles</Link>
-              </Button>
-               <Button
-                asChild
-                size="lg"
-                variant="outline"
-                className="bg-background/50 border-primary text-primary hover:bg-primary hover:text-primary-foreground transition-all duration-300 hover:scale-105"
-              >
-                <Link href="#beneficios">
-                  <QrCode className="mr-2 h-5 w-5" />
-                  Conocer más
-                </Link>
-              </Button>
+        <div className="grid lg:grid-cols-2 gap-12 items-center">
+            <div className="text-center lg:text-left">
+              <h1 className="text-4xl lg:text-6xl font-extrabold font-headline text-primary tracking-tight">
+                Descubre la naturaleza, <br /> escanea un árbol
+              </h1>
+              <p className="mt-6 text-lg text-foreground max-w-2xl mx-auto lg:mx-0">
+                Con VerdeQR, puedes escanear códigos para obtener información detallada sobre los árboles que encuentres en tu camino, explorar consejos y aprender sobre la vida que te rodea.
+              </p>
+              <div className="mt-10 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
+                <Button
+                  asChild
+                  size="lg"
+                  className="bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg transition-transform duration-300 hover:scale-105"
+                >
+                  <Link href="#arboles">Explorar Árboles</Link>
+                </Button>
+                 <Button
+                  asChild
+                  size="lg"
+                  variant="outline"
+                  className="bg-background/50 border-primary text-primary hover:bg-primary hover:text-primary-foreground transition-all duration-300 hover:scale-105"
+                >
+                  <Link href="#beneficios">
+                    <QrCode className="mr-2 h-5 w-5" />
+                    Conocer más
+                  </Link>
+                </Button>
+              </div>
+            </div>
+            <div className="hidden lg:flex justify-center">
+              <QrScanner />
             </div>
           </div>
       </div>
