@@ -1,7 +1,50 @@
 import Image from "next/image";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { trees } from "@/lib/data";
+
+const trees = [
+  {
+    commonName: 'Ceiba',
+    scientificName: 'Ceiba pentandra',
+    description: 'Árbol de gran tamaño, sagrado en muchas culturas prehispánicas.',
+    image: {
+      path: '/ceiba.jpg',
+      alt: 'A tall Ceiba Pentandra tree.',
+      hint: 'tall tree',
+    },
+  },
+  {
+    commonName: 'Guayacán Amarillo',
+    scientificName: 'Handroanthus chrysanthus',
+    description: 'Conocido por su espectacular floración amarilla que cubre el árbol.',
+    image: {
+      path: '/guayacan.jpg',
+      alt: 'A flowering Guayacán tree.',
+      hint: 'flowering tree',
+    },
+  },
+  {
+    commonName: 'Roble',
+    scientificName: 'Quercus humboldtii',
+    description: 'Especie nativa de los Andes, clave para la conservación de bosques.',
+    image: {
+      path: '/roble.jpg',
+      alt: 'A robust Oak tree.',
+      hint: 'oak tree',
+    },
+  },
+  {
+    commonName: 'Samán',
+    scientificName: 'Samanea saman',
+    description: 'Famoso por su amplia copa que proporciona una extensa sombra.',
+    image: {
+      path: '/saman.jpg',
+      alt: 'A Saman tree with a wide canopy.',
+      hint: 'saman tree',
+    },
+  },
+];
+
 
 export default function TreesSection() {
   return (

@@ -1,7 +1,27 @@
 import Image from "next/image";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { centers } from "@/lib/data";
 import { MapPin } from "lucide-react";
+
+const centers = [
+  {
+    name: 'Centro Biotecnológico del Caribe (CBC)',
+    location: 'Valledupar, Cesar',
+    image: {
+      path: '/cbc.png',
+      alt: 'Campus of Centro Biotecnológico del Caribe',
+      hint: 'university campus',
+    },
+  },
+  {
+    name: 'Centro de Innovación y Gestión Empresarial (CIGEC)',
+    location: 'Valledupar, Cesar',
+    image: {
+      path: '/CIGEC.jpeg',
+      alt: 'Campus of Centro de Innovación de Gestión Empresarial y Cultural',
+      hint: 'modern building',
+    },
+  },
+];
 
 export default function CentersSection() {
   return (

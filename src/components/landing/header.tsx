@@ -6,9 +6,17 @@ import { usePathname } from "next/navigation";
 import { Menu, Trees, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger, SheetClose } from "@/components/ui/sheet";
-import { navLinks } from "@/lib/data";
 import { ThemeToggle } from "../theme-toggle";
 import { cn } from "@/lib/utils";
+
+const navLinks = [
+  { name: 'Inicio', href: '/' },
+  { name: 'Beneficios', href: '#beneficios' },
+  { name: 'Centros', href: '#centros' },
+  { name: 'Árboles', href: '#arboles' },
+  { name: 'Comunidad', href: '#comunidad' },
+  { name: 'Acceder', href: '/login' },
+];
 
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
