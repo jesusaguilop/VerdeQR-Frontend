@@ -13,9 +13,14 @@ import {
 } from '@/components/ui/dialog';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { QrCode, CameraOff, X } from 'lucide-react';
-import { Html5Qrcode, Html5QrcodeScannerState } from 'html5-qrcode';
+import { Html5Qrcode } from 'html5-qrcode';
 import { useToast } from '@/hooks/use-toast';
-import { cn } from '@/lib/utils';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/ui/tooltip';
 
 const QR_REGION_ID = 'qr-reader-region';
 
@@ -95,14 +100,23 @@ export default function QrScannerModal() {
 
   return (
     <>
-      <Button
-        size="icon"
-        onClick={() => handleOpenChange(true)}
-        className="fixed bottom-20 right-8 z-50 rounded-full h-16 w-16 bg-accent text-accent-foreground shadow-lg transition-transform duration-300 hover:scale-110 hover:bg-accent/90"
-        aria-label="Escanear Código QR"
-      >
-        <QrCode className="h-8 w-8" />
-      </Button>
+      <TooltipProvider>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Button
+              size="icon"
+              onClick={() => handleOpenChange(true)}
+              className="fixed bottom-20 right-8 z-50 rounded-full h-16 w-16 bg-accent text-accent-foreground shadow-lg transition-transform duration-300 hover:scale-110 hover:bg-accent/90"
+              aria-label="Escanear Código QR"
+            >
+              <QrCode className="h-8 w-8" />
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent side="left">
+            <p>Identificar QR</p>
+          </TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
 
       <Dialog open={isOpen} onOpenChange={handleOpenChange}>
         <DialogContent className="max-w-md w-[95vw] p-0 gap-0 overflow-hidden">
