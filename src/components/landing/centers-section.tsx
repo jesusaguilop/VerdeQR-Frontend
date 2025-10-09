@@ -7,18 +7,18 @@ const centers = [
     name: 'Centro Biotecnológico del Caribe (CBC)',
     location: 'Valledupar, Cesar',
     image: {
-      path: '/cbc.png',
+      src:'/cbc.png',
       alt: 'Campus of Centro Biotecnológico del Caribe',
-      hint: 'university campus',
+      hint: 'Building',
     },
   },
   {
     name: 'Centro de Innovación y Gestión Empresarial (CIGEC)',
     location: 'Valledupar, Cesar',
     image: {
-      path: '/CIGEC.jpeg',
+      src: '/CIGEC.jpeg',
       alt: 'Campus of Centro de Innovación de Gestión Empresarial y Cultural',
-      hint: 'modern building',
+      hint: 'Building',
     },
   },
 ];
@@ -41,7 +41,7 @@ export default function CentersSection() {
               {center.image && (
                 <div className="aspect-w-3 aspect-h-2">
                    <Image
-                    src={center.image.path}
+                    src={center.image.src}
                     alt={center.image.alt}
                     width={600}
                     height={400}

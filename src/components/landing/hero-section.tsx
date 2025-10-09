@@ -64,7 +64,7 @@ export default function HeroSection() {
 
       <div className="container mx-auto px-4 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 items-center gap-12">
-          <div className="flex justify-center lg:order-last lg:justify-start">
+          <div className="flex justify-center lg:justify-start lg:order-first">
             <QrScanner />
           </div>
           <div className="flex justify-center">
