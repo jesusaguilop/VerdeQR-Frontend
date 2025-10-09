@@ -24,7 +24,7 @@ export default function HeroSection() {
   const showDark = mounted && currentTheme === 'dark';
 
   return (
-    <section id="inicio" className="relative h-screen min-h-[700px] flex items-center justify-center pt-20">
+    <section id="inicio" className="relative h-screen min-h-[800px] flex items-center justify-center pt-20">
       {heroBgDark && (
         <Image
           src={heroBgDark.imageUrl}
@@ -71,15 +71,18 @@ export default function HeroSection() {
       <div className="absolute inset-0 bg-background/80 dark:bg-background/80" />
 
       <div className="container mx-auto px-4 relative z-10">
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <div className="text-center lg:text-left">
+        <div className="flex flex-col items-center gap-8">
+            <div className="flex justify-center">
+              <QrScanner />
+            </div>
+            <div className="text-center">
               <h1 className="text-4xl lg:text-6xl font-extrabold font-headline text-primary tracking-tight">
                 Descubre la naturaleza, <br /> escanea un árbol
               </h1>
-              <p className="mt-6 text-lg text-foreground max-w-2xl mx-auto lg:mx-0">
+              <p className="mt-6 text-lg text-foreground max-w-2xl mx-auto">
                 Con VerdeQR, puedes escanear códigos para obtener información detallada sobre los árboles que encuentres en tu camino, explorar consejos y aprender sobre la vida que te rodea.
               </p>
-              <div className="mt-10 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
+              <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
                 <Button
                   asChild
                   size="lg"
@@ -99,9 +102,6 @@ export default function HeroSection() {
                   </Link>
                 </Button>
               </div>
-            </div>
-            <div className="flex justify-center mt-8 lg:mt-0">
-              <QrScanner />
             </div>
           </div>
       </div>
