@@ -21,12 +21,12 @@ export default function TreesSection() {
               {tree.image && (
                 <div className="aspect-w-4 aspect-h-5 overflow-hidden">
                   <Image
-                    src={tree.image.imageUrl}
-                    alt={`Imagen de un ${tree.commonName}`}
+                    src={tree.image.path}
+                    alt={tree.image.alt}
                     width={400}
                     height={500}
                     className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-300"
-                    data-ai-hint={tree.image.imageHint}
+                    data-ai-hint={tree.image.hint}
                   />
                 </div>
               )}

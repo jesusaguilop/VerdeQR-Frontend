@@ -1,7 +1,5 @@
-import type { ImagePlaceholder } from './placeholder-images';
-import { PlaceHolderImages } from './placeholder-images';
-
-const getImage = (id: string): ImagePlaceholder | undefined => PlaceHolderImages.find(img => img.id === id);
+import type { LocalImage } from './images';
+import { getImageById } from './images';
 
 export const navLinks = [
   { name: 'Inicio', href: '/' },
@@ -12,42 +10,42 @@ export const navLinks = [
   { name: 'Acceder', href: '/login' },
 ];
 
-export const centers = [
+export const centers: { name: string, location: string, image: LocalImage }[] = [
   {
     name: 'Centro Biotecnológico del Caribe (CBC)',
     location: 'Valledupar, Cesar',
-    image: getImage('cbc-campus'),
+    image: getImageById('cbc-campus'),
   },
   {
     name: 'Centro de Innovación y Gestión Empresarial (CIGEC)',
     location: 'Valledupar, Cesar',
-    image: getImage('cigec-campus'),
+    image: getImageById('cigec-campus'),
   },
 ];
 
-export const trees = [
+export const trees: { commonName: string, scientificName: string, description: string, image: LocalImage }[] = [
   {
     commonName: 'Ceiba',
     scientificName: 'Ceiba pentandra',
     description: 'Árbol de gran tamaño, sagrado en muchas culturas prehispánicas.',
-    image: getImage('tree-1'),
+    image: getImageById('tree-ceiba'),
   },
   {
     commonName: 'Guayacán Amarillo',
     scientificName: 'Handroanthus chrysanthus',
     description: 'Conocido por su espectacular floración amarilla que cubre el árbol.',
-    image: getImage('tree-2'),
+    image: getImageById('tree-guayacan'),
   },
   {
     commonName: 'Roble',
     scientificName: 'Quercus humboldtii',
     description: 'Especie nativa de los Andes, clave para la conservación de bosques.',
-    image: getImage('tree-3'),
+    image: getImageById('tree-roble'),
   },
   {
     commonName: 'Samán',
     scientificName: 'Samanea saman',
     description: 'Famoso por su amplia copa que proporciona una extensa sombra.',
-    image: getImage('tree-4'),
+    image: getImageById('tree-saman'),
   },
 ];

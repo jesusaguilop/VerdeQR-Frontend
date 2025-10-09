@@ -21,12 +21,12 @@ export default function CentersSection() {
               {center.image && (
                 <div className="aspect-w-3 aspect-h-2">
                    <Image
-                    src={center.image.imageUrl}
-                    alt={`Campus de ${center.name}`}
+                    src={center.image.path}
+                    alt={center.image.alt}
                     width={600}
                     height={400}
                     className="object-cover w-full h-full"
-                    data-ai-hint={center.image.imageHint}
+                    data-ai-hint={center.image.hint}
                   />
                 </div>
               )}
