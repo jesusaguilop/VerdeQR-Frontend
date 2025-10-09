@@ -4,7 +4,6 @@ import { Toaster } from "@/components/ui/toaster";
 import { ThemeProvider } from '@/components/theme-provider';
 import FloatingPlants from '@/components/landing/floating-plants';
 import QrScannerModal from '@/components/shared/qr-scanner-modal';
-import ScrollToTop from '@/components/landing/scroll-to-top';
 
 export const metadata: Metadata = {
   title: 'VerdeQR - Identifica la Naturaleza',
@@ -34,7 +33,6 @@ export default function RootLayout({
           {children}
           <Toaster />
           <QrScannerModal />
-          <ScrollToTop />
         </ThemeProvider>
       </body>
     </html>
