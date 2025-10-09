@@ -32,30 +32,30 @@ export default function HeroSection() {
           alt={heroBgDark.description}
           fill
           className={cn(
-            'object-cover',
+            'object-cover transition-opacity duration-500',
             showDark ? 'opacity-100' : 'opacity-0'
           )}
-          style={{ transition: 'opacity 0.5s ease-in-out' }}
           priority
           quality={80}
           data-ai-hint={heroBgDark.imageHint}
         />
       )}
+      
       {heroBgLight && (
          <Image
           src={heroBgLight.imageUrl}
           alt={heroBgLight.description}
           fill
           className={cn(
-            'object-cover',
-            showLight ? 'opacity-100' : 'opacity-0'
+            'object-cover transition-opacity duration-500',
+             showLight ? 'opacity-100' : 'opacity-0'
           )}
-          style={{ transition: 'opacity 0.5s ease-in-out' }}
           priority
           quality={80}
           data-ai-hint={heroBgLight.imageHint}
         />
       )}
+
       {!mounted && heroBgLight && (
          <Image
           src={heroBgLight.imageUrl}
@@ -68,7 +68,8 @@ export default function HeroSection() {
         />
       )}
 
-      <div className="absolute inset-0 bg-background/80 dark:bg-background/80" />
+
+      <div className="absolute inset-0 bg-background/60 dark:bg-background/80" />
 
       <div className="container mx-auto px-4 relative z-10">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
