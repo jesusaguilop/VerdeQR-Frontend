@@ -100,7 +100,7 @@ export default function HeroSection() {
                 </Button>
               </div>
             </div>
-            <div className="hidden lg:flex justify-center">
+            <div className="flex justify-center mt-8 lg:mt-0">
               <QrScanner />
             </div>
           </div>
