@@ -15,13 +15,13 @@
     {
       "id": "cbc-campus",
       "description": "Campus of Centro Biotecnológico del Caribe",
-      "imageUrl": "/campus-cbc.jpg",
+      "imageUrl": "/cbc.png",
       "imageHint": "university campus"
     },
     {
       "id": "cigec-campus",
       "description": "Campus of Centro de Innovación de Gestión Empresarial y Cultural",
-      "imageUrl": "/campus-cigec.jpg",
+      "imageUrl": "/CIGEC.jpeg",
       "imageHint": "modern building"
     },
     {
