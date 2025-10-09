@@ -19,8 +19,8 @@ export const centers = [
     image: getImage('cbc-campus'),
   },
   {
-    name: 'Centro de Innovación y Gestión Empresarial (CIGE)',
-    location: 'Duitama, Boyacá',
+    name: 'Centro de Innovación y Gestión Empresarial (CIGEC)',
+    location: 'Valledupar, Cesar',
     image: getImage('cigec-campus'),
   },
 ];

@@ -9,19 +9,19 @@
     {
       "id": "hero-background-light",
       "description": "A sunlit forest path with vibrant green trees.",
-      "imageUrl": "/hero-light.jpg",
+      "imageUrl": "https://picsum.photos/seed/hero-light/1920/1080",
       "imageHint": "sunlit forest"
     },
     {
       "id": "cbc-campus",
       "description": "Campus of Centro Biotecnológico del Caribe",
-      "imageUrl": "https://images.unsplash.com/photo-1592280771190-3e2e4d571952?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHx1bml2ZXJzaXR5JTIwY2FtcHVzfGVufDB8fHx8MTc1OTczNjYxOXww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://picsum.photos/seed/cbc-campus/600/400",
       "imageHint": "university campus"
     },
     {
       "id": "cigec-campus",
       "description": "Campus of Centro de Innovación de Gestión Empresarial y Cultural",
-      "imageUrl": "https://images.unsplash.com/photo-1582647509711-c8aa8a8bda71?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxtb2Rlcm4lMjBidWlsZGluZ3xlbnwwfHx8fDE3NTk3MTUxMTh8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://picsum.photos/seed/cigec-campus/600/400",
       "imageHint": "modern building"
     },
     {
