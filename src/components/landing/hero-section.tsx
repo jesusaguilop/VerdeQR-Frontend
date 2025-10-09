@@ -71,18 +71,18 @@ export default function HeroSection() {
       <div className="absolute inset-0 bg-background/80 dark:bg-background/80" />
 
       <div className="container mx-auto px-4 relative z-10">
-        <div className="flex flex-col items-center gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 items-center gap-12">
             <div className="flex justify-center">
               <QrScanner />
             </div>
-            <div className="text-center">
+            <div className="text-center lg:text-left">
               <h1 className="text-4xl lg:text-6xl font-extrabold font-headline text-primary tracking-tight">
                 Descubre la naturaleza, <br /> escanea un árbol
               </h1>
-              <p className="mt-6 text-lg text-foreground max-w-2xl mx-auto">
+              <p className="mt-6 text-lg text-foreground max-w-xl mx-auto lg:mx-0">
                 Con VerdeQR, puedes escanear códigos para obtener información detallada sobre los árboles que encuentres en tu camino, explorar consejos y aprender sobre la vida que te rodea.
               </p>
-              <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
+              <div className="mt-10 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
                 <Button
                   asChild
                   size="lg"
