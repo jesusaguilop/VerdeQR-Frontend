@@ -22,7 +22,6 @@ export default function HeroSection() {
 
   const currentTheme = theme === 'system' ? systemTheme : theme;
   const showDark = mounted && currentTheme === 'dark';
-  const showLight = mounted && currentTheme === 'light';
 
   return (
     <section id="inicio" className="relative h-screen min-h-[700px] flex items-center justify-center pt-20">
@@ -48,7 +47,7 @@ export default function HeroSection() {
           fill
           className={cn(
             'object-cover transition-opacity duration-500',
-             showLight ? 'opacity-100' : 'opacity-0'
+             !showDark ? 'opacity-100' : 'opacity-0'
           )}
           priority
           quality={80}
@@ -69,7 +68,7 @@ export default function HeroSection() {
       )}
 
 
-      <div className="absolute inset-0 bg-background/60 dark:bg-background/80" />
+      <div className="absolute inset-0 bg-background/70 dark:bg-background/80" />
 
       <div className="container mx-auto px-4 relative z-10">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
