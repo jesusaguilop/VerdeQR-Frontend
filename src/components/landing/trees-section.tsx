@@ -8,7 +8,7 @@ const trees = [
     scientificName: 'Ceiba pentandra',
     description: 'Árbol de gran tamaño, sagrado en muchas culturas prehispánicas.',
     image: {
-      path: '/ceiba.jpg',
+      path: '/img/ceiba.jpg',
       alt: 'A tall Ceiba Pentandra tree.',
       hint: 'tall tree',
     },
@@ -18,7 +18,7 @@ const trees = [
     scientificName: 'Handroanthus chrysanthus',
     description: 'Conocido por su espectacular floración amarilla que cubre el árbol.',
     image: {
-      path: '/guayacan.jpg',
+      path: '/img/guayaca-amarillo.jpeg',
       alt: 'A flowering Guayacán tree.',
       hint: 'flowering tree',
     },
@@ -28,7 +28,7 @@ const trees = [
     scientificName: 'Quercus humboldtii',
     description: 'Especie nativa de los Andes, clave para la conservación de bosques.',
     image: {
-      path: '/roble.jpg',
+      path: '/img/roble.jpg',
       alt: 'A robust Oak tree.',
       hint: 'oak tree',
     },
@@ -38,7 +38,7 @@ const trees = [
     scientificName: 'Samanea saman',
     description: 'Famoso por su amplia copa que proporciona una extensa sombra.',
     image: {
-      path: '/saman.jpg',
+      path: '/img/Samán.jpg',
       alt: 'A Saman tree with a wide canopy.',
       hint: 'saman tree',
     },

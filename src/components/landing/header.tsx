@@ -62,14 +62,14 @@ export default function Header() {
     if (isHomePage) return href;
     return href.startsWith('#') ? `/${href}` : href;
   };
-  
+
   const navItems = navLinks.map(link => {
-      if (link.href === '/') {
-          return { ...link, href: getLinkHref(link.href) };
-      }
-      return link.href.startsWith('#') && !isHomePage
-          ? { ...link, href: `/${link.href}` }
-          : link;
+    if (link.href === '/') {
+      return { ...link, href: getLinkHref(link.href) };
+    }
+    return link.href.startsWith('#') && !isHomePage
+      ? { ...link, href: `/${link.href}` }
+      : link;
   });
 
 
@@ -77,14 +77,22 @@ export default function Header() {
     <header className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-sm border-b border-border/50">
       <div className="container mx-auto px-4 h-20 flex justify-between items-center">
         <Link href="/" className="flex items-center gap-2" aria-label="VerdeQR Home">
-          <Trees className="h-8 w-8 text-primary" />
-          <span className="text-2xl font-bold font-headline text-foreground">VerdeQR</span>
+          <img
+            src="/img/VerdeQr-Logo.png"
+            alt="VerdeQR Logo"
+            className="h-14 w-auto object-contain"
+          />
+          <span className="text-2xl font-bold font-headline text-[#2E7D32]">
+            Verde
+            <span className="text-[#5C3A1E]">QR</span>
+          </span>
+
         </Link>
-        
+
         <nav className="hidden md:flex items-center gap-1">
           {navItems.filter(l => l.name !== 'Acceder').map((link) => (
-            <Link 
-              key={link.name} 
+            <Link
+              key={link.name}
               href={link.href}
               className={cn(
                 "px-3 py-2 text-sm font-medium text-muted-foreground hover:text-primary transition-colors relative",
@@ -92,7 +100,7 @@ export default function Header() {
               )}
             >
               {link.name}
-              <span 
+              <span
                 className={cn(
                   "absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-0.5 bg-primary rounded-full transition-all duration-300",
                   isHomePage && (activeSection === link.href.substring(1) || (link.href === '/' && activeSection === 'inicio')) ? "w-4/5" : "w-0"
@@ -104,7 +112,7 @@ export default function Header() {
 
         <div className="hidden md:flex items-center gap-2">
           <Button asChild variant="ghost">
-             <Link href="/login">Acceder</Link>
+            <Link href="/login">Acceder</Link>
           </Button>
           <ThemeToggle />
         </div>
@@ -135,10 +143,10 @@ export default function Header() {
                 <nav className="flex flex-col items-start gap-4 mt-8">
                   {navItems.map((link) => (
                     <SheetClose asChild key={link.name}>
-                      <Link 
+                      <Link
                         href={link.href}
                         className="text-lg font-medium text-muted-foreground hover:text-primary transition-colors w-full text-left py-2"
-                        >
+                      >
                         {link.name}
                       </Link>
                     </SheetClose>

@@ -32,7 +32,7 @@ export default function Footer() {
           
           <div className="flex flex-col items-center md:items-start space-y-4">
             <div className="flex items-center justify-center h-24 w-24 rounded-full bg-background p-4 border border-border shadow-sm">
-                <Trees className="h-12 w-12 text-primary" />
+                <img src="/img/VerdeQr-Logo.png" alt="VerdeQR Logo" className="h-full w-full object-cover"></img>
             </div>
             <h3 className="text-xl font-bold font-headline">VerdeQR</h3>
             <p className="text-sm text-muted-foreground">

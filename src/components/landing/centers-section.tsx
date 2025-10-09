@@ -7,7 +7,7 @@ const centers = [
     name: 'Centro Biotecnológico del Caribe (CBC)',
     location: 'Valledupar, Cesar',
     image: {
-      src:'/cbc.png',
+      src:'/img/cbc.png',
       alt: 'Campus of Centro Biotecnológico del Caribe',
       hint: 'Building',
     },
@@ -16,7 +16,7 @@ const centers = [
     name: 'Centro de Innovación y Gestión Empresarial (CIGEC)',
     location: 'Valledupar, Cesar',
     image: {
-      src: '/CIGEC.jpeg',
+      src: '/img/CIGEC.jpeg',
       alt: 'Campus of Centro de Innovación de Gestión Empresarial y Cultural',
       hint: 'Building',
     },
