@@ -124,6 +124,12 @@ export default function LoginPage() {
                 <Link href="/register">Regístrate aquí</Link>
               </Button>
             </div>
+             <div className="text-center">
+                <span className="text-muted-foreground">¿Eres administrador? </span>
+                <Button variant="link" asChild className="p-0">
+                    <Link href="/admin/login">Accede aquí</Link>
+                </Button>
+            </div>
             <Button variant="link" asChild className="p-0 text-muted-foreground">
                 <Link href="#">¿Olvidaste tu contraseña?</Link>
             </Button>
