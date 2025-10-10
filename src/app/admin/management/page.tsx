@@ -70,13 +70,13 @@ export default function ManagementPage() {
   return (
     <div className="p-4 md:p-8 space-y-8">
       <div>
-        <h1 className="text-3xl font-bold tracking-tight">Gestión</h1>
+        <h1 className="text-3xl font-bold tracking-tight text-foreground">Gestión</h1>
         <p className="text-muted-foreground">
           Administra usuarios, árboles y centros de la plataforma.
         </p>
       </div>
 
-      <Card>
+      <Card className="bg-card/80 backdrop-blur-sm border-border/50 shadow-xl">
         <CardHeader className="flex flex-row items-center justify-between">
             <div>
                 <CardTitle>Usuarios</CardTitle>
@@ -134,7 +134,7 @@ export default function ManagementPage() {
           </Table>
         </CardContent>
       </Card>
-      <Card>
+      <Card className="bg-card/80 backdrop-blur-sm border-border/50 shadow-xl">
         <CardHeader className="flex flex-row items-center justify-between">
             <div>
                 <CardTitle>Árboles</CardTitle>

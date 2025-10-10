@@ -26,6 +26,7 @@ import { toast } from '@/hooks/use-toast';
 import Header from '@/components/landing/header';
 import Footer from '@/components/landing/footer';
 import { LogIn } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 
 const formSchema = z.object({
   email: z.string().email({ message: 'Por favor, introduce un email válido.' }),
@@ -35,6 +36,7 @@ const formSchema = z.object({
 });
 
 export default function LoginPage() {
+  const router = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -44,12 +46,12 @@ export default function LoginPage() {
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    // Aquí iría la lógica de autenticación
     console.log(values);
     toast({
       title: '¡Inicio de sesión exitoso!',
-      description: `Bienvenido, ${values.email}.`,
+      description: 'Redirigiendo al panel de administración...',
     });
+    router.push('/admin');
   }
 
   return (
@@ -60,10 +62,10 @@ export default function LoginPage() {
           <CardHeader className="text-center space-y-2">
             <LogIn className="mx-auto h-8 w-8 text-primary" />
             <CardTitle className="text-3xl font-bold font-headline text-primary">
-              Iniciar Sesión
+              Acceso de Administrador
             </CardTitle>
             <CardDescription>
-              Introduce tus credenciales para acceder a tu cuenta.
+              Introduce tus credenciales para acceder al panel.
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -80,7 +82,7 @@ export default function LoginPage() {
                       <FormLabel>Correo Electrónico</FormLabel>
                       <FormControl>
                         <Input
-                          placeholder="tu@email.com"
+                          placeholder="admin@email.com"
                           {...field}
                           className="bg-input/50"
                         />
@@ -117,19 +119,7 @@ export default function LoginPage() {
               </form>
             </Form>
           </CardContent>
-          <CardFooter className="flex-col gap-4 text-sm">
-            <div className="text-center">
-              <span className="text-muted-foreground">¿No tienes una cuenta? </span>
-              <Button variant="link" asChild className="p-0">
-                <Link href="/register">Regístrate aquí</Link>
-              </Button>
-            </div>
-             <div className="text-center">
-                <span className="text-muted-foreground">¿Eres administrador? </span>
-                <Button variant="link" asChild className="p-0">
-                    <Link href="/admin/login">Accede aquí</Link>
-                </Button>
-            </div>
+           <CardFooter className="flex-col gap-4 text-sm">
             <Button variant="link" asChild className="p-0 text-muted-foreground">
                 <Link href="#">¿Olvidaste tu contraseña?</Link>
             </Button>

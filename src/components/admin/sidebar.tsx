@@ -4,33 +4,38 @@ import { usePathname } from 'next/navigation';
 
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
-import { LayoutDashboard, Users, TreePine, Building, BadgeHelp } from 'lucide-react';
+import { LayoutDashboard, Users, TreePine, Building, BadgeHelp, Home, Settings } from 'lucide-react';
 
 const routes = [
   {
     href: '/admin',
-    label: 'Dashboard',
-    icon: LayoutDashboard,
+    label: 'Inicio',
+    icon: Home,
   },
   {
-    href: '/admin/management',
-    label: 'Gestión',
-    icon: Users,
-  },
-  {
-    href: '#',
+    href: '/admin/trees',
     label: 'Árboles',
     icon: TreePine,
   },
   {
-    href: '#',
+    href: '/admin/centers',
     label: 'Centros',
     icon: Building,
   },
+   {
+    href: '/admin/management',
+    label: 'Usuarios',
+    icon: Users,
+  },
   {
-    href: '#',
+    href: '/admin/suggestions',
     label: 'Sugerencias',
     icon: BadgeHelp,
+  },
+  {
+    href: '/admin/settings',
+    label: 'Configuración',
+    icon: Settings,
   },
 ];
 
@@ -38,10 +43,10 @@ export function Sidebar() {
   const pathname = usePathname();
 
   return (
-    <div className="hidden border-r bg-muted/40 md:block">
+    <div className="hidden border-r bg-background/80 md:block">
       <div className="flex h-full max-h-screen flex-col gap-2">
-        <div className="flex-1">
-          <nav className="grid items-start px-2 text-sm font-medium lg:px-4 pt-8">
+        <div className="flex-1 pt-8">
+          <nav className="grid items-start px-2 text-sm font-medium lg:px-4">
             {routes.map((route) => (
               <Link
                 key={route.label}

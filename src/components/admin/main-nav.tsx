@@ -13,30 +13,15 @@ export function MainNav({
 
   const routes = [
     {
-      href: '/admin',
-      label: 'Inicio',
-      active: pathname === '/admin',
+      href: '/admin/trees',
+      label: 'Árboles',
+      active: pathname.startsWith('/admin/trees'),
     },
     {
       href: '/admin/management',
       label: 'Gestión',
-      active: pathname === '/admin/management',
+      active: pathname.startsWith('/admin/management'),
     },
-    {
-      href: '#',
-      label: 'Árboles',
-      active: pathname === '/admin/trees',
-    },
-    {
-      href: '#',
-      label: 'Centros',
-      active: pathname === '/admin/centers',
-    },
-    {
-        href: '#',
-        label: 'Sugerencias',
-        active: pathname === '/admin/suggestions',
-    }
   ];
 
   return (
@@ -51,7 +36,7 @@ export function MainNav({
           className={cn(
             'text-sm font-medium transition-colors hover:text-primary',
             route.active
-              ? 'text-black dark:text-white'
+              ? 'text-primary dark:text-white'
               : 'text-muted-foreground'
           )}
         >
