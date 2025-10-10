@@ -21,6 +21,8 @@ import {
   Beaker,
   Mountain,
   Sparkles,
+  Bug,
+  QrCode,
 } from 'lucide-react';
 import { SheetClose } from '../ui/sheet';
 
@@ -39,6 +41,16 @@ const routes = [
     href: '/admin/management/fun-facts',
     label: 'Curiosidades',
     icon: Sparkles,
+  },
+  {
+    href: '/admin/management/ecological-interactions',
+    label: 'Interacciones',
+    icon: Bug,
+  },
+  {
+    href: '/admin/management/qr-code',
+    label: 'Código QR',
+    icon: QrCode,
   },
   { href: '/admin/management/users', label: 'Usuarios', icon: Users },
   {
