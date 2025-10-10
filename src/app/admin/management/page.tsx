@@ -1,4 +1,4 @@
-import { Button } from '@/components/ui/button';
+'use client';
 import {
   Card,
   CardContent,
@@ -23,6 +23,8 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { Button } from '@/components/ui/button';
+import { WelcomeModal } from '@/components/admin/welcome-modal';
 
 const users = [
   {
@@ -46,148 +48,160 @@ const users = [
 ];
 
 const trees = [
-    {
-        name: 'Ceiba',
-        species: 'Ceiba pentandra',
-        center: 'CBC',
-        plantings: 120
-    },
-    {
-        name: 'Guayacán Amarillo',
-        species: 'Handroanthus chrysanthus',
-        center: 'CIGEC',
-        plantings: 80
-    },
-    {
-        name: 'Roble',
-        species: 'Quercus humboldtii',
-        center: 'CBC',
-        plantings: 200
-    },
-]
+  {
+    name: 'Ceiba',
+    species: 'Ceiba pentandra',
+    center: 'CBC',
+    plantings: 120,
+  },
+  {
+    name: 'Guayacán Amarillo',
+    species: 'Handroanthus chrysanthus',
+    center: 'CIGEC',
+    plantings: 80,
+  },
+  {
+    name: 'Roble',
+    species: 'Quercus humboldtii',
+    center: 'CBC',
+    plantings: 200,
+  },
+];
 
 export default function ManagementPage() {
   return (
-    <div className="p-4 md:p-8 space-y-8">
-      <div>
-        <h1 className="text-3xl font-bold tracking-tight text-foreground">Gestión</h1>
-        <p className="text-muted-foreground">
-          Administra usuarios, árboles y centros de la plataforma.
-        </p>
-      </div>
-
-      <Card className="bg-card/80 backdrop-blur-sm border-border/50 shadow-xl">
-        <CardHeader className="flex flex-row items-center justify-between">
+    <>
+      <WelcomeModal />
+      <div className="space-y-8 py-8">
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between">
             <div>
-                <CardTitle>Usuarios</CardTitle>
-                <CardDescription>
+              <CardTitle>Usuarios</CardTitle>
+              <CardDescription>
                 Gestiona los usuarios registrados en la plataforma.
-                </CardDescription>
+              </CardDescription>
             </div>
             <Button size="sm" className="gap-1">
-                <PlusCircle className="h-4 w-4" />
-                Añadir Usuario
+              <PlusCircle className="h-4 w-4" />
+              Añadir Usuario
             </Button>
-        </CardHeader>
-        <CardContent>
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Nombre</TableHead>
-                <TableHead>Email</TableHead>
-                <TableHead>Rol</TableHead>
-                <TableHead>Estado</TableHead>
-                <TableHead>
-                  <span className="sr-only">Acciones</span>
-                </TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {users.map((user) => (
-                <TableRow key={user.email}>
-                  <TableCell className="font-medium">{user.name}</TableCell>
-                  <TableCell>{user.email}</TableCell>
-                  <TableCell>
-                    <Badge variant={user.role === 'Admin' ? 'default' : 'secondary'}>{user.role}</Badge>
-                  </TableCell>
-                  <TableCell>
-                    <Badge variant={user.status === 'Active' ? 'outline' : 'destructive'}>{user.status}</Badge>
+          </CardHeader>
+          <CardContent>
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Nombre</TableHead>
+                  <TableHead>Email</TableHead>
+                  <TableHead>Rol</TableHead>
+                  <TableHead>Estado</TableHead>
+                  <TableHead>
+                    <span className="sr-only">Acciones</span>
+                  </TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {users.map((user) => (
+                  <TableRow key={user.email}>
+                    <TableCell className="font-medium">{user.name}</TableCell>
+                    <TableCell>{user.email}</TableCell>
+                    <TableCell>
+                      <Badge
+                        variant={user.role === 'Admin' ? 'default' : 'secondary'}
+                      >
+                        {user.role}
+                      </Badge>
                     </TableCell>
-                  <TableCell>
-                    <DropdownMenu>
-                      <DropdownMenuTrigger asChild>
-                        <Button aria-haspopup="true" size="icon" variant="ghost">
-                          <MoreHorizontal className="h-4 w-4" />
-                          <span className="sr-only">Toggle menu</span>
-                        </Button>
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent align="end">
-                        <DropdownMenuLabel>Acciones</DropdownMenuLabel>
-                        <DropdownMenuItem>Editar</DropdownMenuItem>
-                        <DropdownMenuItem>Eliminar</DropdownMenuItem>
-                      </DropdownMenuContent>
-                    </DropdownMenu>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </CardContent>
-      </Card>
-      <Card className="bg-card/80 backdrop-blur-sm border-border/50 shadow-xl">
-        <CardHeader className="flex flex-row items-center justify-between">
+                    <TableCell>
+                      <Badge
+                        variant={user.status === 'Active' ? 'outline' : 'destructive'}
+                      >
+                        {user.status}
+                      </Badge>
+                    </TableCell>
+                    <TableCell>
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <Button
+                            aria-haspopup="true"
+                            size="icon"
+                            variant="ghost"
+                          >
+                            <MoreHorizontal className="h-4 w-4" />
+                            <span className="sr-only">Toggle menu</span>
+                          </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end">
+                          <DropdownMenuLabel>Acciones</DropdownMenuLabel>
+                          <DropdownMenuItem>Editar</DropdownMenuItem>
+                          <DropdownMenuItem>Eliminar</DropdownMenuItem>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between">
             <div>
-                <CardTitle>Árboles</CardTitle>
-                <CardDescription>
+              <CardTitle>Árboles</CardTitle>
+              <CardDescription>
                 Gestiona los árboles registrados en los centros.
-                </CardDescription>
+              </CardDescription>
             </div>
             <Button size="sm" className="gap-1">
-                <PlusCircle className="h-4 w-4" />
-                Añadir Árbol
+              <PlusCircle className="h-4 w-4" />
+              Añadir Árbol
             </Button>
-        </CardHeader>
-        <CardContent>
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Nombre Común</TableHead>
-                <TableHead>Especie</TableHead>
-                <TableHead>Centro</TableHead>
-                <TableHead>Siembras</TableHead>
-                <TableHead>
-                  <span className="sr-only">Acciones</span>
-                </TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {trees.map((tree) => (
-                <TableRow key={tree.name}>
-                  <TableCell className="font-medium">{tree.name}</TableCell>
-                  <TableCell>{tree.species}</TableCell>
-                  <TableCell>{tree.center}</TableCell>
-                  <TableCell>{tree.plantings}</TableCell>
-                  <TableCell>
-                    <DropdownMenu>
-                      <DropdownMenuTrigger asChild>
-                        <Button aria-haspopup="true" size="icon" variant="ghost">
-                          <MoreHorizontal className="h-4 w-4" />
-                          <span className="sr-only">Toggle menu</span>
-                        </Button>
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent align="end">
-                        <DropdownMenuLabel>Acciones</DropdownMenuLabel>
-                        <DropdownMenuItem>Editar</DropdownMenuItem>
-                        <DropdownMenuItem>Eliminar</DropdownMenuItem>
-                      </DropdownMenuContent>
-                    </DropdownMenu>
-                  </TableCell>
+          </CardHeader>
+          <CardContent>
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Nombre Común</TableHead>
+                  <TableHead>Especie</TableHead>
+                  <TableHead>Centro</TableHead>
+                  <TableHead>Siembras</TableHead>
+                  <TableHead>
+                    <span className="sr-only">Acciones</span>
+                  </TableHead>
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </CardContent>
-      </Card>
-    </div>
+              </TableHeader>
+              <TableBody>
+                {trees.map((tree) => (
+                  <TableRow key={tree.name}>
+                    <TableCell className="font-medium">{tree.name}</TableCell>
+                    <TableCell>{tree.species}</TableCell>
+                    <TableCell>{tree.center}</TableCell>
+                    <TableCell>{tree.plantings}</TableCell>
+                    <TableCell>
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <Button
+                            aria-haspopup="true"
+                            size="icon"
+                            variant="ghost"
+                          >
+                            <MoreHorizontal className="h-4 w-4" />
+                            <span className="sr-only">Toggle menu</span>
+                          </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end">
+                          <DropdownMenuLabel>Acciones</DropdownMenuLabel>
+                          <DropdownMenuItem>Editar</DropdownMenuItem>
+                          <DropdownMenuItem>Eliminar</DropdownMenuItem>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </CardContent>
+        </Card>
+      </div>
+    </>
   );
 }

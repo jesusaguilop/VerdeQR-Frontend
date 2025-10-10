@@ -1,23 +1,88 @@
+'use client';
 import Link from 'next/link';
-import { MainNav } from '@/components/admin/main-nav';
-import { UserNav } from '@/components/admin/user-nav';
+import {
+  Home,
+  LineChart,
+  Package,
+  Package2,
+  PanelLeft,
+  Search,
+  ShoppingCart,
+  Users2,
+} from 'lucide-react';
+
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from '@/components/ui/breadcrumb';
+import { Button } from '@/components/ui/button';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+import { Input } from '@/components/ui/input';
+import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
+import { UserNav } from './user-nav';
+import { usePathname } from 'next/navigation';
+import { SidebarNav } from './sidebar-nav';
 
 export default function Header() {
+  const pathname = usePathname();
+  const pageTitle =
+    pathname.split('/').pop()?.replace(/-/g, ' ') ?? 'Dashboard';
+
   return (
-    <div className="fixed top-0 left-0 right-0 z-20 border-b bg-background/90 backdrop-blur-sm">
-      <div className="flex h-16 items-center px-4 sm:px-6 lg:px-8">
-        <Link href="/admin" className="flex items-center gap-2 mr-6">
-            <img
-                src="/img/VerdeQr-Logo.png"
-                alt="VerdeQR Logo"
-                className="h-10 w-auto object-contain"
-            />
-        </Link>
-        <MainNav className="hidden md:flex" />
-        <div className="ml-auto flex items-center space-x-4">
-          <UserNav />
-        </div>
+    <header className="sticky top-0 z-30 flex h-14 items-center gap-4 border-b bg-background px-4 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6">
+      <Sheet>
+        <SheetTrigger asChild>
+          <Button size="icon" variant="outline" className="sm:hidden">
+            <PanelLeft className="h-5 w-5" />
+            <span className="sr-only">Toggle Menu</span>
+          </Button>
+        </SheetTrigger>
+        <SheetContent side="left" className="sm:max-w-xs">
+          <nav className="grid gap-6 text-lg font-medium">
+             <Link
+              href="#"
+              className="group flex h-10 w-10 shrink-0 items-center justify-center gap-2 rounded-full bg-primary text-lg font-semibold text-primary-foreground md:text-base"
+            >
+              <Package2 className="h-5 w-5 transition-all group-hover:scale-110" />
+              <span className="sr-only">VerdeQR</span>
+            </Link>
+            <SidebarNav isMobile={true} />
+          </nav>
+        </SheetContent>
+      </Sheet>
+      <Breadcrumb className="hidden md:flex">
+        <BreadcrumbList>
+          <BreadcrumbItem>
+            <BreadcrumbLink asChild>
+              <Link href="/admin/management">Inicio</Link>
+            </BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbPage className="capitalize">{pageTitle}</BreadcrumbPage>
+          </BreadcrumbItem>
+        </BreadcrumbList>
+      </Breadcrumb>
+      <div className="relative ml-auto flex-1 md:grow-0">
+        <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+        <Input
+          type="search"
+          placeholder="Buscar..."
+          className="w-full rounded-lg bg-background pl-8 md:w-[200px] lg:w-[320px]"
+        />
       </div>
-    </div>
+      <UserNav />
+    </header>
   );
 }

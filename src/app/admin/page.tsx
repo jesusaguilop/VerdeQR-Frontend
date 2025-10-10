@@ -1,48 +1,63 @@
-import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
-import { CheckCircle, ArrowLeft } from 'lucide-react';
-import Link from 'next/link';
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
+import Header from '@/components/admin/header-simple';
+import { TreePine, Users, Building } from 'lucide-react';
 
-const managementTasks = [
-  'Gestiona los árboles registrados en el sistema',
-  'Administra los centros educativos',
-  'Configura los tipos de árbol y sus usos',
-  'Genera códigos QR para los árboles',
-  'Revisa y responde sugerencias de usuarios',
-  'Administra los usuarios del sistema',
+const stats = [
+  {
+    title: 'Árboles registrados',
+    value: '0',
+    icon: TreePine,
+  },
+  {
+    title: 'Usuarios',
+    value: '0',
+    icon: Users,
+  },
+  {
+    title: 'Centros participantes',
+    value: '0',
+    icon: Building,
+  },
 ];
 
 export default function AdminDashboardPage() {
   return (
-    <div className="flex items-center justify-center h-full p-4 md:p-8">
-      <Card className="w-full max-w-4xl bg-card/90 backdrop-blur-lg border border-border/30 shadow-2xl">
-        <CardContent className="p-8 md:p-12 text-center">
-          <h1 className="text-3xl md:text-4xl font-bold text-primary mb-2">
-            Bienvenido al Panel de Gestión
+    <div className="flex flex-col min-h-screen bg-background">
+      <Header />
+      <main className="flex-1 flex items-center justify-center p-4">
+        <div className="w-full max-w-5xl mx-auto text-center">
+          <h1 className="text-4xl md:text-5xl font-bold text-foreground">
+            Bienvenido, <span className="text-primary">Sergio</span>
           </h1>
-          <div className="w-20 h-1 bg-primary mx-auto mb-6"></div>
-          <p className="text-muted-foreground text-lg mb-8">
-            Desde aquí podrás administrar todos los aspectos de la aplicación
-            VerdeQR.
+          <p className="mt-4 max-w-3xl mx-auto text-muted-foreground text-lg">
+            Explora el fascinante mundo de los árboles con VerdeQR. Nuestra
+            plataforma te permite descubrir, aprender y contribuir al
+            conocimiento y conservación de la flora colombiana. Conoce las
+            características, usos y curiosidades de cada especie, y únete a
+            nuestra comunidad de amantes de la naturaleza.
           </p>
-
-          <ul className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4 text-left mx-auto max-w-2xl mb-10">
-            {managementTasks.map((task) => (
-              <li key={task} className="flex items-center gap-3">
-                <CheckCircle className="h-5 w-5 text-green-500 flex-shrink-0" />
-                <span className="text-foreground">{task}</span>
-              </li>
+          <div className="mt-12 grid gap-4 md:grid-cols-3">
+            {stats.map((stat) => (
+              <Card key={stat.title}>
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                  <CardTitle className="text-sm font-medium">
+                    {stat.title}
+                  </CardTitle>
+                  <stat.icon className="h-4 w-4 text-muted-foreground" />
+                </CardHeader>
+                <CardContent>
+                  <div className="text-2xl font-bold">{stat.value}</div>
+                </CardContent>
+              </Card>
             ))}
-          </ul>
-
-          <Button asChild size="lg">
-            <Link href="/">
-              <ArrowLeft className="mr-2 h-5 w-5" />
-              Volver a la página principal
-            </Link>
-          </Button>
-        </CardContent>
-      </Card>
+          </div>
+        </div>
+      </main>
     </div>
   );
 }
