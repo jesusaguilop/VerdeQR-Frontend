@@ -17,6 +17,10 @@ import {
   BadgeHelp,
   Settings,
   Package2,
+  Sprout,
+  Beaker,
+  Mountain,
+  Sparkles,
 } from 'lucide-react';
 import { SheetClose } from '../ui/sheet';
 
@@ -24,6 +28,18 @@ const routes = [
   { href: '/admin/management', label: 'Inicio', icon: Home },
   { href: '/admin/management/trees', label: 'Árboles', icon: TreePine },
   { href: '/admin/management/centers', label: 'Centros', icon: Building },
+  { href: '/admin/management/species', label: 'Especies', icon: Sprout },
+  { href: '/admin/management/tree-uses', label: 'Usos de Árbol', icon: Beaker },
+  {
+    href: '/admin/management/forest-types',
+    label: 'Tipos de Bosque',
+    icon: Mountain,
+  },
+  {
+    href: '/admin/management/fun-facts',
+    label: 'Curiosidades',
+    icon: Sparkles,
+  },
   { href: '/admin/management/users', label: 'Usuarios', icon: Users },
   {
     href: '/admin/management/suggestions',
@@ -101,10 +117,29 @@ export function SidebarNav({ isMobile = false }: SidebarNavProps) {
             ))}
           </nav>
         )}
+         {isMobile && (
+          <nav className="grid gap-6 text-lg font-medium p-4">
+             <Link
+              href="#"
+              className="group flex h-10 w-10 shrink-0 items-center justify-center gap-2 rounded-full bg-primary text-lg font-semibold text-primary-foreground md:text-base"
+            >
+              <Package2 className="h-5 w-5 transition-all group-hover:scale-110" />
+              <span className="sr-only">VerdeQR</span>
+            </Link>
+            {routes.map((route) => (
+               <SheetClose asChild key={route.href}>
+                <Link href={route.href} className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground">
+                  <route.icon className="h-5 w-5" />
+                  {route.label}
+                </Link>
+              </SheetClose>
+            ))}
+          </nav>
+        )}
         <nav
           className={cn(
             'mt-auto flex flex-col items-center gap-4 px-2 sm:py-5',
-            { 'mt-0': isMobile }
+            { 'mt-0 border-t pt-4': isMobile }
           )}
         >
           <NavLink route={settingsRoute} pathname={pathname} isMobile={isMobile} />
