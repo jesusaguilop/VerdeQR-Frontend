@@ -77,21 +77,32 @@ const NavLink = ({
   route: typeof routes[0];
   pathname: string;
 }) => {
+  const LinkComponent = isMobile ? SheetClose : 'div';
+  const linkContent = (
+    <Link
+      href={route.href}
+      className={cn(
+        'flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground',
+        pathname.startsWith(route.href) && 'text-foreground',
+        !isMobile &&
+          'h-9 w-9 items-center justify-center rounded-lg md:h-8 md:w-8',
+        !isMobile &&
+          pathname.startsWith(route.href) &&
+          'bg-accent text-accent-foreground'
+      )}
+    >
+      <route.icon className="h-5 w-5" />
+      {isMobile ? route.label : <span className="sr-only">{route.label}</span>}
+    </Link>
+  );
+
+  if (isMobile) {
+    return <SheetClose asChild>{linkContent}</SheetClose>;
+  }
+
   return (
     <Tooltip>
-      <TooltipTrigger asChild>
-        <Link
-          href={route.href}
-          className={cn(
-            'flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8',
-            pathname.startsWith(route.href) &&
-              'bg-accent text-accent-foreground'
-          )}
-        >
-          <route.icon className="h-5 w-5" />
-          <span className="sr-only">{route.label}</span>
-        </Link>
-      </TooltipTrigger>
+      <TooltipTrigger asChild>{linkContent}</TooltipTrigger>
       <TooltipContent side="right">{route.label}</TooltipContent>
     </Tooltip>
   );
