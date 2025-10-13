@@ -9,6 +9,8 @@ import {
   SheetContent,
   SheetTrigger,
   SheetClose,
+  SheetTitle,
+  SheetDescription,
 } from '@/components/ui/sheet';
 import { Button } from '../ui/button';
 
@@ -36,6 +38,8 @@ export default function HeaderSimple() {
                 </Button>
               </SheetTrigger>
               <SheetContent side="left">
+                <SheetTitle className="sr-only">Menú Principal</SheetTitle>
+                <SheetDescription className="sr-only">Navegación principal del panel de administración.</SheetDescription>
                 <nav className="grid gap-6 text-lg font-medium p-4">
                   <Link
                     href="#"
