@@ -73,11 +73,12 @@ type SidebarNavProps = {
 const NavLink = ({
   route,
   pathname,
+  isMobile,
 }: {
   route: typeof routes[0];
   pathname: string;
+  isMobile: boolean;
 }) => {
-  const LinkComponent = isMobile ? SheetClose : 'div';
   const linkContent = (
     <Link
       href={route.href}
@@ -161,6 +162,7 @@ export function SidebarNav({ isMobile = false }: SidebarNavProps) {
               key={route.href}
               route={route}
               pathname={pathname}
+              isMobile={isMobile}
             />
           ))}
         </nav>
