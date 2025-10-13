@@ -1,9 +1,10 @@
+
 "use client";
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Menu, Trees, X } from "lucide-react";
+import { Menu, Trees, X, LogIn } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger, SheetClose, SheetTitle, SheetDescription } from "@/components/ui/sheet";
 import { ThemeToggle } from "../theme-toggle";
@@ -118,6 +119,11 @@ export default function Header() {
         </div>
 
         <div className="md:hidden flex items-center gap-2">
+          <Button asChild variant="ghost" size="icon">
+            <Link href="/login" aria-label="Acceder">
+              <LogIn className="h-6 w-6" />
+            </Link>
+          </Button>
           <ThemeToggle />
           <Sheet open={isOpen} onOpenChange={setIsOpen}>
             <SheetTrigger asChild>
@@ -135,12 +141,6 @@ export default function Header() {
                     <Trees className="h-6 w-6 text-primary" />
                     <span className="text-xl font-bold font-headline">VerdeQR</span>
                   </Link>
-                  <SheetClose asChild>
-                    <Button variant="ghost" size="icon">
-                      <X className="h-6 w-6" />
-                      <span className="sr-only">Cerrar menú</span>
-                    </Button>
-                  </SheetClose>
                 </div>
                 <nav className="flex flex-col items-start gap-4 mt-8">
                   {navItems.map((link) => (
