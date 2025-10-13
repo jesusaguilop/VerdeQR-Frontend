@@ -45,19 +45,14 @@ export function UserNav() {
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          <DropdownMenuItem>
+          <DropdownMenuItem onClick={() => router.push('/admin/management/settings')}>
             Perfil
-          </DropdownMenuItem>
-          <DropdownMenuItem>
-            Facturación
           </DropdownMenuItem>
           <DropdownMenuSub>
             <DropdownMenuSubTrigger>
-              Configuración
+              Temas
             </DropdownMenuSubTrigger>
             <DropdownMenuSubContent>
-              <DropdownMenuLabel>Tema</DropdownMenuLabel>
-              <DropdownMenuSeparator />
               <DropdownMenuItem onClick={() => setTheme('light')}>
                 Claro
               </DropdownMenuItem>
@@ -69,7 +64,6 @@ export function UserNav() {
               </DropdownMenuItem>
             </DropdownMenuSubContent>
           </DropdownMenuSub>
-          <DropdownMenuItem>Nueva Siembra</DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <DropdownMenuItem onClick={() => router.push('/')}>

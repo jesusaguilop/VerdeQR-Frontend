@@ -73,88 +73,99 @@ type SidebarNavProps = {
 const NavLink = ({
   route,
   pathname,
-  isMobile,
 }: {
   route: typeof routes[0];
   pathname: string;
-  isMobile: boolean;
 }) => {
-  const linkContent = (
-    <Link
-      href={route.href}
-      className={cn(
-        'flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8',
-        pathname.startsWith(route.href) && 'bg-accent text-accent-foreground'
-      )}
-    >
-      <route.icon className="h-5 w-5" />
-      <span className="sr-only">{route.label}</span>
-    </Link>
-  );
-
-  const mobileLink = <SheetClose asChild>{linkContent}</SheetClose>;
-
-  const desktopLink = (
+  return (
     <Tooltip>
-      <TooltipTrigger asChild>{linkContent}</TooltipTrigger>
+      <TooltipTrigger asChild>
+        <Link
+          href={route.href}
+          className={cn(
+            'flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8',
+            pathname.startsWith(route.href) &&
+              'bg-accent text-accent-foreground'
+          )}
+        >
+          <route.icon className="h-5 w-5" />
+          <span className="sr-only">{route.label}</span>
+        </Link>
+      </TooltipTrigger>
       <TooltipContent side="right">{route.label}</TooltipContent>
     </Tooltip>
   );
-
-  return isMobile ? mobileLink : desktopLink;
 };
 
 export function SidebarNav({ isMobile = false }: SidebarNavProps) {
   const pathname = usePathname();
 
+  if (isMobile) {
+    return (
+      <nav className="grid gap-6 text-lg font-medium p-4">
+        <Link
+          href="#"
+          className="group flex h-10 w-10 shrink-0 items-center justify-center gap-2 rounded-full bg-primary text-lg font-semibold text-primary-foreground md:text-base"
+        >
+          <Package2 className="h-5 w-5 transition-all group-hover:scale-110" />
+          <span className="sr-only">VerdeQR</span>
+        </Link>
+        {routes.map((route) => (
+          <SheetClose asChild key={route.href}>
+            <Link
+              href={route.href}
+              className={cn(
+                'flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground',
+                pathname.startsWith(route.href) && 'text-foreground'
+              )}
+            >
+              <route.icon className="h-5 w-5" />
+              {route.label}
+            </Link>
+          </SheetClose>
+        ))}
+        <SheetClose asChild>
+           <Link href={settingsRoute.href} className={cn('flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground', pathname.startsWith(settingsRoute.href) && 'text-foreground')}>
+              <settingsRoute.icon className="h-5 w-5" />
+              {settingsRoute.label}
+            </Link>
+        </SheetClose>
+      </nav>
+    );
+  }
+
   return (
     <TooltipProvider>
       <div className="flex flex-col h-full">
-        {!isMobile && (
-          <nav className="flex flex-col items-center gap-4 px-2 sm:py-5">
-            <Link
-              href="#"
-              className="group flex h-9 w-9 shrink-0 items-center justify-center gap-2 rounded-full bg-primary text-lg font-semibold text-primary-foreground md:h-8 md:w-8 md:text-base"
-            >
-              <Package2 className="h-4 w-4 transition-all group-hover:scale-110" />
-              <span className="sr-only">VerdeQR</span>
-            </Link>
-            {routes.map((route) => (
-              <NavLink
-                key={route.href}
-                route={route}
-                pathname={pathname}
-                isMobile={false}
-              />
-            ))}
-          </nav>
-        )}
-         {isMobile && (
-          <nav className="grid gap-6 text-lg font-medium p-4">
-             <Link
-              href="#"
-              className="group flex h-10 w-10 shrink-0 items-center justify-center gap-2 rounded-full bg-primary text-lg font-semibold text-primary-foreground md:text-base"
-            >
-              <Package2 className="h-5 w-5 transition-all group-hover:scale-110" />
-              <span className="sr-only">VerdeQR</span>
-            </Link>
-            {routes.map((route) => (
-               <SheetClose asChild key={route.href}>
-                <Link href={route.href} className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground">
-                  <route.icon className="h-5 w-5" />
-                  {route.label}
-                </Link>
-              </SheetClose>
-            ))}
-          </nav>
-        )}
-        <nav
-          className={cn(
-            'mt-auto flex flex-col items-center gap-4 px-2 sm:py-5',
-            { 'mt-0 border-t pt-4': isMobile }
-          )}
-        >
-          <NavLink route={settingsRoute} pathname={pathname} isMobile={isMobile} />
+        <nav className="flex flex-col items-center gap-4 px-2 sm:py-5">
+          <Link
+            href="#"
+            className="group flex h-9 w-9 shrink-0 items-center justify-center gap-2 rounded-full bg-primary text-lg font-semibold text-primary-foreground md:h-8 md:w-8 md:text-base"
+          >
+            <Package2 className="h-4 w-4 transition-all group-hover:scale-110" />
+            <span className="sr-only">VerdeQR</span>
+          </Link>
+          {routes.map((route) => (
+            <NavLink
+              key={route.href}
+              route={route}
+              pathname={pathname}
+            />
+          ))}
+        </nav>
+        <nav className="mt-auto flex flex-col items-center gap-4 px-2 sm:py-5">
+           <Tooltip>
+            <TooltipTrigger asChild>
+              <Link
+                href={settingsRoute.href}
+                className={cn('flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8', pathname.startsWith(settingsRoute.href) && 'bg-accent text-accent-foreground')}
+              >
+                <settingsRoute.icon className="h-5 w-5" />
+                <span className="sr-only">{settingsRoute.label}</span>
+              </Link>
+            </TooltipTrigger>
+            <TooltipContent side="right">{settingsRoute.label}</TooltipContent>
+          </Tooltip>
         </nav>
       </div>
     </TooltipProvider>

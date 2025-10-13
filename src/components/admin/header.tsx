@@ -20,19 +20,12 @@ import {
   BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb';
 import { Button } from '@/components/ui/button';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
 import { Input } from '@/components/ui/input';
 import { Sheet, SheetContent, SheetTrigger, SheetTitle, SheetDescription } from '@/components/ui/sheet';
 import { UserNav } from './user-nav';
 import { usePathname } from 'next/navigation';
 import { SidebarNav } from './sidebar-nav';
+import { ThemeToggle } from '../theme-toggle';
 
 export default function Header() {
   const pathname = usePathname();
@@ -52,13 +45,6 @@ export default function Header() {
            <SheetTitle className="sr-only">Menú de Navegación</SheetTitle>
            <SheetDescription className="sr-only">Navegación principal del panel de gestión.</SheetDescription>
           <nav className="grid gap-6 text-lg font-medium">
-             <Link
-              href="#"
-              className="group flex h-10 w-10 shrink-0 items-center justify-center gap-2 rounded-full bg-primary text-lg font-semibold text-primary-foreground md:text-base"
-            >
-              <Package2 className="h-5 w-5 transition-all group-hover:scale-110" />
-              <span className="sr-only">VerdeQR</span>
-            </Link>
             <SidebarNav isMobile={true} />
           </nav>
         </SheetContent>
@@ -84,6 +70,7 @@ export default function Header() {
           className="w-full rounded-lg bg-background pl-8 md:w-[200px] lg:w-[320px]"
         />
       </div>
+      <ThemeToggle />
       <UserNav />
     </header>
   );
