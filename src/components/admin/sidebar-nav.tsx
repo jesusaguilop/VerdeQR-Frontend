@@ -70,45 +70,6 @@ type SidebarNavProps = {
   isMobile: boolean;
 };
 
-const NavLink = ({
-  route,
-  pathname,
-  isMobile,
-}: {
-  route: typeof routes[0];
-  pathname: string;
-  isMobile: boolean;
-}) => {
-  const linkContent = (
-    <Link
-      href={route.href}
-      className={cn(
-        'flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground',
-        pathname.startsWith(route.href) && 'text-foreground',
-        !isMobile &&
-          'h-9 w-9 items-center justify-center rounded-lg md:h-8 md:w-8',
-        !isMobile &&
-          pathname.startsWith(route.href) &&
-          'bg-accent text-accent-foreground'
-      )}
-    >
-      <route.icon className="h-5 w-5" />
-      {isMobile ? route.label : <span className="sr-only">{route.label}</span>}
-    </Link>
-  );
-
-  if (isMobile) {
-    return <SheetClose asChild>{linkContent}</SheetClose>;
-  }
-
-  return (
-    <Tooltip>
-      <TooltipTrigger asChild>{linkContent}</TooltipTrigger>
-      <TooltipContent side="right">{route.label}</TooltipContent>
-    </Tooltip>
-  );
-};
-
 export function SidebarNav({ isMobile = false }: SidebarNavProps) {
   const pathname = usePathname();
 
@@ -148,39 +109,47 @@ export function SidebarNav({ isMobile = false }: SidebarNavProps) {
 
   return (
     <TooltipProvider>
-      <div className="flex flex-col h-full">
-        <nav className="flex flex-col items-center gap-4 px-2 sm:py-5">
-          <Link
-            href="#"
-            className="group flex h-9 w-9 shrink-0 items-center justify-center gap-2 rounded-full bg-primary text-lg font-semibold text-primary-foreground md:h-8 md:w-8 md:text-base"
-          >
-            <Package2 className="h-4 w-4 transition-all group-hover:scale-110" />
-            <span className="sr-only">VerdeQR</span>
-          </Link>
-          {routes.map((route) => (
-            <NavLink
-              key={route.href}
-              route={route}
-              pathname={pathname}
-              isMobile={isMobile}
-            />
-          ))}
-        </nav>
-        <nav className="mt-auto flex flex-col items-center gap-4 px-2 sm:py-5">
-           <Tooltip>
+      <nav className="flex flex-col items-center gap-4 px-2 sm:py-5">
+        <Link
+          href="#"
+          className="group flex h-9 w-9 shrink-0 items-center justify-center gap-2 rounded-full bg-primary text-lg font-semibold text-primary-foreground md:h-8 md:w-8 md:text-base"
+        >
+          <Package2 className="h-4 w-4 transition-all group-hover:scale-110" />
+          <span className="sr-only">VerdeQR</span>
+        </Link>
+        {routes.map((route) => (
+          <Tooltip key={route.href}>
             <TooltipTrigger asChild>
               <Link
-                href={settingsRoute.href}
-                className={cn('flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8', pathname.startsWith(settingsRoute.href) && 'bg-accent text-accent-foreground')}
+                href={route.href}
+                className={cn(
+                  'flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8',
+                  pathname.startsWith(route.href) &&
+                    'bg-accent text-accent-foreground'
+                )}
               >
-                <settingsRoute.icon className="h-5 w-5" />
-                <span className="sr-only">{settingsRoute.label}</span>
+                <route.icon className="h-5 w-5" />
+                <span className="sr-only">{route.label}</span>
               </Link>
             </TooltipTrigger>
-            <TooltipContent side="right">{settingsRoute.label}</TooltipContent>
+            <TooltipContent side="right">{route.label}</TooltipContent>
           </Tooltip>
-        </nav>
-      </div>
+        ))}
+      </nav>
+      <nav className="mt-auto flex flex-col items-center gap-4 px-2 sm:py-5">
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Link
+              href={settingsRoute.href}
+              className={cn('flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8', pathname.startsWith(settingsRoute.href) && 'bg-accent text-accent-foreground')}
+            >
+              <Settings className="h-5 w-5" />
+              <span className="sr-only">Configuración</span>
+            </Link>
+          </TooltipTrigger>
+          <TooltipContent side="right">Configuración</TooltipContent>
+        </Tooltip>
+      </nav>
     </TooltipProvider>
   );
 }
