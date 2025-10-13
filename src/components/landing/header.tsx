@@ -5,7 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Menu, Trees, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Sheet, SheetContent, SheetTrigger, SheetClose } from "@/components/ui/sheet";
+import { Sheet, SheetContent, SheetTrigger, SheetClose, SheetTitle, SheetDescription } from "@/components/ui/sheet";
 import { ThemeToggle } from "../theme-toggle";
 import { cn } from "@/lib/utils";
 
@@ -127,6 +127,8 @@ export default function Header() {
               </Button>
             </SheetTrigger>
             <SheetContent side="right" className="bg-background">
+               <SheetTitle className="sr-only">Menú Principal</SheetTitle>
+               <SheetDescription className="sr-only">Navegación principal del sitio.</SheetDescription>
               <div className="flex flex-col h-full">
                 <div className="flex justify-between items-center border-b pb-4">
                   <Link href="/" className="flex items-center gap-2" onClick={() => setIsOpen(false)}>
