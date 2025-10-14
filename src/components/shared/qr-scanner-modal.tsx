@@ -22,6 +22,7 @@ import {
   TooltipTrigger,
 } from '@/components/ui/tooltip';
 import Link from 'next/link';
+import { cn } from '@/lib/utils';
 
 const QR_REGION_ID = 'qr-reader-region';
 
@@ -42,10 +43,9 @@ export default function QrScannerModal() {
     const savedX = localStorage.getItem('qr-button-pos-x');
     const savedY = localStorage.getItem('qr-button-pos-y');
     
-    // Position it on bottom-right on first load
     if (savedX === null || savedY === null) {
-        const initialX = window.innerWidth - 80 - 32; // window - button_width - margin_right
-        const initialY = window.innerHeight - 80 - 32; // window - button_height - margin_bottom
+        const initialX = window.innerWidth - 72 - 24; // window - button_width - margin_right
+        const initialY = window.innerHeight - 72 - 24; // window - button_height - margin_bottom
         setPosition({ x: initialX, y: initialY });
     } else {
       setPosition({ x: parseInt(savedX, 10), y: parseInt(savedY, 10) });
@@ -216,15 +216,20 @@ export default function QrScannerModal() {
                 onClick={() => handleOpenChange(true)}
                 onMouseDown={handleMouseDown}
                 onTouchStart={handleTouchStart}
-                className="z-50 rounded-full h-20 w-20 bg-accent text-accent-foreground shadow-lg transition-transform duration-300 hover:scale-110 hover:bg-accent/90 flex flex-col items-center justify-center cursor-grab active:cursor-grabbing"
+                className={cn(
+                  'z-50 rounded-3xl h-16 w-16 bg-primary text-primary-foreground shadow-lg transition-all duration-300 ease-in-out flex flex-col items-center justify-center cursor-grab',
+                  isDragging 
+                    ? 'scale-110 shadow-2xl cursor-grabbing' 
+                    : 'animate-pulse-slow hover:scale-105 hover:shadow-xl hover:animate-none'
+                )}
                 aria-label="Escanear Código QR"
               >
-              <QrCode className="h-8 w-8 mb-1" />
-              <GripVertical className="h-4 w-4 text-accent-foreground/50"/>
+              <QrCode className="h-7 w-7" />
+              <GripVertical className="h-3 w-3 text-primary-foreground/60 mt-0.5"/>
             </button>
           </TooltipTrigger>
           <TooltipContent side="left">
-            <p>Identificar QR (arrastrable)</p>
+            <p>Escanear QR (arrastrable)</p>
           </TooltipContent>
         </Tooltip>
       </TooltipProvider>
