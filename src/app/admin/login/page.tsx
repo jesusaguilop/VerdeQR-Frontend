@@ -22,8 +22,9 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { toast } from '@/hooks/use-toast';
-import { LogIn } from 'lucide-react';
+import { LogIn, Smartphone } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 
 const formSchema = z.object({
   email: z.string().email({ message: 'Por favor, introduce un email válido.' }),
@@ -64,6 +65,14 @@ export default function AdminLoginPage() {
           </CardDescription>
         </CardHeader>
         <CardContent>
+          <Alert className="mb-6 md:hidden">
+            <Smartphone className="h-4 w-4" />
+            <AlertTitle>Recomendación para Móviles</AlertTitle>
+            <AlertDescription>
+              Para una mejor experiencia, activa el 'Modo Escritorio' en tu
+              navegador al usar el panel de gestión.
+            </AlertDescription>
+          </Alert>
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
               <FormField
