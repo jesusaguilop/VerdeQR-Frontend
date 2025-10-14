@@ -78,14 +78,14 @@ const NavLink = ({
   const linkContent = (
     <>
       <route.icon className="h-5 w-5" />
-      <span className={cn(!isExpanded && "hidden")}>{route.label}</span>
-      <span className="sr-only">{route.label}</span>
+      <span className={cn(!isExpanded && 'hidden')}>{route.label}</span>
+      {!isExpanded && <span className="sr-only">{route.label}</span>}
     </>
   );
 
   const linkClasses = cn(
-    'flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8',
-    isExpanded && 'w-full justify-start gap-4 px-2.5',
+    'flex items-center gap-4 text-muted-foreground transition-colors hover:text-foreground',
+    isExpanded ? 'h-9 w-full justify-start rounded-lg px-2.5' : 'h-9 w-9 justify-center rounded-lg',
     pathname.startsWith(route.href) && 'bg-accent text-accent-foreground',
   );
 
@@ -100,10 +100,7 @@ const NavLink = ({
   return (
     <Tooltip>
       <TooltipTrigger asChild>
-        <Link
-          href={route.href}
-          className={linkClasses}
-        >
+        <Link href={route.href} className={linkClasses}>
           {linkContent}
         </Link>
       </TooltipTrigger>
@@ -147,20 +144,20 @@ export function SidebarNav({ isMobile = false, isExpanded = false }: SidebarNavP
   }
 
   return (
-    <nav className="flex flex-col items-center gap-4 px-2 sm:py-4 h-full">
+    <nav className={cn("flex flex-col items-center gap-4 px-2 sm:py-4 h-full", isExpanded && 'items-start')}>
         <Link
           href="/admin/management"
-          className="group flex h-9 w-9 shrink-0 items-center justify-center gap-2 rounded-full bg-primary text-lg font-semibold text-primary-foreground md:h-8 md:w-8 md:text-base"
+          className={cn("group flex h-9 w-9 shrink-0 items-center justify-center gap-2 rounded-full bg-primary text-lg font-semibold text-primary-foreground md:h-8 md:w-8 md:text-base", isExpanded && 'self-center')}
         >
           <Package2 className="h-4 w-4 transition-all group-hover:scale-110" />
           <span className="sr-only">VerdeQR</span>
         </Link>
-        <div className="flex flex-col items-center gap-2 w-full">
+        <div className="flex flex-col gap-1 w-full">
         {mainRoutes.map((route) => (
           <NavLink key={route.href} route={route} pathname={pathname} isExpanded={isExpanded}/>
         ))}
         </div>
-        <div className="mt-auto flex flex-col items-center gap-2 w-full">
+        <div className="mt-auto flex flex-col gap-1 w-full">
            <NavLink route={settingsRoute} pathname={pathname} isExpanded={isExpanded}/>
         </div>
       </nav>
