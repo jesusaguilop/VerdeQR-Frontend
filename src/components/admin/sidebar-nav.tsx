@@ -1,14 +1,13 @@
+
 'use client';
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from '@/components/ui/tooltip';
-import { cn } from '@/lib/utils';
+  SidebarMenu,
+  SidebarMenuItem,
+  SidebarMenuButton,
+} from '@/components/ui/sidebar';
 import {
   Home,
   TreePine,
@@ -16,17 +15,18 @@ import {
   Users,
   BadgeHelp,
   Settings,
-  Package2,
   Sprout,
   Beaker,
   Mountain,
   Sparkles,
   Bug,
   QrCode,
+  Package2,
 } from 'lucide-react';
 import { SheetClose } from '../ui/sheet';
+import { cn } from '@/lib/utils';
 
-const routes = [
+const mainRoutes = [
   { href: '/admin/management', label: 'Inicio', icon: Home },
   { href: '/admin/management/trees', label: 'Árboles', icon: TreePine },
   { href: '/admin/management/centers', label: 'Centros', icon: Building },
@@ -67,7 +67,47 @@ const settingsRoute = {
 };
 
 type SidebarNavProps = {
-  isMobile: boolean;
+  isMobile?: boolean;
+};
+
+const NavLink = ({
+  route,
+  pathname,
+  isMobile = false,
+}: {
+  route: { href: string; label: string; icon: React.ElementType };
+  pathname: string;
+  isMobile?: boolean;
+}) => {
+  const LinkComponent = (
+    <Link href={route.href} className="flex items-center gap-4 px-2.5">
+      <route.icon className="h-5 w-5" />
+      <span>{route.label}</span>
+    </Link>
+  );
+
+  if (isMobile) {
+    return (
+      <SheetClose asChild key={route.href}>
+        {LinkComponent}
+      </SheetClose>
+    );
+  }
+
+  return (
+    <SidebarMenuItem key={route.href}>
+      <SidebarMenuButton
+        asChild
+        isActive={pathname.startsWith(route.href)}
+        tooltip={{ children: route.label }}
+      >
+        <Link href={route.href}>
+          <route.icon />
+          <span>{route.label}</span>
+        </Link>
+      </SidebarMenuButton>
+    </SidebarMenuItem>
+  );
 };
 
 export function SidebarNav({ isMobile = false }: SidebarNavProps) {
@@ -83,21 +123,15 @@ export function SidebarNav({ isMobile = false }: SidebarNavProps) {
           <Package2 className="h-5 w-5 transition-all group-hover:scale-110" />
           <span className="sr-only">VerdeQR</span>
         </Link>
-        {routes.map((route) => (
-          <SheetClose asChild key={route.href}>
-            <Link
-              href={route.href}
-              className={cn(
-                'flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground',
-                pathname.startsWith(route.href) && 'text-foreground'
-              )}
-            >
+        {mainRoutes.map((route) => (
+           <SheetClose asChild key={route.href}>
+            <Link href={route.href} className={cn('flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground', pathname.startsWith(route.href) && 'text-foreground')}>
               <route.icon className="h-5 w-5" />
               {route.label}
             </Link>
           </SheetClose>
         ))}
-        <SheetClose asChild>
+         <SheetClose asChild>
            <Link href={settingsRoute.href} className={cn('flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground', pathname.startsWith(settingsRoute.href) && 'text-foreground')}>
               <settingsRoute.icon className="h-5 w-5" />
               {settingsRoute.label}
@@ -108,48 +142,22 @@ export function SidebarNav({ isMobile = false }: SidebarNavProps) {
   }
 
   return (
-    <TooltipProvider>
-      <nav className="flex flex-col items-center gap-4 px-2 sm:py-5">
+    <div className="flex flex-col h-full">
+      <SidebarMenu className="flex-1">
         <Link
-          href="#"
-          className="group flex h-9 w-9 shrink-0 items-center justify-center gap-2 rounded-full bg-primary text-lg font-semibold text-primary-foreground md:h-8 md:w-8 md:text-base"
+          href="/admin/management"
+          className="group flex h-9 w-9 mb-4 shrink-0 items-center justify-center gap-2 rounded-full bg-primary text-lg font-semibold text-primary-foreground md:h-8 md:w-8 md:text-base"
         >
           <Package2 className="h-4 w-4 transition-all group-hover:scale-110" />
           <span className="sr-only">VerdeQR</span>
         </Link>
-        {routes.map((route) => (
-          <Tooltip key={route.href}>
-            <TooltipTrigger asChild>
-              <Link
-                href={route.href}
-                className={cn(
-                  'flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8',
-                  pathname.startsWith(route.href) &&
-                    'bg-accent text-accent-foreground'
-                )}
-              >
-                <route.icon className="h-5 w-5" />
-                <span className="sr-only">{route.label}</span>
-              </Link>
-            </TooltipTrigger>
-            <TooltipContent side="right">{route.label}</TooltipContent>
-          </Tooltip>
+        {mainRoutes.map((route) => (
+          <NavLink key={route.href} route={route} pathname={pathname} />
         ))}
-      </nav>
-      <nav className="mt-auto flex flex-col items-center gap-4 px-2 sm:py-5">
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <Link
-              href={settingsRoute.href}
-              className={cn('flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8', pathname.startsWith(settingsRoute.href) && 'bg-accent text-accent-foreground')}
-            >
-              <Settings className="h-5 w-5" />
-              <span className="sr-only">Configuración</span>
-            </Link>
-          </TooltipTrigger>
-          <TooltipContent side="right">Configuración</TooltipContent>
-        </Tooltip>
-      </nav>
-    </TooltipProvider>
+      </SidebarMenu>
+      <SidebarMenu className="mt-auto">
+        <NavLink route={settingsRoute} pathname={pathname} />
+      </SidebarMenu>
+    </div>
   );
 }

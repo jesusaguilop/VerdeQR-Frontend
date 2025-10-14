@@ -1,9 +1,23 @@
+
+'use client';
+
+import {
+  Sidebar,
+  SidebarContent,
+  SidebarHeader,
+  SidebarMenu,
+  SidebarMenuItem,
+  SidebarMenuButton,
+  SidebarTrigger,
+} from '@/components/ui/sidebar';
 import { SidebarNav } from './sidebar-nav';
 
-export function Sidebar() {
+export function AdminSidebar() {
   return (
-    <aside className="fixed inset-y-0 left-0 z-10 hidden w-14 flex-col border-r bg-background sm:flex">
-      <SidebarNav isMobile={false} />
-    </aside>
+    <Sidebar collapsible="icon" side="left" variant="sidebar">
+      <SidebarContent>
+        <SidebarNav />
+      </SidebarContent>
+    </Sidebar>
   );
 }
