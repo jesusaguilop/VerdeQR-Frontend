@@ -13,7 +13,7 @@ import {
   DialogClose,
 } from '@/components/ui/dialog';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { QrCode, CameraOff, RefreshCw } from 'lucide-react';
+import { QrCode, CameraOff, RefreshCw, GripVertical } from 'lucide-react';
 import { Html5Qrcode } from 'html5-qrcode';
 import {
   Tooltip,
@@ -32,6 +32,95 @@ export default function QrScannerModal() {
   const [scanResult, setScanResult] = useState<string | null>(null);
   const html5QrCodeRef = useRef<Html5Qrcode | null>(null);
 
+  const [position, setPosition] = useState({ x: 0, y: 0 });
+  const [isDragging, setIsDragging] = useState(false);
+  const dragStartPos = useRef({ x: 0, y: 0 });
+  const buttonRef = useRef<HTMLButtonElement>(null);
+
+
+   useEffect(() => {
+    const savedX = localStorage.getItem('qr-button-pos-x');
+    const savedY = localStorage.getItem('qr-button-pos-y');
+    
+    // Position it on bottom-right on first load
+    if (savedX === null || savedY === null) {
+        const initialX = window.innerWidth - 80 - 32; // window - button_width - margin_right
+        const initialY = window.innerHeight - 80 - 32; // window - button_height - margin_bottom
+        setPosition({ x: initialX, y: initialY });
+    } else {
+      setPosition({ x: parseInt(savedX, 10), y: parseInt(savedY, 10) });
+    }
+  }, []);
+
+  const handleMouseDown = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    setIsDragging(true);
+    dragStartPos.current = { x: e.clientX, y: e.clientY };
+  };
+
+  const handleTouchStart = (e: React.TouchEvent<HTMLButtonElement>) => {
+    setIsDragging(true);
+    const touch = e.touches[0];
+    dragStartPos.current = { x: touch.clientX, y: touch.clientY };
+  };
+
+  const handleMouseMove = (e: MouseEvent) => {
+    if (!isDragging || !buttonRef.current) return;
+    const dx = e.clientX - dragStartPos.current.x;
+    const dy = e.clientY - dragStartPos.current.y;
+    dragStartPos.current = { x: e.clientX, y: e.clientY };
+    
+    setPosition(prevPos => {
+      const newX = Math.max(0, Math.min(window.innerWidth - buttonRef.current!.offsetWidth, prevPos.x + dx));
+      const newY = Math.max(0, Math.min(window.innerHeight - buttonRef.current!.offsetHeight, prevPos.y + dy));
+      return { x: newX, y: newY };
+    });
+  };
+
+  const handleTouchMove = (e: TouchEvent) => {
+    if (!isDragging || !buttonRef.current) return;
+    const touch = e.touches[0];
+    const dx = touch.clientX - dragStartPos.current.x;
+    const dy = touch.clientY - dragStartPos.current.y;
+    dragStartPos.current = { x: touch.clientX, y: touch.clientY };
+
+     setPosition(prevPos => {
+      const newX = Math.max(0, Math.min(window.innerWidth - buttonRef.current!.offsetWidth, prevPos.x + dx));
+      const newY = Math.max(0, Math.min(window.innerHeight - buttonRef.current!.offsetHeight, prevPos.y + dy));
+      return { x: newX, y: newY };
+    });
+  };
+
+  const handleMouseUp = () => {
+    if (isDragging) {
+      setTimeout(() => setIsDragging(false), 0);
+      localStorage.setItem('qr-button-pos-x', String(position.x));
+      localStorage.setItem('qr-button-pos-y', String(position.y));
+    }
+  };
+
+  useEffect(() => {
+    if (isDragging) {
+      document.addEventListener('mousemove', handleMouseMove);
+      document.addEventListener('mouseup', handleMouseUp);
+      document.addEventListener('touchmove', handleTouchMove);
+      document.addEventListener('touchend', handleMouseUp);
+    } else {
+      document.removeEventListener('mousemove', handleMouseMove);
+      document.removeEventListener('mouseup', handleMouseUp);
+      document.removeEventListener('touchmove', handleTouchMove);
+      document.removeEventListener('touchend', handleMouseUp);
+    }
+    return () => {
+      document.removeEventListener('mousemove', handleMouseMove);
+      document.removeEventListener('mouseup', handleMouseUp);
+      document.removeEventListener('touchmove', handleTouchMove);
+      document.removeEventListener('touchend', handleMouseUp);
+    };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isDragging]);
+
+
   const cleanup = () => {
     if (html5QrCodeRef.current?.isScanning) {
       html5QrCodeRef.current.stop().catch(console.error);
@@ -40,6 +129,7 @@ export default function QrScannerModal() {
   };
 
   const handleOpenChange = (open: boolean) => {
+    if (isDragging) return;
     setIsOpen(open);
     if (!open) {
       cleanup();
@@ -55,7 +145,9 @@ export default function QrScannerModal() {
       if (devices && devices.length) {
         setHasCameraPermission(true);
         if (!html5QrCodeRef.current) {
-          html5QrCodeRef.current = new Html5Qrcode(QR_REGION_ID);
+          html5QrCodeRef.current = new Html5Qrcode(QR_REGION_ID, {
+            verbose: false,
+          });
         }
         
         if (html5QrCodeRef.current && !html5QrCodeRef.current.isScanning) {
@@ -98,7 +190,8 @@ export default function QrScannerModal() {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isOpen]);
 
-  const isValidUrl = (text: string) => {
+  const isValidUrl = (text: string | null): text is string => {
+    if (!text) return false;
     try {
       new URL(text);
       return true;
@@ -112,16 +205,26 @@ export default function QrScannerModal() {
       <TooltipProvider>
         <Tooltip>
           <TooltipTrigger asChild>
-            <Button
-              onClick={() => handleOpenChange(true)}
-              className="fixed bottom-8 right-8 z-50 rounded-full h-16 w-16 bg-accent text-accent-foreground shadow-lg transition-transform duration-300 hover:scale-110 hover:bg-accent/90"
-              aria-label="Escanear Código QR"
-            >
-              <QrCode className="h-8 w-8" />
-            </Button>
+            <button
+                ref={buttonRef}
+                style={{
+                    position: 'fixed',
+                    left: `${position.x}px`,
+                    top: `${position.y}px`,
+                    touchAction: 'none',
+                }}
+                onClick={() => handleOpenChange(true)}
+                onMouseDown={handleMouseDown}
+                onTouchStart={handleTouchStart}
+                className="z-50 rounded-full h-20 w-20 bg-accent text-accent-foreground shadow-lg transition-transform duration-300 hover:scale-110 hover:bg-accent/90 flex flex-col items-center justify-center cursor-grab active:cursor-grabbing"
+                aria-label="Escanear Código QR"
+              >
+              <QrCode className="h-8 w-8 mb-1" />
+              <GripVertical className="h-4 w-4 text-accent-foreground/50"/>
+            </button>
           </TooltipTrigger>
           <TooltipContent side="left">
-            <p>Identificar QR</p>
+            <p>Identificar QR (arrastrable)</p>
           </TooltipContent>
         </Tooltip>
       </TooltipProvider>

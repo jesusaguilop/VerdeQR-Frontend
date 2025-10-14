@@ -64,6 +64,9 @@ export default function HeroSection() {
 
       <div className="container mx-auto px-4 relative z-10">
         <div className="grid grid-cols-1 md:grid-cols-2 items-center gap-12">
+           <div className="flex justify-center md:justify-start row-start-1 md:row-auto">
+            <QrScanner />
+          </div>
           <div className="text-center md:text-left">
             <h1 className="text-4xl lg:text-6xl font-extrabold font-headline text-primary tracking-tight">
               Descubre la naturaleza, <br /> escanea un árbol
@@ -91,9 +94,6 @@ export default function HeroSection() {
                 </Link>
               </Button>
             </div>
-          </div>
-           <div className="flex justify-center md:justify-end">
-            <QrScanner />
           </div>
         </div>
       </div>
