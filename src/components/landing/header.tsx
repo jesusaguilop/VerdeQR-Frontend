@@ -1,4 +1,5 @@
 
+
 "use client";
 
 import { useState, useEffect } from "react";
@@ -123,7 +124,10 @@ export default function Header() {
 
         <div className="hidden md:flex items-center gap-2">
           <Button asChild variant="ghost">
-            <Link href="/login">Acceder</Link>
+            <Link href="/login" className="flex items-center gap-2">
+              <LogIn className="h-4 w-4" />
+              Acceder
+            </Link>
           </Button>
           <ThemeToggle />
         </div>
