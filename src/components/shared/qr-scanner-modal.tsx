@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useState, useEffect, useRef, MouseEvent, TouchEvent } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -13,7 +13,7 @@ import {
   DialogClose,
 } from '@/components/ui/dialog';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { QrCode, CameraOff, Move, RefreshCw } from 'lucide-react';
+import { QrCode, CameraOff, RefreshCw } from 'lucide-react';
 import { Html5Qrcode } from 'html5-qrcode';
 import {
   Tooltip,
@@ -21,7 +21,6 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui/tooltip';
-import { cn } from '@/lib/utils';
 import Link from 'next/link';
 
 const QR_REGION_ID = 'qr-reader-region';
@@ -32,53 +31,6 @@ export default function QrScannerModal() {
   const [isScanning, setIsScanning] = useState(false);
   const [scanResult, setScanResult] = useState<string | null>(null);
   const html5QrCodeRef = useRef<Html5Qrcode | null>(null);
-
-  const [position, setPosition] = useState({ x: 0, y: 0 });
-  const [isDragging, setIsDragging] = useState(false);
-  const [isMoved, setIsMoved] = useState(false);
-  const dragStartPos = useRef({ x: 0, y: 0 });
-  const buttonRef = useRef<HTMLButtonElement>(null);
-
-  useEffect(() => {
-    const initialX = window.innerWidth - 80;
-    const initialY = window.innerHeight - 80;
-    setPosition({ x: initialX, y: initialY });
-  }, []);
-
-  const handleDragStart = (clientX: number, clientY: number) => {
-    if (!buttonRef.current) return;
-    setIsDragging(true);
-    setIsMoved(false);
-    const buttonRect = buttonRef.current.getBoundingClientRect();
-    dragStartPos.current = {
-      x: clientX - buttonRect.left,
-      y: clientY - buttonRect.top,
-    };
-  };
-
-  const handleDragMove = (clientX: number, clientY: number) => {
-    if (!isDragging) return;
-    setIsMoved(true);
-
-    let newX = clientX - dragStartPos.current.x;
-    let newY = clientY - dragStartPos.current.y;
-
-    newX = Math.max(0, Math.min(newX, window.innerWidth - 64));
-    newY = Math.max(0, Math.min(newY, window.innerHeight - 64));
-
-    setPosition({ x: newX, y: newY });
-  };
-
-  const handleDragEnd = () => {
-    setIsDragging(false);
-  };
-
-  const handlePointerUp = () => {
-    if (!isMoved) {
-      handleOpenChange(true);
-    }
-    handleDragEnd();
-  };
 
   const cleanup = () => {
     if (html5QrCodeRef.current?.isScanning) {
@@ -158,31 +110,15 @@ export default function QrScannerModal() {
   return (
     <>
       <TooltipProvider>
-        <Tooltip open={isDragging ? false : undefined}>
+        <Tooltip>
           <TooltipTrigger asChild>
-            <button
-              ref={buttonRef}
-              onMouseDown={(e: MouseEvent) => handleDragStart(e.clientX, e.clientY)}
-              onMouseMove={(e: MouseEvent) => handleDragMove(e.clientX, e.clientY)}
-              onMouseUp={handlePointerUp}
-              onMouseLeave={handleDragEnd}
-              onTouchStart={(e: TouchEvent) => handleDragStart(e.touches[0].clientX, e.touches[0].clientY)}
-              onTouchMove={(e: TouchEvent) => handleDragMove(e.touches[0].clientX, e.touches[0].clientY)}
-              onTouchEnd={handlePointerUp}
-              style={{
-                left: `${position.x}px`,
-                top: `${position.y}px`,
-                touchAction: 'none',
-              }}
-              className={cn(
-                "fixed z-50 rounded-full h-16 w-16 bg-accent text-accent-foreground shadow-lg flex items-center justify-center transition-transform duration-300 hover:scale-110 hover:bg-accent/90",
-                { 'cursor-grabbing': isDragging }
-              )}
-              aria-label="Escanear Código QR o arrastrar"
+            <Button
+              onClick={() => handleOpenChange(true)}
+              className="fixed bottom-8 right-8 z-50 rounded-full h-16 w-16 bg-accent text-accent-foreground shadow-lg transition-transform duration-300 hover:scale-110 hover:bg-accent/90"
+              aria-label="Escanear Código QR"
             >
               <QrCode className="h-8 w-8" />
-              <Move className="absolute h-4 w-4 bottom-1 right-1 text-accent-foreground/50" />
-            </button>
+            </Button>
           </TooltipTrigger>
           <TooltipContent side="left">
             <p>Identificar QR</p>
