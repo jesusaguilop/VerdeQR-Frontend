@@ -1,15 +1,6 @@
 'use client';
 import Link from 'next/link';
-import {
-  Home,
-  LineChart,
-  Package,
-  Package2,
-  PanelLeft,
-  Search,
-  ShoppingCart,
-  Users2,
-} from 'lucide-react';
+import { PanelLeft, Search } from 'lucide-react';
 
 import {
   Breadcrumb,
@@ -21,7 +12,13 @@ import {
 } from '@/components/ui/breadcrumb';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Sheet, SheetContent, SheetTrigger, SheetTitle, SheetDescription } from '@/components/ui/sheet';
+import {
+  Sheet,
+  SheetContent,
+  SheetTrigger,
+  SheetTitle,
+  SheetDescription,
+} from '@/components/ui/sheet';
 import { UserNav } from './user-nav';
 import { usePathname } from 'next/navigation';
 import { SidebarNav } from './sidebar-nav';
@@ -42,8 +39,10 @@ export default function Header() {
           </Button>
         </SheetTrigger>
         <SheetContent side="left" className="sm:max-w-xs">
-           <SheetTitle className="sr-only">Menú de Navegación</SheetTitle>
-           <SheetDescription className="sr-only">Navegación principal del panel de gestión.</SheetDescription>
+          <SheetTitle className="sr-only">Menú de Navegación</SheetTitle>
+          <SheetDescription className="sr-only">
+            Navegación principal del panel de gestión.
+          </SheetDescription>
           <nav className="grid gap-6 text-lg font-medium">
             <SidebarNav isMobile={true} />
           </nav>

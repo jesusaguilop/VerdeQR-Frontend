@@ -3,18 +3,10 @@
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { SidebarNav } from './sidebar-nav';
 import { cn } from '@/lib/utils';
-import { useEffect, useState } from 'react';
+import { useManagement } from './management-provider';
 
-type AdminSidebarProps = {
-  onStateChange?: (isExpanded: boolean) => void;
-};
-
-export function AdminSidebar({ onStateChange }: AdminSidebarProps) {
-  const [isExpanded, setIsExpanded] = useState(false);
-
-  useEffect(() => {
-    onStateChange?.(isExpanded);
-  }, [isExpanded, onStateChange]);
+export function AdminSidebar() {
+  const { isExpanded, setIsExpanded } = useManagement();
 
   return (
     <TooltipProvider>
