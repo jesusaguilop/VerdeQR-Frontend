@@ -23,7 +23,7 @@ export default function HeroSection() {
   return (
     <section id="inicio" className="relative h-screen min-h-[800px] flex items-center justify-center pt-20">
       <Image
-        src="/forest-dark.jpg"
+        src="/img/forest-dark.jpg"
         alt="A beautiful path in a forest with tall trees at night."
         fill
         className={cn(
@@ -36,7 +36,7 @@ export default function HeroSection() {
       />
       
        <Image
-        src="/forest-light.jpg"
+        src="/img/forest-light.jpg"
         alt="A sunlit forest path with vibrant green trees."
         fill
         className={cn(
@@ -50,7 +50,7 @@ export default function HeroSection() {
 
       {!mounted && (
          <Image
-          src="/forest-light.jpg"
+          src="/img/forest-light.jpg"
           alt="A sunlit forest path with vibrant green trees."
           fill
           className="object-cover"
