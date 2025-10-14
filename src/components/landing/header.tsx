@@ -4,19 +4,28 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Menu, Trees, X, LogIn } from "lucide-react";
+import {
+  Menu,
+  Trees,
+  X,
+  LogIn,
+  Home,
+  Sparkles,
+  Building2,
+  TreePine,
+  Users,
+} from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger, SheetClose, SheetTitle, SheetDescription } from "@/components/ui/sheet";
 import { ThemeToggle } from "../theme-toggle";
 import { cn } from "@/lib/utils";
 
 const navLinks = [
-  { name: 'Inicio', href: '/' },
-  { name: 'Beneficios', href: '#beneficios' },
-  { name: 'Centros', href: '#centros' },
-  { name: 'Árboles', href: '#arboles' },
-  { name: 'Comunidad', href: '#comunidad' },
-  { name: 'Acceder', href: '/login' },
+  { name: 'Inicio', href: '/', icon: Home },
+  { name: 'Beneficios', href: '#beneficios', icon: Sparkles },
+  { name: 'Centros', href: '#centros', icon: Building2 },
+  { name: 'Árboles', href: '#arboles', icon: TreePine },
+  { name: 'Comunidad', href: '#comunidad', icon: Users },
 ];
 
 export default function Header() {
@@ -91,16 +100,17 @@ export default function Header() {
         </Link>
 
         <nav className="hidden md:flex items-center gap-1">
-          {navItems.filter(l => l.name !== 'Acceder').map((link) => (
+          {navItems.map((link) => (
             <Link
               key={link.name}
               href={link.href}
               className={cn(
-                "px-3 py-2 text-sm font-medium text-muted-foreground hover:text-primary transition-colors relative",
+                "px-3 py-2 text-sm font-medium text-muted-foreground hover:text-primary transition-colors relative flex items-center gap-2",
                 isHomePage && (activeSection === link.href.substring(1) || (link.href === '/' && activeSection === 'inicio')) && "text-primary"
               )}
             >
-              {link.name}
+              <link.icon className="h-4 w-4" />
+              <span>{link.name}</span>
               <span
                 className={cn(
                   "absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-0.5 bg-primary rounded-full transition-all duration-300",
@@ -149,13 +159,14 @@ export default function Header() {
                   </SheetClose>
                 </div>
                 <nav className="flex flex-col items-start gap-4 mt-8">
-                  {navItems.filter(l => l.name !== 'Acceder').map((link) => (
+                  {navItems.map((link) => (
                     <SheetClose asChild key={link.name}>
                       <Link
                         href={link.href}
-                        className="text-lg font-medium text-muted-foreground hover:text-primary transition-colors w-full text-left py-2"
+                        className="text-lg font-medium text-muted-foreground hover:text-primary transition-colors w-full text-left py-2 flex items-center gap-3"
                       >
-                        {link.name}
+                         <link.icon className="h-5 w-5" />
+                        <span>{link.name}</span>
                       </Link>
                     </SheetClose>
                   ))}
