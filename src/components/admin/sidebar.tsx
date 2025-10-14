@@ -1,21 +1,27 @@
 'use client';
 
-import {
-  TooltipProvider,
-} from '@/components/ui/tooltip';
+import { TooltipProvider } from '@/components/ui/tooltip';
 import { SidebarNav } from './sidebar-nav';
 import { cn } from '@/lib/utils';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
-export function AdminSidebar() {
+type AdminSidebarProps = {
+  onStateChange?: (isExpanded: boolean) => void;
+};
+
+export function AdminSidebar({ onStateChange }: AdminSidebarProps) {
   const [isExpanded, setIsExpanded] = useState(false);
+
+  useEffect(() => {
+    onStateChange?.(isExpanded);
+  }, [isExpanded, onStateChange]);
 
   return (
     <TooltipProvider>
-       <aside
+      <aside
         className={cn(
-          "fixed inset-y-0 left-0 z-10 hidden w-14 flex-col border-r bg-background sm:flex transition-all duration-300 ease-in-out",
-          isExpanded && "w-56"
+          'fixed inset-y-0 left-0 z-10 hidden w-14 flex-col border-r bg-background sm:flex transition-all duration-300 ease-in-out',
+          isExpanded && 'w-56'
         )}
         onMouseEnter={() => setIsExpanded(true)}
         onMouseLeave={() => setIsExpanded(false)}
