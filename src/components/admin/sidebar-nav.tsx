@@ -1,13 +1,7 @@
-
 'use client';
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import {
-  SidebarMenu,
-  SidebarMenuItem,
-  SidebarMenuButton,
-} from '@/components/ui/sidebar';
 import {
   Home,
   TreePine,
@@ -25,6 +19,7 @@ import {
 } from 'lucide-react';
 import { SheetClose } from '../ui/sheet';
 import { cn } from '@/lib/utils';
+import { Tooltip, TooltipContent, TooltipTrigger } from '../ui/tooltip';
 
 const mainRoutes = [
   { href: '/admin/management', label: 'Inicio', icon: Home },
@@ -68,49 +63,59 @@ const settingsRoute = {
 
 type SidebarNavProps = {
   isMobile?: boolean;
+  isExpanded?: boolean;
 };
 
 const NavLink = ({
   route,
   pathname,
-  isMobile = false,
+  isExpanded,
 }: {
   route: { href: string; label: string; icon: React.ElementType };
   pathname: string;
-  isMobile?: boolean;
+  isExpanded?: boolean;
 }) => {
-  const LinkComponent = (
-    <Link href={route.href} className="flex items-center gap-4 px-2.5">
+  const linkContent = (
+    <>
       <route.icon className="h-5 w-5" />
-      <span>{route.label}</span>
-    </Link>
+      <span className={cn(!isExpanded && "hidden")}>{route.label}</span>
+      <span className="sr-only">{route.label}</span>
+    </>
   );
 
-  if (isMobile) {
+  const linkClasses = cn(
+    'flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8',
+    isExpanded && 'w-full justify-start gap-4 px-2.5',
+    pathname.startsWith(route.href) && 'bg-accent text-accent-foreground',
+  );
+
+  if (isExpanded) {
     return (
-      <SheetClose asChild key={route.href}>
-        {LinkComponent}
-      </SheetClose>
+      <Link href={route.href} className={linkClasses}>
+        {linkContent}
+      </Link>
     );
   }
 
   return (
-    <SidebarMenuItem key={route.href}>
-      <SidebarMenuButton
-        asChild
-        isActive={pathname.startsWith(route.href)}
-        tooltip={{ children: route.label }}
-      >
-        <Link href={route.href}>
-          <route.icon />
-          <span>{route.label}</span>
+    <Tooltip>
+      <TooltipTrigger asChild>
+        <Link
+          href={route.href}
+          className={linkClasses}
+        >
+          {linkContent}
         </Link>
-      </SidebarMenuButton>
-    </SidebarMenuItem>
+      </TooltipTrigger>
+      <TooltipContent side="right">
+        <p>{route.label}</p>
+      </TooltipContent>
+    </Tooltip>
   );
 };
 
-export function SidebarNav({ isMobile = false }: SidebarNavProps) {
+
+export function SidebarNav({ isMobile = false, isExpanded = false }: SidebarNavProps) {
   const pathname = usePathname();
 
   if (isMobile) {
@@ -142,22 +147,22 @@ export function SidebarNav({ isMobile = false }: SidebarNavProps) {
   }
 
   return (
-    <div className="flex flex-col h-full">
-      <SidebarMenu className="flex-1">
+    <nav className="flex flex-col items-center gap-4 px-2 sm:py-4 h-full">
         <Link
           href="/admin/management"
-          className="group flex h-9 w-9 mb-4 shrink-0 items-center justify-center gap-2 rounded-full bg-primary text-lg font-semibold text-primary-foreground md:h-8 md:w-8 md:text-base"
+          className="group flex h-9 w-9 shrink-0 items-center justify-center gap-2 rounded-full bg-primary text-lg font-semibold text-primary-foreground md:h-8 md:w-8 md:text-base"
         >
           <Package2 className="h-4 w-4 transition-all group-hover:scale-110" />
           <span className="sr-only">VerdeQR</span>
         </Link>
+        <div className="flex flex-col items-center gap-2 w-full">
         {mainRoutes.map((route) => (
-          <NavLink key={route.href} route={route} pathname={pathname} />
+          <NavLink key={route.href} route={route} pathname={pathname} isExpanded={isExpanded}/>
         ))}
-      </SidebarMenu>
-      <SidebarMenu className="mt-auto">
-        <NavLink route={settingsRoute} pathname={pathname} />
-      </SidebarMenu>
-    </div>
+        </div>
+        <div className="mt-auto flex flex-col items-center gap-2 w-full">
+           <NavLink route={settingsRoute} pathname={pathname} isExpanded={isExpanded}/>
+        </div>
+      </nav>
   );
 }

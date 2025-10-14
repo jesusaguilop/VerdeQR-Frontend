@@ -1,4 +1,3 @@
-import { SidebarProvider } from '@/components/ui/sidebar';
 import { AdminSidebar } from '@/components/admin/sidebar';
 import Header from '@/components/admin/header';
 
@@ -8,7 +7,7 @@ export default function ManagementLayout({
   children: React.ReactNode;
 }) {
   return (
-    <SidebarProvider>
+    <>
       <AdminSidebar />
       <div className="flex flex-col sm:gap-4 sm:py-4 sm:pl-14">
         <Header />
@@ -16,6 +15,6 @@ export default function ManagementLayout({
           {children}
         </main>
       </div>
-    </SidebarProvider>
+    </>
   );
 }
