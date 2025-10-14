@@ -13,7 +13,7 @@ import {
   DialogClose,
 } from '@/components/ui/dialog';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { QrCode, CameraOff, RefreshCw, GripVertical } from 'lucide-react';
+import { QrCode, CameraOff, RefreshCw } from 'lucide-react';
 import { Html5Qrcode } from 'html5-qrcode';
 import {
   Tooltip,
@@ -217,19 +217,18 @@ export default function QrScannerModal() {
                 onMouseDown={handleMouseDown}
                 onTouchStart={handleTouchStart}
                 className={cn(
-                  'z-50 rounded-3xl h-16 w-16 bg-primary text-primary-foreground shadow-lg transition-all duration-300 ease-in-out flex flex-col items-center justify-center cursor-grab',
+                  'z-50 rounded-3xl h-16 w-16 bg-primary text-primary-foreground shadow-lg flex items-center justify-center cursor-grab transition-transform duration-300',
                   isDragging 
                     ? 'scale-110 shadow-2xl cursor-grabbing' 
                     : 'animate-pulse-slow hover:scale-105 hover:shadow-xl hover:animate-none'
                 )}
                 aria-label="Escanear Código QR"
               >
-              <QrCode className="h-7 w-7" />
-              <GripVertical className="h-3 w-3 text-primary-foreground/60 mt-0.5"/>
+              <QrCode className="h-8 w-8" />
             </button>
           </TooltipTrigger>
           <TooltipContent side="left">
-            <p>Escanear QR (arrastrable)</p>
+            <p>Escanear QR</p>
           </TooltipContent>
         </Tooltip>
       </TooltipProvider>

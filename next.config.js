@@ -5,7 +5,8 @@ const withPWA = require("@ducanh2912/next-pwa").default({
   skipWaiting: true,
   fallbacks: {
     document: '/offline',
-  }
+  },
+  disable: process.env.NODE_ENV === 'development',
 });
 
 /** @type {import('next').NextConfig} */
