@@ -35,6 +35,7 @@ export default function QrScannerModal() {
 
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [isDragging, setIsDragging] = useState(false);
+  const [wasDragged, setWasDragged] = useState(false);
   const dragStartPos = useRef({ x: 0, y: 0 });
   const buttonRef = useRef<HTMLButtonElement>(null);
 
@@ -55,17 +56,20 @@ export default function QrScannerModal() {
   const handleMouseDown = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     setIsDragging(true);
+    setWasDragged(false);
     dragStartPos.current = { x: e.clientX, y: e.clientY };
   };
 
   const handleTouchStart = (e: React.TouchEvent<HTMLButtonElement>) => {
     setIsDragging(true);
+    setWasDragged(false);
     const touch = e.touches[0];
     dragStartPos.current = { x: touch.clientX, y: touch.clientY };
   };
 
   const handleMouseMove = (e: MouseEvent) => {
     if (!isDragging || !buttonRef.current) return;
+    setWasDragged(true);
     const dx = e.clientX - dragStartPos.current.x;
     const dy = e.clientY - dragStartPos.current.y;
     dragStartPos.current = { x: e.clientX, y: e.clientY };
@@ -79,6 +83,7 @@ export default function QrScannerModal() {
 
   const handleTouchMove = (e: TouchEvent) => {
     if (!isDragging || !buttonRef.current) return;
+    setWasDragged(true);
     const touch = e.touches[0];
     const dx = touch.clientX - dragStartPos.current.x;
     const dy = touch.clientY - dragStartPos.current.y;
@@ -93,11 +98,19 @@ export default function QrScannerModal() {
 
   const handleMouseUp = () => {
     if (isDragging) {
-      setTimeout(() => setIsDragging(false), 0);
-      localStorage.setItem('qr-button-pos-x', String(position.x));
-      localStorage.setItem('qr-button-pos-y', String(position.y));
+      setIsDragging(false);
+      if(wasDragged) {
+        localStorage.setItem('qr-button-pos-x', String(position.x));
+        localStorage.setItem('qr-button-pos-y', String(position.y));
+      }
     }
   };
+
+  const handleMouseClick = () => {
+    if (!wasDragged) {
+      handleOpenChange(true);
+    }
+  }
 
   useEffect(() => {
     if (isDragging) {
@@ -213,11 +226,11 @@ export default function QrScannerModal() {
                     top: `${position.y}px`,
                     touchAction: 'none',
                 }}
-                onClick={() => handleOpenChange(true)}
+                onClick={handleMouseClick}
                 onMouseDown={handleMouseDown}
                 onTouchStart={handleTouchStart}
                 className={cn(
-                  'z-50 rounded-3xl h-16 w-16 bg-primary text-primary-foreground shadow-lg flex items-center justify-center cursor-grab transition-transform duration-300',
+                  'z-50 rounded-full h-16 w-16 bg-primary text-primary-foreground shadow-lg flex items-center justify-center cursor-grab transition-transform duration-300',
                   isDragging 
                     ? 'scale-110 shadow-2xl cursor-grabbing' 
                     : 'animate-pulse-slow hover:scale-105 hover:shadow-xl hover:animate-none'
@@ -312,3 +325,5 @@ export default function QrScannerModal() {
     </>
   );
 }
+
+    
