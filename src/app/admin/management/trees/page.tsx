@@ -25,7 +25,15 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 import { Badge } from '@/components/ui/badge';
+import { MoreHorizontal } from 'lucide-react';
 
 const registeredTrees = [
   {
@@ -171,12 +179,13 @@ export default function TreesManagementPage() {
                 <TableHead>ID</TableHead>
                 <TableHead>Especie</TableHead>
                 <TableHead>Nombre Vulgar</TableHead>
-                <TableHead>Descripción</TableHead>
-                <TableHead>Características</TableHead>
-                <TableHead>Servicios Ecosistémicos</TableHead>
-                <TableHead>Tipo...</TableHead>
-                <TableHead>Centro</TableHead>
+                <TableHead className="hidden md:table-cell">Descripción</TableHead>
+                <TableHead className="hidden md:table-cell">Características</TableHead>
+                <TableHead className="hidden lg:table-cell">Servicios Ecosistémicos</TableHead>
+                <TableHead className="hidden md:table-cell">Tipo...</TableHead>
+                <TableHead className="hidden lg:table-cell">Centro</TableHead>
                 <TableHead>Estado</TableHead>
+                <TableHead>Acciones</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -185,17 +194,17 @@ export default function TreesManagementPage() {
                   <TableCell>{tree.id}</TableCell>
                   <TableCell>{tree.species}</TableCell>
                   <TableCell>{tree.commonName}</TableCell>
-                  <TableCell className="max-w-[150px] truncate">
+                  <TableCell className="hidden md:table-cell max-w-[150px] truncate">
                     {tree.description}
                   </TableCell>
-                  <TableCell className="max-w-[150px] truncate">
+                  <TableCell className="hidden md:table-cell max-w-[150px] truncate">
                     {tree.characteristics}
                   </TableCell>
-                  <TableCell className="max-w-[150px] truncate">
+                  <TableCell className="hidden lg:table-cell max-w-[150px] truncate">
                     {tree.ecoServices}
                   </TableCell>
-                  <TableCell>{tree.forestType}</TableCell>
-                  <TableCell>{tree.center}</TableCell>
+                  <TableCell className="hidden md:table-cell">{tree.forestType}</TableCell>
+                  <TableCell className="hidden lg:table-cell">{tree.center}</TableCell>
                   <TableCell>
                     <Badge
                       variant={
@@ -209,6 +218,27 @@ export default function TreesManagementPage() {
                     >
                       {tree.status}
                     </Badge>
+                  </TableCell>
+                   <TableCell>
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button
+                          aria-haspopup="true"
+                          size="icon"
+                          variant="ghost"
+                        >
+                          <MoreHorizontal className="h-4 w-4" />
+                          <span className="sr-only">Toggle menu</span>
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="end">
+                        <DropdownMenuLabel>Acciones</DropdownMenuLabel>
+                        <DropdownMenuItem>Editar</DropdownMenuItem>
+                        <DropdownMenuItem className="text-red-600">
+                          Eliminar
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
                   </TableCell>
                 </TableRow>
               ))}

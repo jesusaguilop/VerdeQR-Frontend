@@ -18,6 +18,24 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+import { Badge } from '@/components/ui/badge';
+import { MoreHorizontal } from 'lucide-react';
+
 
 type UseCategory =
   | ''
@@ -430,6 +448,12 @@ const DynamicFields = ({ category }: { category: UseCategory }) => {
   }
 };
 
+const registeredUses = [
+    { id: 1, species: 'Mangifera indica (Mango)', useName: 'Consumo en fresco', category: 'Comestible', status: 'Activo' },
+    { id: 2, species: 'Handroanthus chrysanthus (Guayacán)', useName: 'Construcción de vigas', category: 'Maderable', status: 'Activo' },
+    { id: 3, species: 'Ceiba pentandra (Ceiba)', useName: 'Uso en ceremonias', category: 'Cultural/Ceremonial', status: 'Inactivo' },
+];
+
 export default function TreeUsesManagementPage() {
   const [category, setCategory] = useState<UseCategory>('');
 
@@ -500,6 +524,64 @@ export default function TreeUsesManagementPage() {
           )}
 
           <Button>Guardar</Button>
+        </CardContent>
+      </Card>
+      <Card>
+        <CardHeader>
+          <CardTitle>Usos Registrados</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>ID</TableHead>
+                <TableHead>Especie</TableHead>
+                <TableHead>Nombre del Uso</TableHead>
+                <TableHead>Categoría</TableHead>
+                <TableHead>Estado</TableHead>
+                <TableHead>Acciones</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {registeredUses.map((use) => (
+                <TableRow key={use.id}>
+                  <TableCell>{use.id}</TableCell>
+                  <TableCell>{use.species}</TableCell>
+                  <TableCell>{use.useName}</TableCell>
+                  <TableCell><Badge variant="secondary">{use.category}</Badge></TableCell>
+                  <TableCell>
+                    <Badge
+                      variant={use.status === 'Activo' ? 'default' : 'outline'}
+                      className={use.status === 'Activo' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}
+                    >
+                      {use.status}
+                    </Badge>
+                  </TableCell>
+                  <TableCell>
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button
+                          aria-haspopup="true"
+                          size="icon"
+                          variant="ghost"
+                        >
+                          <MoreHorizontal className="h-4 w-4" />
+                          <span className="sr-only">Toggle menu</span>
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="end">
+                        <DropdownMenuLabel>Acciones</DropdownMenuLabel>
+                        <DropdownMenuItem>Editar</DropdownMenuItem>
+                        <DropdownMenuItem className="text-red-600">
+                          Eliminar
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
         </CardContent>
       </Card>
     </div>

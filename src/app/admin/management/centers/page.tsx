@@ -25,6 +25,36 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+import { Badge } from '@/components/ui/badge';
+import { MoreHorizontal } from 'lucide-react';
+
+const registeredCenters = [
+  {
+    id: 1,
+    name: 'Centro Biotecnológico del Caribe',
+    address: 'Kilómetro 7, Vía a La Paz',
+    status: 'Activo',
+  },
+  {
+    id: 2,
+    name: 'Centro de Innovación y Gestión Empresarial (CIGEC)',
+    address: 'Calle 14 # 12-05',
+    status: 'Activo',
+  },
+  {
+    id: 3,
+    name: 'Centro Agroempresarial',
+    address: 'Aguachica, Cesar',
+    status: 'Inactivo',
+  },
+];
 
 export default function CentersManagementPage() {
   return (
@@ -83,7 +113,48 @@ export default function CentersManagementPage() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {/* Aquí irán los datos de los centros */}
+              {registeredCenters.map((center) => (
+                <TableRow key={center.id}>
+                  <TableCell>{center.id}</TableCell>
+                  <TableCell className="font-medium">{center.name}</TableCell>
+                  <TableCell>{center.address}</TableCell>
+                  <TableCell>
+                    <Badge
+                      variant={
+                        center.status === 'Activo' ? 'default' : 'outline'
+                      }
+                      className={
+                        center.status === 'Activo'
+                          ? 'bg-green-100 text-green-800'
+                          : 'bg-red-100 text-red-800'
+                      }
+                    >
+                      {center.status}
+                    </Badge>
+                  </TableCell>
+                  <TableCell>
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button
+                          aria-haspopup="true"
+                          size="icon"
+                          variant="ghost"
+                        >
+                          <MoreHorizontal className="h-4 w-4" />
+                          <span className="sr-only">Toggle menu</span>
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="end">
+                        <DropdownMenuLabel>Acciones</DropdownMenuLabel>
+                        <DropdownMenuItem>Editar</DropdownMenuItem>
+                        <DropdownMenuItem className="text-red-600">
+                          Eliminar
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </TableCell>
+                </TableRow>
+              ))}
             </TableBody>
           </Table>
         </CardContent>

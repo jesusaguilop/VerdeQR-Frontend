@@ -25,6 +25,39 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+import { Badge } from '@/components/ui/badge';
+import { MoreHorizontal } from 'lucide-react';
+
+const registeredInteractions = [
+  {
+    id: 1,
+    species: 'Mangifera indica (Mango)',
+    type: 'Polinización',
+    description: 'Abejas polinizan las flores del mango.',
+    status: 'Activo',
+  },
+  {
+    id: 2,
+    species: 'Handroanthus chrysanthus (Guayacán)',
+    type: 'Dispersión de semillas',
+    description: 'El viento dispersa las semillas aladas del Guayacán.',
+    status: 'Activo',
+  },
+  {
+    id: 3,
+    species: 'Ceiba pentandra (Ceiba)',
+    type: 'Herbivoría',
+    description: 'Las hormigas cortadoras de hojas atacan los brotes jóvenes.',
+    status: 'Inactivo',
+  },
+];
 
 export default function EcologicalInteractionsManagementPage() {
   return (
@@ -105,7 +138,53 @@ export default function EcologicalInteractionsManagementPage() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {/* Aquí irán los datos de las interacciones */}
+              {registeredInteractions.map((interaction) => (
+                <TableRow key={interaction.id}>
+                  <TableCell>{interaction.id}</TableCell>
+                  <TableCell>{interaction.species}</TableCell>
+                  <TableCell>{interaction.type}</TableCell>
+                  <TableCell className="max-w-[200px] truncate">
+                    {interaction.description}
+                  </TableCell>
+                  <TableCell>
+                    <Badge
+                      variant={
+                        interaction.status === 'Activo'
+                          ? 'default'
+                          : 'outline'
+                      }
+                      className={
+                        interaction.status === 'Activo'
+                          ? 'bg-green-100 text-green-800'
+                          : 'bg-red-100 text-red-800'
+                      }
+                    >
+                      {interaction.status}
+                    </Badge>
+                  </TableCell>
+                  <TableCell>
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button
+                          aria-haspopup="true"
+                          size="icon"
+                          variant="ghost"
+                        >
+                          <MoreHorizontal className="h-4 w-4" />
+                          <span className="sr-only">Toggle menu</span>
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="end">
+                        <DropdownMenuLabel>Acciones</DropdownMenuLabel>
+                        <DropdownMenuItem>Editar</DropdownMenuItem>
+                        <DropdownMenuItem className="text-red-600">
+                          Eliminar
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </TableCell>
+                </TableRow>
+              ))}
             </TableBody>
           </Table>
         </CardContent>
