@@ -23,6 +23,7 @@ import {
 } from '@/components/ui/tooltip';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
+import { useRouter } from 'next/navigation';
 
 const QR_REGION_ID = 'qr-reader-region';
 
@@ -32,6 +33,7 @@ export default function QrScannerModal() {
   const [isScanning, setIsScanning] = useState(false);
   const [scanResult, setScanResult] = useState<string | null>(null);
   const html5QrCodeRef = useRef<Html5Qrcode | null>(null);
+  const router = useRouter();
 
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [isDragging, setIsDragging] = useState(false);
@@ -106,29 +108,36 @@ export default function QrScannerModal() {
     }
   };
 
-  const handleMouseClick = () => {
+  const handleMouseClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     if (!wasDragged) {
       handleOpenChange(true);
     }
-  }
+  };
+
+  const handleTouchEnd = () => {
+    if (!wasDragged) {
+      handleOpenChange(true);
+    }
+    handleMouseUp();
+  };
 
   useEffect(() => {
     if (isDragging) {
-      document.addEventListener('mousemove', handleMouseMove);
-      document.addEventListener('mouseup', handleMouseUp);
-      document.addEventListener('touchmove', handleTouchMove);
-      document.addEventListener('touchend', handleMouseUp);
+      window.addEventListener('mousemove', handleMouseMove);
+      window.addEventListener('mouseup', handleMouseUp);
+      window.addEventListener('touchmove', handleTouchMove);
+      window.addEventListener('touchend', handleMouseUp);
     } else {
-      document.removeEventListener('mousemove', handleMouseMove);
-      document.removeEventListener('mouseup', handleMouseUp);
-      document.removeEventListener('touchmove', handleTouchMove);
-      document.removeEventListener('touchend', handleMouseUp);
+      window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('mouseup', handleMouseUp);
+      window.removeEventListener('touchmove', handleTouchMove);
+      window.removeEventListener('touchend', handleMouseUp);
     }
     return () => {
-      document.removeEventListener('mousemove', handleMouseMove);
-      document.removeEventListener('mouseup', handleMouseUp);
-      document.removeEventListener('touchmove', handleTouchMove);
-      document.removeEventListener('touchend', handleMouseUp);
+      window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('mouseup', handleMouseUp);
+      window.removeEventListener('touchmove', handleTouchMove);
+      window.removeEventListener('touchend', handleMouseUp);
     };
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isDragging]);
@@ -148,6 +157,16 @@ export default function QrScannerModal() {
       cleanup();
       setHasCameraPermission(null);
       setScanResult(null);
+    }
+  };
+
+  const onScanSuccess = (decodedText: string) => {
+    cleanup();
+    if (decodedText.startsWith('/ver_arbol/')) {
+        router.push(decodedText);
+        handleOpenChange(false);
+    } else {
+        setScanResult(decodedText);
     }
   };
 
@@ -171,10 +190,7 @@ export default function QrScannerModal() {
               qrbox: { width: 250, height: 250 },
               aspectRatio: 1.0,
             },
-            (decodedText) => {
-              cleanup();
-              setScanResult(decodedText);
-            },
+            onScanSuccess,
             () => {}
           ).then(() => setIsScanning(true))
           .catch((err) => {
@@ -206,10 +222,12 @@ export default function QrScannerModal() {
   const isValidUrl = (text: string | null): text is string => {
     if (!text) return false;
     try {
+      // Check for full URLs
       new URL(text);
       return true;
     } catch (_) {
-      return false;
+      // Check for relative paths starting with /
+      return text.startsWith('/');
     }
   };
 
@@ -229,6 +247,7 @@ export default function QrScannerModal() {
                 onClick={handleMouseClick}
                 onMouseDown={handleMouseDown}
                 onTouchStart={handleTouchStart}
+                onTouchEnd={handleTouchEnd}
                 className={cn(
                   'z-50 rounded-full h-16 w-16 bg-primary text-primary-foreground shadow-lg flex items-center justify-center cursor-grab transition-transform duration-300',
                   isDragging 
@@ -301,7 +320,7 @@ export default function QrScannerModal() {
                 </div>
                 {isValidUrl(scanResult) && (
                   <Button asChild className="w-full mt-4">
-                    <Link href={scanResult} target="_blank" rel="noopener noreferrer">
+                    <Link href={scanResult} target={scanResult.startsWith('http') ? '_blank' : '_self'} rel="noopener noreferrer">
                       Abrir Enlace
                     </Link>
                   </Button>
@@ -325,5 +344,3 @@ export default function QrScannerModal() {
     </>
   );
 }
-
-    
