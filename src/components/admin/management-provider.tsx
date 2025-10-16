@@ -1,6 +1,5 @@
 'use client';
 
-import { cn } from '@/lib/utils';
 import {
   createContext,
   useContext,
@@ -9,10 +8,48 @@ import {
   SetStateAction,
   ReactNode,
 } from 'react';
+import {
+  initialCenters,
+  initialEcologicalInteractions,
+  initialForestTypes,
+  initialFunFacts,
+  initialSpecies,
+  initialSuggestions,
+  initialTrees,
+  initialTreeUses,
+  initialUsers,
+  Center,
+  EcologicalInteraction,
+  ForestType,
+  FunFact,
+  Specie,
+  Suggestion,
+  Tree,
+  TreeUse,
+  User,
+} from '@/lib/mock-data';
 
 type ManagementContextType = {
   isExpanded: boolean;
   setIsExpanded: Dispatch<SetStateAction<boolean>>;
+  centers: Center[];
+  setCenters: Dispatch<SetStateAction<Center[]>>;
+  interactions: EcologicalInteraction[];
+  setInteractions: Dispatch<SetStateAction<EcologicalInteraction[]>>;
+  forestTypes: ForestType[];
+  setForestTypes: Dispatch<SetStateAction<ForestType[]>>;
+  funFacts: FunFact[];
+  setFunFacts: Dispatch<SetStateAction<FunFact[]>>;
+  species: Specie[];
+  setSpecies: Dispatch<SetStateAction<Specie[]>>;
+  suggestions: Suggestion[];
+  setSuggestions: Dispatch<SetStateAction<Suggestion[]>>;
+  trees: Tree[];
+  setTrees: Dispatch<SetStateAction<Tree[]>>;
+  treeUses: TreeUse[];
+  setTreeUses: Dispatch<SetStateAction<TreeUse[]>>;
+  users: User[];
+  setUsers: Dispatch<SetStateAction<User[]>>;
 };
 
 const ManagementContext = createContext<ManagementContextType | undefined>(
@@ -21,9 +58,41 @@ const ManagementContext = createContext<ManagementContextType | undefined>(
 
 export function ManagementProvider({ children }: { children: ReactNode }) {
   const [isExpanded, setIsExpanded] = useState(false);
+  const [centers, setCenters] = useState<Center[]>(initialCenters);
+  const [interactions, setInteractions] = useState<EcologicalInteraction[]>(initialEcologicalInteractions);
+  const [forestTypes, setForestTypes] = useState<ForestType[]>(initialForestTypes);
+  const [funFacts, setFunFacts] = useState<FunFact[]>(initialFunFacts);
+  const [species, setSpecies] = useState<Specie[]>(initialSpecies);
+  const [suggestions, setSuggestions] = useState<Suggestion[]>(initialSuggestions);
+  const [trees, setTrees] = useState<Tree[]>(initialTrees);
+  const [treeUses, setTreeUses] = useState<TreeUse[]>(initialTreeUses);
+  const [users, setUsers] = useState<User[]>(initialUsers);
+
+  const value = {
+    isExpanded,
+    setIsExpanded,
+    centers,
+    setCenters,
+    interactions,
+    setInteractions,
+    forestTypes,
+    setForestTypes,
+    funFacts,
+    setFunFacts,
+    species,
+    setSpecies,
+    suggestions,
+    setSuggestions,
+    trees,
+    setTrees,
+    treeUses,
+    setTreeUses,
+    users,
+    setUsers,
+  };
 
   return (
-    <ManagementContext.Provider value={{ isExpanded, setIsExpanded }}>
+    <ManagementContext.Provider value={value}>
       <div className={cn('group/provider', isExpanded && 'is-expanded')}>
         {children}
       </div>
@@ -37,4 +106,12 @@ export function useManagement() {
     throw new Error('useManagement must be used within a ManagementProvider');
   }
   return context;
+}
+
+// Helper to add the 'cn' function if it's not globally available
+// In most Next.js projects with shadcn/ui, this is not needed in this file.
+function cn(...inputs: any[]) {
+  // A simple version of clsx + twMerge for client components
+  const classes = inputs.filter(Boolean).join(' ');
+  return classes;
 }
