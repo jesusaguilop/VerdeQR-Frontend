@@ -5,7 +5,7 @@ import { useParams, useRouter } from 'next/navigation';
 import { useManagement } from '@/components/admin/management-provider';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft, BookOpen, Leaf, Sprout, Trees, Building, Info } from 'lucide-react';
+import { ArrowLeft, BookOpen, Leaf, Sprout, Trees, Building, Info, Sparkles } from 'lucide-react';
 import {
   Card,
   CardContent,
@@ -19,7 +19,7 @@ export default function TreeDetailPage() {
   const router = useRouter();
   const params = useParams();
   const { id } = params;
-  const { trees, species, treeUses, centers } = useManagement();
+  const { trees, species, treeUses, centers, funFacts } = useManagement();
 
   const tree = trees.find((t) => t.id === parseInt(id as string, 10));
 
@@ -42,6 +42,7 @@ export default function TreeDetailPage() {
   const treeSpecie = species.find((s) => s.scientificName === tree.species);
   const treeCenter = centers.find((c) => c.name === tree.center);
   const uses = treeUses.filter((u) => u.species === tree.species);
+  const relatedFunFacts = funFacts.filter((ff) => ff.species === tree.species);
 
   return (
     <div className="max-w-6xl mx-auto py-8 px-4">
@@ -149,6 +150,19 @@ export default function TreeDetailPage() {
               </DetailSection>
             </CardContent>
           </Card>
+            {relatedFunFacts.length > 0 && (
+                <Card>
+                    <CardContent className="p-6">
+                        <DetailSection title="Datos Curiosos" icon={Sparkles}>
+                            <ul className="space-y-3 list-disc list-inside text-muted-foreground">
+                                {relatedFunFacts.map(fact => (
+                                    <li key={fact.id} className="leading-relaxed">{fact.fact}</li>
+                                ))}
+                            </ul>
+                        </DetailSection>
+                    </CardContent>
+                </Card>
+            )}
         </div>
       </div>
     </div>
