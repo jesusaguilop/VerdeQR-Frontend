@@ -162,12 +162,7 @@ export default function QrScannerModal() {
 
   const onScanSuccess = (decodedText: string) => {
     cleanup();
-    if (decodedText.startsWith('/ver_arbol/')) {
-        router.push(decodedText);
-        handleOpenChange(false);
-    } else {
-        setScanResult(decodedText);
-    }
+    setScanResult(decodedText);
   };
 
   const startScanner = async () => {
@@ -319,7 +314,7 @@ export default function QrScannerModal() {
                   {scanResult}
                 </div>
                 {isValidUrl(scanResult) && (
-                  <Button asChild className="w-full mt-4">
+                  <Button asChild className="w-full mt-4" onClick={() => handleOpenChange(false)}>
                     <Link href={scanResult} target={scanResult.startsWith('http') ? '_blank' : '_self'} rel="noopener noreferrer">
                       Abrir Enlace
                     </Link>
