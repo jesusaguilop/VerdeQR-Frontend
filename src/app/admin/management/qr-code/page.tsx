@@ -17,11 +17,13 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { QrCode as QrCodeIcon } from 'lucide-react';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import QRCode from 'qrcode';
 import { useToast } from '@/hooks/use-toast';
 import { useManagement } from '@/components/admin/management-provider';
 import Image from 'next/image';
+
+const BASE_URL = 'https://verdeqr-fahsejh6h4ccg4dy.eastus-01.azurewebsites.net';
 
 export default function QrCodeManagementPage() {
   const { trees } = useManagement();
@@ -49,16 +51,8 @@ export default function QrCodeManagementPage() {
       return;
     }
 
-    const qrCodeContent = JSON.stringify({
-      id: tree.id,
-      commonName: tree.commonName,
-      species: tree.species,
-      description: tree.description,
-      characteristics: tree.characteristics,
-      ecoServices: tree.ecoServices,
-      forestType: tree.forestType,
-      center: tree.center,
-    });
+    // Use a fixed URL for generation as per request.
+    const qrCodeContent = `${BASE_URL}/ver_arbol/${tree.id}`;
 
     QRCode.toDataURL(qrCodeContent, {
       width: 256,
@@ -91,7 +85,7 @@ export default function QrCodeManagementPage() {
         <CardHeader>
           <CardTitle>Generación de Código QR</CardTitle>
           <CardDescription>
-            Genera un código QR para un árbol específico.
+            Genera un código QR que enlaza a la página de detalles de un árbol específico.
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">

@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   description: 'Identifica árboles silvestres al instante con VerdeQR en los Centros de Formación del SENA.',
   manifest: '/manifest.webmanifest',
   icons: {
-    icon: '/img/VerdeQr-Logo.png', // Puedes cambiar esta ruta a tu nuevo favicon
+    icon: '/img/verdeqr.png', // Puedes cambiar esta ruta a tu nuevo favicon
   },
 };
 

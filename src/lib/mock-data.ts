@@ -45,14 +45,14 @@ export const initialEcologicalInteractions: EcologicalInteraction[] = [
   },
   {
     id: 2,
-    species: 'Handroanthus chrysanthus (Guayacán)',
+    species: 'Handroanthus chrysanthus',
     type: 'Dispersión de semillas',
     description: 'El viento dispersa las semillas aladas del Guayacán.',
     status: 'Activo',
   },
   {
     id: 3,
-    species: 'Ceiba pentandra (Ceiba)',
+    species: 'Ceiba pentandra',
     type: 'Herbivoría',
     description: 'Las hormigas cortadoras de hojas atacan los brotes jóvenes.',
     status: 'Inactivo',
@@ -97,17 +97,17 @@ export type FunFact = {
 export const initialFunFacts: FunFact[] = [
   {
     id: 1,
-    species: 'Ceiba pentandra (Ceiba)',
+    species: 'Ceiba pentandra',
     fact: 'La Ceiba era considerada un árbol sagrado por los mayas, quienes creían que conectaba el cielo, la tierra y el inframundo.',
   },
   {
     id: 2,
-    species: 'Handroanthus chrysanthus (Guayacán)',
+    species: 'Handroanthus chrysanthus',
     fact: 'El Guayacán puede tardar hasta 10 años en florecer por primera vez, pero cuando lo hace, el espectáculo es inolvidable.',
   },
   {
     id: 3,
-    species: 'Mangifera indica (Mango)',
+    species: 'Mangifera indica',
     fact: 'El mango es originario de la India y se cultiva desde hace más de 4,000 años. Es conocido como el "rey de las frutas".',
   },
 ];
@@ -138,6 +138,24 @@ export const initialSpecies: Specie[] = [
     commonName: 'Ceiba',
     description: 'Árbol de gran tamaño, considerado sagrado en diversas culturas americanas.',
   },
+   {
+    id: 4,
+    scientificName: 'Tabebuia sp',
+    commonName: 'Cañaguate',
+    description: 'Género neotropical de árboles de la familia de las bignoniáceas, muy valorados por su floración ultra y su resistencia a la sequía. Su madera es de ray durable, muy utilizada en arborización urbana y proyectos de restauración ambiental.'
+  },
+    {
+    id: 5,
+    scientificName: 'Jacquinia armillaris',
+    commonName: 'Yatú',
+    description: 'Especie nativa del Caribe y América Central, perteneciente a la familia de las primuláceas. Es muy resistente a la salinidad y a las condiciones costeras, lo que la hace ideal para la reforestación de zonas litorales y la protección contra la erosión.'
+  },
+    {
+    id: 6,
+    scientificName: 'Machaerium biovulatum',
+    commonName: 'Rabo de iguana',
+    description: 'Especie nativa de los bosques secos tropicales de América, perteneciente a la familia de las leguminosas. Es un árbol espinoso con una floración vistosa y un gran valor ecológico por su capacidad de fijar nitrógeno en el suelo.'
+  }
 ];
 
 export type Suggestion = {
@@ -186,9 +204,9 @@ export type TreeUse = {
     details?: any;
 }
 export const initialTreeUses: TreeUse[] = [
-    { id: 1, species: 'Mangifera indica (Mango)', useName: 'Consumo en fresco', category: 'Comestible', status: 'Activo' },
-    { id: 2, species: 'Handroanthus chrysanthus (Guayacán)', useName: 'Construcción de vigas', category: 'Maderable', status: 'Activo' },
-    { id: 3, species: 'Ceiba pentandra (Ceiba)', useName: 'Uso en ceremonias', category: 'Cultural/Ceremonial', status: 'Inactivo' },
+    { id: 1, species: 'Mangifera indica', useName: 'Consumo en fresco', category: 'Comestible', status: 'Activo' },
+    { id: 2, species: 'Handroanthus chrysanthus', useName: 'Construcción de vigas', category: 'Maderable', status: 'Activo' },
+    { id: 3, species: 'Ceiba pentandra', useName: 'Uso en ceremonias', category: 'Cultural/Ceremonial', status: 'Inactivo' },
 ];
 
 export type Tree = {
@@ -208,33 +226,33 @@ export const initialTrees: Tree[] = [
     id: 9,
     species: 'Tabebuia sp',
     commonName: 'Cañaguate',
-    description: 'Género neotropical de árboles muy valorados...',
-    characteristics: 'Árbol mediano a grande que alcanza entre 10 y...',
-    ecoServices: 'Contribuye a la belleza paisajística y...',
+    description: 'Género neotropical de árboles muy valorados por su floración ultra y su resistencia a la sequía. Su madera es de ray durable, muy utilizada en arborización urbana y proyectos de restauración ambiental.',
+    characteristics: 'Árbol mediano a grande que alcanza entre 10 y 30 metros de altura. Posee tronco recto con corteza grisácea y fisurada. Sus hojas son opuestas, palmadamente compuestas con 5 folíolos. Las flores son grandes, en forma de trompeta, y pueden ser de color rosado, amarillo o blanco según la especie. El fruto es una cápsula alargada y leñosa que contiene numerosas semillas aladas.',
+    ecoServices: 'Contribuye a la belleza paisajística y ornamental de las ciudades, atrae polinizadores como abejas y colibríes, y su sistema radicular ayuda a controlar la erosión del suelo. Además, es una especie importante para la restauración de ecosistemas degradados.',
     forestType: 'Bosque seco tropical',
-    center: 'Centro biotecnológico del caribe',
+    center: 'Centro Biotecnológico del Caribe',
     status: 'Activo',
   },
   {
     id: 8,
     species: 'Jacquinia armillaris',
-    commonName: 'Yatu',
-    description: 'Especie nativa del Caribe y América Central....',
-    characteristics: 'Arbusto o árbol pequeño de entre 3 y 10 metros...',
-    ecoServices: 'Ayuda en la protección de suelos costeros...',
+    commonName: 'Yatú',
+    description: 'Especie nativa del Caribe y América Central, perteneciente a la familia de las primuláceas. Es muy resistente a la salinidad y a las condiciones costeras, lo que la hace ideal para la reforestación de zonas litorales y la protección contra la erosión.',
+    characteristics: 'Arbusto o árbol pequeño de entre 3 y 10 metros de altura, con hojas simples, coriáceas y brillantes. Sus flores son pequeñas, blancas y fragantes, y se agrupan en inflorescencias terminales. El fruto es una baya globosa de color naranja o rojo al madurar, muy llamativa para la fauna silvestre.',
+    ecoServices: 'Ayuda en la protección de suelos costeros, sirve como refugio y alimento para aves y otros animales, y tiene un alto valor ornamental por su follaje perenne y sus frutos coloridos. También se utiliza en la medicina tradicional para tratar diversas afecciones.',
     forestType: 'Bosque seco tropical',
-    center: 'Centro biotecnológico del caribe',
+    center: 'Centro Biotecnológico del Caribe',
     status: 'Activo',
   },
   {
     id: 7,
     species: 'Machaerium biovulatum',
     commonName: 'Rabo de iguana',
-    description: 'Especie nativa de los bosques secos tropicales...',
-    characteristics: 'Árbol mediano que alcanza entre 10 y 20 metros...',
-    ecoServices: 'Su sistema radicular profundo contribuye al...',
+    description: 'Especie nativa de los bosques secos tropicales de América, perteneciente a la familia de las leguminosas. Es un árbol espinoso con una floración vistosa y un gran valor ecológico por su capacidad de fijar nitrógeno en el suelo.',
+    characteristics: 'Árbol mediano que alcanza entre 10 y 20 metros de altura, con un tronco delgado y espinoso. Sus hojas son compuestas y alternas, y sus flores son de color púrpura o lila, agrupadas en racimos. El fruto es una legumbre aplanada y alada, que facilita su dispersión por el viento.',
+    ecoServices: 'Su sistema radicular profundo contribuye al mejoramiento de la estructura del suelo y a la fijación de nitrógeno, lo que enriquece la fertilidad del ecosistema. Además, sus flores atraen a una gran variedad de insectos polinizadores y su follaje sirve de alimento para la fauna local.',
     forestType: 'Bosque seco tropical',
-    center: 'Centro biotecnológico del caribe',
+    center: 'Centro Biotecnológico del Caribe',
     status: 'Activo',
   },
 ];
