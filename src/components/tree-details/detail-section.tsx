@@ -17,7 +17,7 @@ export default function DetailSection({
 }: DetailSectionProps) {
   return (
     <div className={cn('space-y-3', className)}>
-      <h3 className="text-lg font-semibold text-primary flex items-center gap-2 border-b pb-2">
+      <h3 className="text-lg font-semibold text-primary flex items-center gap-2 border-b pb-2 mb-4">
         {Icon && <Icon className="h-5 w-5" />}
         {title}
       </h3>
