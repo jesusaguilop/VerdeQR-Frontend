@@ -9,6 +9,9 @@ export const metadata: Metadata = {
   title: 'VerdeQR - Identifica la Naturaleza',
   description: 'Identifica árboles silvestres al instante con VerdeQR en los Centros de Formación del SENA.',
   manifest: '/manifest.webmanifest',
+  icons: {
+    icon: '/img/VerdeQr-Logo.png', // Puedes cambiar esta ruta a tu nuevo favicon
+  },
 };
 
 export default function RootLayout({
