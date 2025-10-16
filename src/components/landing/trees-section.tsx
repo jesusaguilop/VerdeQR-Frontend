@@ -1,9 +1,11 @@
 import Image from "next/image";
+import Link from "next/link";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 
 const trees = [
   {
+    id: 7,
     commonName: 'Ceiba',
     scientificName: 'Ceiba pentandra',
     description: 'Árbol de gran tamaño, sagrado en muchas culturas prehispánicas.',
@@ -14,6 +16,7 @@ const trees = [
     },
   },
   {
+    id: 8,
     commonName: 'Guayacán Amarillo',
     scientificName: 'Handroanthus chrysanthus',
     description: 'Conocido por su espectacular floración amarilla que cubre el árbol.',
@@ -24,8 +27,9 @@ const trees = [
     },
   },
   {
-    commonName: 'Roble',
-    scientificName: 'Quercus humboldtii',
+    id: 9,
+    commonName: 'Cañaguate',
+    scientificName: 'Tabebuia sp',
     description: 'Especie nativa de los Andes, clave para la conservación de bosques.',
     image: {
       path: '/img/roble.jpg',
@@ -81,8 +85,8 @@ export default function TreesSection() {
                 <p className="text-sm text-muted-foreground">{tree.description}</p>
               </CardContent>
               <CardFooter>
-                <Button variant="outline" className="w-full border-primary text-primary hover:bg-primary hover:text-primary-foreground transition-colors duration-300">
-                  Ver más
+                <Button asChild variant="outline" className="w-full border-primary text-primary hover:bg-primary hover:text-primary-foreground transition-colors duration-300">
+                  <Link href={`/ver_arbol/${tree.id}`}>Ver más</Link>
                 </Button>
               </CardFooter>
             </Card>
