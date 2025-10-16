@@ -23,8 +23,6 @@ import { useToast } from '@/hooks/use-toast';
 import { useManagement } from '@/components/admin/management-provider';
 import Image from 'next/image';
 
-const BASE_URL = 'https://verdeqr-fahsejh6h4ccg4dy.eastus-01.azurewebsites.net';
-
 export default function QrCodeManagementPage() {
   const { trees } = useManagement();
   const [selectedTreeId, setSelectedTreeId] = useState<string>('');
@@ -51,8 +49,8 @@ export default function QrCodeManagementPage() {
       return;
     }
 
-    // Use a fixed URL for generation as per request.
-    const qrCodeContent = `${BASE_URL}/ver_arbol/${tree.id}`;
+    // Use a relative path for the QR code content.
+    const qrCodeContent = `/ver_arbol/${tree.id}`;
 
     QRCode.toDataURL(qrCodeContent, {
       width: 256,
