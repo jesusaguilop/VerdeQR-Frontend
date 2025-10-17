@@ -292,3 +292,11 @@ export const initialUsers: User[] = [
     status: 'Inactive',
   },
 ];
+
+export type GeneratedQr = {
+    id: number;
+    treeId: number;
+    qrCodeDataUrl: string;
+}
+
+export const initialGeneratedQrs: GeneratedQr[] = [];

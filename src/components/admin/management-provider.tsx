@@ -18,6 +18,7 @@ import {
   initialTrees,
   initialTreeUses,
   initialUsers,
+  initialGeneratedQrs,
   Center,
   EcologicalInteraction,
   ForestType,
@@ -27,6 +28,7 @@ import {
   Tree,
   TreeUse,
   User,
+  GeneratedQr,
 } from '@/lib/mock-data';
 
 type ManagementContextType = {
@@ -50,6 +52,8 @@ type ManagementContextType = {
   setTreeUses: Dispatch<SetStateAction<TreeUse[]>>;
   users: User[];
   setUsers: Dispatch<SetStateAction<User[]>>;
+  generatedQrs: GeneratedQr[];
+  setGeneratedQrs: Dispatch<SetStateAction<GeneratedQr[]>>;
 };
 
 const ManagementContext = createContext<ManagementContextType | undefined>(
@@ -67,6 +71,8 @@ export function ManagementProvider({ children }: { children: ReactNode }) {
   const [trees, setTrees] = useState<Tree[]>(initialTrees);
   const [treeUses, setTreeUses] = useState<TreeUse[]>(initialTreeUses);
   const [users, setUsers] = useState<User[]>(initialUsers);
+  const [generatedQrs, setGeneratedQrs] = useState<GeneratedQr[]>(initialGeneratedQrs);
+
 
   const value = {
     isExpanded,
@@ -89,6 +95,8 @@ export function ManagementProvider({ children }: { children: ReactNode }) {
     setTreeUses,
     users,
     setUsers,
+    generatedQrs,
+    setGeneratedQrs,
   };
 
   return (
