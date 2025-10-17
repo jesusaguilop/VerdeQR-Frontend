@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   description: 'Identifica árboles silvestres al instante con VerdeQR en los Centros de Formación del SENA.',
   manifest: '/manifest.webmanifest',
   icons: {
-    icon: '/img/verdeqr.png', // Puedes cambiar esta ruta a tu nuevo favicon
+    icon: '/img/VerdeQr-Logo.png',
   },
 };
 
@@ -27,6 +27,7 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
         <link rel="manifest" href="/manifest.webmanifest" />
+        <link rel="apple-touch-icon" href="/img/icons/icon-192x192.png"></link>
       </head>
       <body className="font-body antialiased">
         <ThemeProvider
