@@ -117,6 +117,7 @@ export type Specie = {
     scientificName: string;
     commonName: string;
     description: string;
+    status: 'Activo' | 'Inactivo';
 }
 
 export const initialSpecies: Specie[] = [
@@ -125,36 +126,42 @@ export const initialSpecies: Specie[] = [
     scientificName: 'Mangifera indica',
     commonName: 'Mango',
     description: 'Árbol frutal de la familia Anacardiaceae, muy popular en zonas tropicales.',
+    status: 'Activo',
   },
   {
     id: 2,
     scientificName: 'Handroanthus chrysanthus',
     commonName: 'Guayacán Amarillo',
     description: 'Árbol ornamental famoso por su espectacular floración amarilla.',
+    status: 'Activo',
   },
   {
     id: 3,
     scientificName: 'Ceiba pentandra',
     commonName: 'Ceiba',
     description: 'Árbol de gran tamaño, considerado sagrado en diversas culturas americanas.',
+    status: 'Activo',
   },
    {
     id: 4,
     scientificName: 'Tabebuia sp',
     commonName: 'Cañaguate',
-    description: 'Género neotropical de árboles de la familia de las bignoniáceas, muy valorados por su floración ultra y su resistencia a la sequía. Su madera es de ray durable, muy utilizada en arborización urbana y proyectos de restauración ambiental.'
+    description: 'Género neotropical de árboles de la familia de las bignoniáceas, muy valorados por su floración ultra y su resistencia a la sequía. Su madera es de ray durable, muy utilizada en arborización urbana y proyectos de restauración ambiental.',
+    status: 'Activo',
   },
     {
     id: 5,
     scientificName: 'Jacquinia armillaris',
     commonName: 'Yatú',
-    description: 'Especie nativa del Caribe y América Central, perteneciente a la familia de las primuláceas. Es muy resistente a la salinidad y a las condiciones costeras, lo que la hace ideal para la reforestación de zonas litorales y la protección contra la erosión.'
+    description: 'Especie nativa del Caribe y América Central, perteneciente a la familia de las primuláceas. Es muy resistente a la salinidad y a las condiciones costeras, lo que la hace ideal para la reforestación de zonas litorales y la protección contra la erosión.',
+    status: 'Activo',
   },
     {
     id: 6,
     scientificName: 'Machaerium biovulatum',
     commonName: 'Rabo de iguana',
-    description: 'Especie nativa de los bosques secos tropicales de América, perteneciente a la familia de las leguminosas. Es un árbol espinoso con una floración vistosa y un gran valor ecológico por su capacidad de fijar nitrógeno en el suelo.'
+    description: 'Especie nativa de los bosques secos tropicales de América, perteneciente a la familia de las leguminosas. Es un árbol espinoso con una floración vistosa y un gran valor ecológico por su capacidad de fijar nitrógeno en el suelo.',
+    status: 'Activo',
   }
 ];
 
@@ -239,7 +246,7 @@ export const initialTrees: Tree[] = [
     commonName: 'Yatú',
     description: 'Especie nativa del Caribe y América Central, perteneciente a la familia de las primuláceas. Es muy resistente a la salinidad y a las condiciones costeras, lo que la hace ideal para la reforestación de zonas litorales y la protección contra la erosión.',
     characteristics: 'Arbusto o árbol pequeño de entre 3 y 10 metros de altura, con hojas simples, coriáceas y brillantes. Sus flores son pequeñas, blancas y fragantes, y se agrupan en inflorescencias terminales. El fruto es una baya globosa de color naranja o rojo al madurar, muy llamativa para la fauna silvestre.',
-    ecoServices: 'Ayuda en la protección de suelos costeros, sirve como refugio y alimento para aves y otros animales, y tiene un alto valor ornamental por su follaje perenne y sus frutos coloridos. También se utiliza en la medicina tradicional para tratar diversas afecciones.',
+    ecoServices: 'Ayuda en la protección de suelos costeros, sirve como refugio y alimento para aves y otros animales, y tiene un alto valor ornamental por su follaje perenne y sus frutos coloridos. También se utiliza en la medicina tradicional para tratar diversas afeacciones.',
     forestType: 'Bosque seco tropical',
     center: 'Centro Biotecnológico del Caribe',
     status: 'Activo',

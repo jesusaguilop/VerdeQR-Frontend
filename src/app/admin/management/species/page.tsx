@@ -9,7 +9,6 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
 import {
   Table,
   TableBody,
@@ -35,13 +34,16 @@ import { Specie } from '@/lib/mock-data';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { useToast } from '@/hooks/use-toast';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Badge } from '@/components/ui/badge';
 
 
 const formSchema = z.object({
   id: z.number().optional(),
   scientificName: z.string().min(1, 'El nombre científico es requerido.'),
   commonName: z.string().min(1, 'El nombre común es requerido.'),
-  description: z.string().min(1, 'La descripción es requerida.'),
+  description: z.string().optional(), // Now optional
+  status: z.enum(['Activo', 'Inactivo']),
 });
 
 type SpecieFormValues = z.infer<typeof formSchema>;
@@ -57,19 +59,21 @@ export default function SpeciesManagementPage() {
       scientificName: '',
       commonName: '',
       description: '',
+      status: 'Activo',
     },
   });
 
   const onSubmit: SubmitHandler<SpecieFormValues> = (data) => {
+    const finalData = { ...data, description: data.description || 'Sin descripción' };
     if (isEditing && data.id) {
-      setSpecies(prev => prev.map(s => s.id === data.id ? { ...s, ...data } : s));
+      setSpecies(prev => prev.map(s => s.id === data.id ? { ...s, ...finalData } : s));
       toast({ title: 'Especie actualizada', description: 'La especie ha sido actualizada exitosamente.' });
     } else {
       const newId = species.length > 0 ? Math.max(...species.map(s => s.id)) + 1 : 1;
-      setSpecies(prev => [...prev, { ...data, id: newId }]);
+      setSpecies(prev => [...prev, { ...finalData, id: newId }]);
       toast({ title: 'Especie guardada', description: 'La nueva especie ha sido guardada.' });
     }
-    form.reset();
+    form.reset({ scientificName: '', commonName: '', description: '', status: 'Activo' });
     setIsEditing(false);
   };
 
@@ -85,7 +89,7 @@ export default function SpeciesManagementPage() {
   };
 
   const handleCancelEdit = () => {
-    form.reset();
+    form.reset({ scientificName: '', commonName: '', description: '', status: 'Activo' });
     setIsEditing(false);
   };
 
@@ -93,7 +97,7 @@ export default function SpeciesManagementPage() {
     <div className="space-y-8">
       <Card>
         <CardHeader>
-          <CardTitle>{isEditing ? 'Editar' : 'Añadir'} Especie</CardTitle>
+          <CardTitle>{isEditing ? 'Editar Especie' : 'Añadir Especie'}</CardTitle>
           <CardDescription>
             {isEditing ? 'Modifica los detalles de la especie.' : 'Añade una nueva especie de árbol.'}
           </CardDescription>
@@ -129,13 +133,21 @@ export default function SpeciesManagementPage() {
               />
               <FormField
                 control={form.control}
-                name="description"
+                name="status"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Descripción</FormLabel>
-                    <FormControl>
-                      <Textarea placeholder="Breve descripción de la especie" {...field} />
-                    </FormControl>
+                    <FormLabel>Estado</FormLabel>
+                    <Select onValueChange={field.onChange} value={field.value}>
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Selecciona un estado" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="Activo">Activo</SelectItem>
+                        <SelectItem value="Inactivo">Inactivo</SelectItem>
+                      </SelectContent>
+                    </Select>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -159,7 +171,7 @@ export default function SpeciesManagementPage() {
                 <TableHead>ID</TableHead>
                 <TableHead>Nombre Científico</TableHead>
                 <TableHead>Nombre Común</TableHead>
-                <TableHead>Descripción</TableHead>
+                <TableHead>Estado</TableHead>
                 <TableHead>Acciones</TableHead>
               </TableRow>
             </TableHeader>
@@ -169,7 +181,20 @@ export default function SpeciesManagementPage() {
                   <TableCell>{specie.id}</TableCell>
                   <TableCell className="font-medium">{specie.scientificName}</TableCell>
                   <TableCell>{specie.commonName}</TableCell>
-                  <TableCell className="max-w-[300px] truncate">{specie.description}</TableCell>
+                  <TableCell>
+                    <Badge
+                      variant={
+                        specie.status === 'Activo' ? 'default' : 'outline'
+                      }
+                      className={
+                        specie.status === 'Activo'
+                          ? 'bg-green-100 text-green-800'
+                          : 'bg-red-100 text-red-800'
+                      }
+                    >
+                      {specie.status}
+                    </Badge>
+                  </TableCell>
                   <TableCell>
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
