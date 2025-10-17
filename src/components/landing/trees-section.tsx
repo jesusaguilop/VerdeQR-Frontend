@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 
 const trees = [
   {
-    id: 7,
+    id: 3,
     commonName: 'Ceiba',
     scientificName: 'Ceiba pentandra',
     description: 'Árbol de gran tamaño, sagrado en muchas culturas prehispánicas.',
@@ -16,7 +16,7 @@ const trees = [
     },
   },
   {
-    id: 8,
+    id: 2,
     commonName: 'Guayacán Amarillo',
     scientificName: 'Handroanthus chrysanthus',
     description: 'Conocido por su espectacular floración amarilla que cubre el árbol.',
@@ -27,10 +27,10 @@ const trees = [
     },
   },
   {
-    id: 9,
+    id: 4,
     commonName: 'Cañaguate',
     scientificName: 'Tabebuia sp',
-    description: 'Especie nativa de los Andes, clave para la conservación de bosques.',
+    description: 'Género neotropical de árboles muy valorados por su floración y resistencia.',
     image: {
       path: '/img/roble.jpg',
       alt: 'A robust Oak tree.',
@@ -38,8 +38,9 @@ const trees = [
     },
   },
   {
-    commonName: 'Samán',
-    scientificName: 'Samanea saman',
+    id: 7,
+    commonName: 'Rabo de iguana',
+    scientificName: 'Machaerium biovulatum',
     description: 'Famoso por su amplia copa que proporciona una extensa sombra.',
     image: {
       path: '/img/Samán.jpg',
@@ -64,7 +65,7 @@ export default function TreesSection() {
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
           {trees.map((tree) => (
-            <Card key={tree.commonName} className="flex flex-col group overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+            <Card key={tree.id} className="flex flex-col group overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
               {tree.image && (
                 <div className="aspect-w-4 aspect-h-5 overflow-hidden">
                   <Image
