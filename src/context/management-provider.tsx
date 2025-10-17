@@ -1,3 +1,4 @@
+
 'use client';
 
 import {
@@ -6,6 +7,7 @@ import {
   Dispatch,
   SetStateAction,
   ReactNode,
+  useEffect,
 } from 'react';
 import {
   initialCenters,
@@ -70,7 +72,29 @@ export function ManagementProvider({ children }: { children: ReactNode }) {
   const [trees, setTrees] = useState<Tree[]>(initialTrees);
   const [treeUses, setTreeUses] = useState<TreeUse[]>(initialTreeUses);
   const [users, setUsers] = useState<User[]>(initialUsers);
-  const [generatedQrs, setGeneratedQrs] = useState<GeneratedQr[]>(initialGeneratedQrs);
+  
+  // State for generated QRs with localStorage persistence
+  const [generatedQrs, setGeneratedQrs] = useState<GeneratedQr[]>(() => {
+    if (typeof window === 'undefined') {
+      return initialGeneratedQrs;
+    }
+    try {
+      const item = window.localStorage.getItem('generatedQrs');
+      return item ? JSON.parse(item) : initialGeneratedQrs;
+    } catch (error) {
+      console.error(error);
+      return initialGeneratedQrs;
+    }
+  });
+
+  // Effect to save to localStorage whenever generatedQrs changes
+  useEffect(() => {
+    try {
+      window.localStorage.setItem('generatedQrs', JSON.stringify(generatedQrs));
+    } catch (error) {
+      console.error(error);
+    }
+  }, [generatedQrs]);
 
 
   const value = {
