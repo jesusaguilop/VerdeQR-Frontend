@@ -1,3 +1,4 @@
+
 'use client';
 import { Button } from '@/components/ui/button';
 import {
@@ -8,7 +9,6 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import {
   Table,
@@ -26,55 +26,126 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { MoreHorizontal } from 'lucide-react';
+import { useManagement } from '@/components/admin/management-provider';
+import { useState } from 'react';
+import { useForm, SubmitHandler } from 'react-hook-form';
+import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Specie } from '@/lib/mock-data';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { useToast } from '@/hooks/use-toast';
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
 
-const registeredSpecies = [
-  {
-    id: 1,
-    scientificName: 'Mangifera indica',
-    commonName: 'Mango',
-    description: 'Árbol frutal de la familia Anacardiaceae, muy popular en zonas tropicales.',
-  },
-  {
-    id: 2,
-    scientificName: 'Handroanthus chrysanthus',
-    commonName: 'Guayacán Amarillo',
-    description: 'Árbol ornamental famoso por su espectacular floración amarilla.',
-  },
-  {
-    id: 3,
-    scientificName: 'Ceiba pentandra',
-    commonName: 'Ceiba',
-    description: 'Árbol de gran tamaño, considerado sagrado en diversas culturas americanas.',
-  },
-];
+
+const formSchema = z.object({
+  id: z.number().optional(),
+  scientificName: z.string().min(1, 'El nombre científico es requerido.'),
+  commonName: z.string().min(1, 'El nombre común es requerido.'),
+  description: z.string().min(1, 'La descripción es requerida.'),
+});
+
+type SpecieFormValues = z.infer<typeof formSchema>;
 
 export default function SpeciesManagementPage() {
+  const { species, setSpecies } = useManagement();
+  const { toast } = useToast();
+  const [isEditing, setIsEditing] = useState(false);
+
+  const form = useForm<SpecieFormValues>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      scientificName: '',
+      commonName: '',
+      description: '',
+    },
+  });
+
+  const onSubmit: SubmitHandler<SpecieFormValues> = (data) => {
+    if (isEditing && data.id) {
+      setSpecies(prev => prev.map(s => s.id === data.id ? { ...s, ...data } : s));
+      toast({ title: 'Especie actualizada', description: 'La especie ha sido actualizada exitosamente.' });
+    } else {
+      const newId = species.length > 0 ? Math.max(...species.map(s => s.id)) + 1 : 1;
+      setSpecies(prev => [...prev, { ...data, id: newId }]);
+      toast({ title: 'Especie guardada', description: 'La nueva especie ha sido guardada.' });
+    }
+    form.reset();
+    setIsEditing(false);
+  };
+
+  const handleEdit = (specie: Specie) => {
+    form.reset(specie);
+    setIsEditing(true);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handleDelete = (id: number) => {
+    setSpecies(prev => prev.filter(s => s.id !== id));
+    toast({ variant: 'destructive', title: 'Especie eliminada', description: 'La especie ha sido eliminada.' });
+  };
+
+  const handleCancelEdit = () => {
+    form.reset();
+    setIsEditing(false);
+  };
+
   return (
     <div className="space-y-8">
       <Card>
         <CardHeader>
-          <CardTitle>Especie</CardTitle>
+          <CardTitle>{isEditing ? 'Editar' : 'Añadir'} Especie</CardTitle>
           <CardDescription>
-            Añade o edita una especie de árbol.
+            {isEditing ? 'Modifica los detalles de la especie.' : 'Añade una nueva especie de árbol.'}
           </CardDescription>
         </CardHeader>
-        <CardContent className="space-y-6">
-          <div className="space-y-2">
-            <Label htmlFor="scientific-name">Nombre Científico</Label>
-            <Input id="scientific-name" placeholder="Ej: Mangifera indica" />
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="common-name">Nombre Común</Label>
-            <Input id="common-name" placeholder="Ej: Mango" />
-          </div>
-           <div className="space-y-2">
-            <Label htmlFor="description">Descripción</Label>
-            <Textarea
-              id="description"
-              placeholder="Breve descripción de la especie"
-            />
-          </div>
-          <Button>Guardar</Button>
+        <CardContent>
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+              <FormField
+                control={form.control}
+                name="scientificName"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Nombre Científico</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Ej: Mangifera indica" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="commonName"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Nombre Común</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Ej: Mango" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="description"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Descripción</FormLabel>
+                    <FormControl>
+                      <Textarea placeholder="Breve descripción de la especie" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <div className="flex gap-2">
+                <Button type="submit">{isEditing ? 'Actualizar' : 'Guardar'}</Button>
+                {isEditing && <Button variant="outline" onClick={handleCancelEdit}>Cancelar</Button>}
+              </div>
+            </form>
+          </Form>
         </CardContent>
       </Card>
       <Card>
@@ -93,12 +164,12 @@ export default function SpeciesManagementPage() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {registeredSpecies.map((species) => (
-                <TableRow key={species.id}>
-                  <TableCell>{species.id}</TableCell>
-                  <TableCell className="font-medium">{species.scientificName}</TableCell>
-                  <TableCell>{species.commonName}</TableCell>
-                  <TableCell className="max-w-[300px] truncate">{species.description}</TableCell>
+              {species.map((specie) => (
+                <TableRow key={specie.id}>
+                  <TableCell>{specie.id}</TableCell>
+                  <TableCell className="font-medium">{specie.scientificName}</TableCell>
+                  <TableCell>{specie.commonName}</TableCell>
+                  <TableCell className="max-w-[300px] truncate">{specie.description}</TableCell>
                   <TableCell>
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
@@ -113,10 +184,24 @@ export default function SpeciesManagementPage() {
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end">
                         <DropdownMenuLabel>Acciones</DropdownMenuLabel>
-                        <DropdownMenuItem>Editar</DropdownMenuItem>
-                        <DropdownMenuItem className="text-red-600">
-                          Eliminar
-                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => handleEdit(specie)}>Editar</DropdownMenuItem>
+                        <AlertDialog>
+                          <AlertDialogTrigger asChild>
+                            <DropdownMenuItem onSelect={(e) => e.preventDefault()} className="text-red-600">Eliminar</DropdownMenuItem>
+                          </AlertDialogTrigger>
+                          <AlertDialogContent>
+                            <AlertDialogHeader>
+                              <AlertDialogTitle>¿Estás seguro?</AlertDialogTitle>
+                              <AlertDialogDescription>
+                                Esta acción no se puede deshacer. Esto eliminará permanentemente la especie.
+                              </AlertDialogDescription>
+                            </AlertDialogHeader>
+                            <AlertDialogFooter>
+                              <AlertDialogCancel>Cancelar</AlertDialogCancel>
+                              <AlertDialogAction onClick={() => handleDelete(specie.id)}>Eliminar</AlertDialogAction>
+                            </AlertDialogFooter>
+                          </AlertDialogContent>
+                        </AlertDialog>
                       </DropdownMenuContent>
                     </DropdownMenu>
                   </TableCell>

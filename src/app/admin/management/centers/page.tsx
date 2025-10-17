@@ -1,3 +1,4 @@
+
 'use client';
 import { Button } from '@/components/ui/button';
 import {
@@ -33,67 +34,155 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Badge } from '@/components/ui/badge';
-import { MoreHorizontal } from 'lucide-react';
+import { MoreHorizontal, PlusCircle } from 'lucide-react';
+import { useManagement } from '@/components/admin/management-provider';
+import { useForm, SubmitHandler } from 'react-hook-form';
+import { Center } from '@/lib/mock-data';
+import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form';
+import { useToast } from '@/hooks/use-toast';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from '@/components/ui/alert-dialog';
+import { useState } from 'react';
 
-const registeredCenters = [
-  {
-    id: 1,
-    name: 'Centro Biotecnológico del Caribe',
-    address: 'Kilómetro 7, Vía a La Paz',
-    status: 'Activo',
-  },
-  {
-    id: 2,
-    name: 'Centro de Innovación y Gestión Empresarial (CIGEC)',
-    address: 'Calle 14 # 12-05',
-    status: 'Activo',
-  },
-  {
-    id: 3,
-    name: 'Centro Agroempresarial',
-    address: 'Aguachica, Cesar',
-    status: 'Inactivo',
-  },
-];
+const formSchema = z.object({
+  id: z.number().optional(),
+  name: z.string().min(1, 'El nombre es requerido.'),
+  address: z.string().min(1, 'La dirección es requerida.'),
+  status: z.enum(['Activo', 'Inactivo']),
+});
+
+type CenterFormValues = z.infer<typeof formSchema>;
 
 export default function CentersManagementPage() {
+  const { centers, setCenters } = useManagement();
+  const { toast } = useToast();
+  const [isEditing, setIsEditing] = useState(false);
+
+  const form = useForm<CenterFormValues>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      name: '',
+      address: '',
+      status: 'Activo',
+    },
+  });
+
+  const onSubmit: SubmitHandler<CenterFormValues> = (data) => {
+    if (isEditing && data.id) {
+      // Update existing center
+      setCenters((prev) =>
+        prev.map((center) => (center.id === data.id ? { ...center, ...data } : center))
+      );
+      toast({ title: 'Centro actualizado', description: 'El centro ha sido actualizado exitosamente.' });
+    } else {
+      // Add new center
+      const newId = centers.length > 0 ? Math.max(...centers.map((c) => c.id)) + 1 : 1;
+      setCenters((prev) => [...prev, { ...data, id: newId }]);
+      toast({ title: 'Centro añadido', description: 'El nuevo centro ha sido añadido exitosamente.' });
+    }
+    form.reset();
+    setIsEditing(false);
+  };
+
+  const handleEdit = (center: Center) => {
+    form.reset(center);
+    setIsEditing(true);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+  
+  const handleDelete = (id: number) => {
+    setCenters(prev => prev.filter(center => center.id !== id));
+    toast({ variant: 'destructive', title: 'Centro eliminado', description: 'El centro ha sido eliminado exitosamente.' });
+  }
+
+  const handleCancelEdit = () => {
+    form.reset();
+    setIsEditing(false);
+  }
+
   return (
     <div className="space-y-8">
       <Card>
         <CardHeader>
-          <CardTitle>Centro</CardTitle>
+          <CardTitle>{isEditing ? 'Editar Centro' : 'Añadir Centro'}</CardTitle>
           <CardDescription>
-            Añade o edita un centro de formación.
+            {isEditing ? 'Modifica los detalles del centro.' : 'Añade un nuevo centro de formación.'}
           </CardDescription>
         </CardHeader>
-        <CardContent className="space-y-6">
-          <div className="space-y-2">
-            <Label htmlFor="center-name">Nombre</Label>
-            <Input
-              id="center-name"
-              placeholder="Ej: Centro Biotecnológico del Caribe"
-            />
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="direccion">Dirección</Label>
-            <Textarea
-              id="direccion"
-              placeholder="Ej: Kilómetro 7, Vía a La Paz"
-            />
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="status">Estado</Label>
-            <Select>
-              <SelectTrigger id="status">
-                <SelectValue placeholder="Selecciona un estado" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="active">Activo</SelectItem>
-                <SelectItem value="inactive">Inactivo</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-          <Button>Guardar</Button>
+        <CardContent>
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+              <FormField
+                control={form.control}
+                name="name"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Nombre</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Ej: Centro Biotecnológico del Caribe" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="address"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Dirección</FormLabel>
+                    <FormControl>
+                      <Textarea placeholder="Ej: Kilómetro 7, Vía a La Paz" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="status"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Estado</FormLabel>
+                    <Select onValueChange={field.onChange} value={field.value}>
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Selecciona un estado" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="Activo">Activo</SelectItem>
+                        <SelectItem value="Inactivo">Inactivo</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <div className="flex gap-2">
+                <Button type="submit">{isEditing ? 'Actualizar Centro' : 'Guardar Centro'}</Button>
+                {isEditing && <Button variant="outline" onClick={handleCancelEdit}>Cancelar</Button>}
+              </div>
+            </form>
+          </Form>
         </CardContent>
       </Card>
 
@@ -113,7 +202,7 @@ export default function CentersManagementPage() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {registeredCenters.map((center) => (
+              {centers.map((center) => (
                 <TableRow key={center.id}>
                   <TableCell>{center.id}</TableCell>
                   <TableCell className="font-medium">{center.name}</TableCell>
@@ -146,10 +235,24 @@ export default function CentersManagementPage() {
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end">
                         <DropdownMenuLabel>Acciones</DropdownMenuLabel>
-                        <DropdownMenuItem>Editar</DropdownMenuItem>
-                        <DropdownMenuItem className="text-red-600">
-                          Eliminar
-                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => handleEdit(center)}>Editar</DropdownMenuItem>
+                        <AlertDialog>
+                          <AlertDialogTrigger asChild>
+                             <DropdownMenuItem onSelect={(e) => e.preventDefault()} className="text-red-600">Eliminar</DropdownMenuItem>
+                          </AlertDialogTrigger>
+                          <AlertDialogContent>
+                            <AlertDialogHeader>
+                              <AlertDialogTitle>¿Estás seguro?</AlertDialogTitle>
+                              <AlertDialogDescription>
+                                Esta acción no se puede deshacer. Esto eliminará permanentemente el centro.
+                              </AlertDialogDescription>
+                            </AlertDialogHeader>
+                            <AlertDialogFooter>
+                              <AlertDialogCancel>Cancelar</AlertDialogCancel>
+                              <AlertDialogAction onClick={() => handleDelete(center.id)}>Eliminar</AlertDialogAction>
+                            </AlertDialogFooter>
+                          </AlertDialogContent>
+                        </AlertDialog>
                       </DropdownMenuContent>
                     </DropdownMenu>
                   </TableCell>

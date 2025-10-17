@@ -1,3 +1,4 @@
+
 'use client';
 import { Button } from '@/components/ui/button';
 import {
@@ -26,51 +27,111 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { MoreHorizontal } from 'lucide-react';
+import { useManagement } from '@/components/admin/management-provider';
+import { useForm, SubmitHandler } from 'react-hook-form';
+import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { ForestType } from '@/lib/mock-data';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { useToast } from '@/hooks/use-toast';
+import { useState } from 'react';
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
 
-const registeredForestTypes = [
-  {
-    id: 1,
-    name: 'Bosque seco tropical',
-    description:
-      'Ecosistema con estaciones secas pronunciadas y vegetación adaptada a la falta de agua.',
-  },
-  {
-    id: 2,
-    name: 'Bosque húmedo tropical',
-    description:
-      'Alta biodiversidad, lluvias constantes y temperaturas cálidas durante todo el año.',
-  },
-  {
-    id: 3,
-    name: 'Bosque de galería',
-    description:
-      'Bosques que crecen a lo largo de los ríos en zonas áridas o semiáridas.',
-  },
-];
+
+const formSchema = z.object({
+  id: z.number().optional(),
+  name: z.string().min(1, 'El nombre es requerido.'),
+  description: z.string().min(1, 'La descripción es requerida.'),
+});
+
+type ForestTypeFormValues = z.infer<typeof formSchema>;
 
 export default function ForestTypesManagementPage() {
+  const { forestTypes, setForestTypes } = useManagement();
+  const { toast } = useToast();
+  const [isEditing, setIsEditing] = useState(false);
+
+  const form = useForm<ForestTypeFormValues>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      name: '',
+      description: '',
+    },
+  });
+
+  const onSubmit: SubmitHandler<ForestTypeFormValues> = (data) => {
+    if (isEditing && data.id) {
+      setForestTypes(prev => prev.map(ft => ft.id === data.id ? { ...ft, ...data } : ft));
+      toast({ title: 'Tipo de bosque actualizado', description: 'El tipo de bosque ha sido actualizado.' });
+    } else {
+      const newId = forestTypes.length > 0 ? Math.max(...forestTypes.map(ft => ft.id)) + 1 : 1;
+      setForestTypes(prev => [...prev, { ...data, id: newId }]);
+      toast({ title: 'Tipo de bosque guardado', description: 'El nuevo tipo de bosque ha sido guardado.' });
+    }
+    form.reset();
+    setIsEditing(false);
+  };
+
+  const handleEdit = (forestType: ForestType) => {
+    form.reset(forestType);
+    setIsEditing(true);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handleDelete = (id: number) => {
+    setForestTypes(prev => prev.filter(ft => ft.id !== id));
+    toast({ variant: 'destructive', title: 'Tipo de bosque eliminado', description: 'El tipo de bosque ha sido eliminado.' });
+  };
+
+  const handleCancelEdit = () => {
+    form.reset();
+    setIsEditing(false);
+  };
+
   return (
     <div className="space-y-8">
       <Card>
         <CardHeader>
-          <CardTitle>Tipo de Bosque</CardTitle>
+          <CardTitle>{isEditing ? 'Editar' : 'Añadir'} Tipo de Bosque</CardTitle>
           <CardDescription>
-            Añade o edita un tipo de bosque.
+            {isEditing ? 'Modifica los detalles del tipo de bosque.' : 'Añade un nuevo tipo de bosque.'}
           </CardDescription>
         </CardHeader>
-        <CardContent className="space-y-6">
-          <div className="space-y-2">
-            <Label htmlFor="forest-name">Nombre del Tipo de Bosque</Label>
-            <Input id="forest-name" placeholder="Ej: Bosque seco tropical" />
-          </div>
-           <div className="space-y-2">
-            <Label htmlFor="description">Descripción</Label>
-            <Textarea
-              id="description"
-              placeholder="Breve descripción del tipo de bosque"
-            />
-          </div>
-          <Button>Guardar</Button>
+        <CardContent>
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+              <FormField
+                control={form.control}
+                name="name"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Nombre del Tipo de Bosque</FormLabel>
+                    <FormControl>
+                      <Input id="forest-name" placeholder="Ej: Bosque seco tropical" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="description"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Descripción</FormLabel>
+                    <FormControl>
+                      <Textarea id="description" placeholder="Breve descripción del tipo de bosque" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <div className="flex gap-2">
+                <Button type="submit">{isEditing ? 'Actualizar' : 'Guardar'}</Button>
+                {isEditing && <Button variant="outline" onClick={handleCancelEdit}>Cancelar</Button>}
+              </div>
+            </form>
+          </Form>
         </CardContent>
       </Card>
       <Card>
@@ -88,7 +149,7 @@ export default function ForestTypesManagementPage() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {registeredForestTypes.map((forest) => (
+              {forestTypes.map((forest) => (
                 <TableRow key={forest.id}>
                   <TableCell>{forest.id}</TableCell>
                   <TableCell className="font-medium">{forest.name}</TableCell>
@@ -107,10 +168,24 @@ export default function ForestTypesManagementPage() {
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end">
                         <DropdownMenuLabel>Acciones</DropdownMenuLabel>
-                        <DropdownMenuItem>Editar</DropdownMenuItem>
-                        <DropdownMenuItem className="text-red-600">
-                          Eliminar
-                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => handleEdit(forest)}>Editar</DropdownMenuItem>
+                        <AlertDialog>
+                          <AlertDialogTrigger asChild>
+                            <DropdownMenuItem onSelect={(e) => e.preventDefault()} className="text-red-600">Eliminar</DropdownMenuItem>
+                          </AlertDialogTrigger>
+                          <AlertDialogContent>
+                            <AlertDialogHeader>
+                              <AlertDialogTitle>¿Estás seguro?</AlertDialogTitle>
+                              <AlertDialogDescription>
+                                Esta acción no se puede deshacer. Esto eliminará permanentemente el tipo de bosque.
+                              </AlertDialogDescription>
+                            </AlertDialogHeader>
+                            <AlertDialogFooter>
+                              <AlertDialogCancel>Cancelar</AlertDialogCancel>
+                              <AlertDialogAction onClick={() => handleDelete(forest.id)}>Eliminar</AlertDialogAction>
+                            </AlertDialogFooter>
+                          </AlertDialogContent>
+                        </AlertDialog>
                       </DropdownMenuContent>
                     </DropdownMenu>
                   </TableCell>

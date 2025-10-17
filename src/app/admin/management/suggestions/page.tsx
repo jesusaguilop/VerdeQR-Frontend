@@ -1,3 +1,4 @@
+
 'use client';
 import {
   Card,
@@ -7,8 +8,6 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
 import {
   Table,
@@ -34,61 +33,152 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { useManagement } from '@/components/admin/management-provider';
+import { useState } from 'react';
+import { useForm, SubmitHandler } from 'react-hook-form';
+import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Suggestion } from '@/lib/mock-data';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { Textarea } from '@/components/ui/textarea';
+import { useToast } from '@/hooks/use-toast';
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
 
-const registeredSuggestions = [
-  {
-    id: 1,
-    name: 'Ana García',
-    email: 'ana.garcia@email.com',
-    suggestion: 'Deberían añadir más información sobre los usos medicinales de las plantas.',
-    date: '2023-10-26',
-    status: 'Pendiente',
-  },
-  {
-    id: 2,
-    name: 'Carlos Pérez',
-    email: 'carlos.perez@email.com',
-    suggestion: 'Me gustaría poder subir mis propias fotos de los árboles.',
-    date: '2023-10-25',
-    status: 'Revisado',
-  },
-  {
-    id: 3,
-    name: 'Luisa Fernández',
-    email: 'luisa.fernandez@email.com',
-    suggestion: 'Falta información del árbol "Dividivi".',
-    date: '2023-10-24',
-    status: 'Implementado',
-  },
-];
+
+const formSchema = z.object({
+  id: z.number().optional(),
+  name: z.string().min(1, 'El nombre es requerido.'),
+  email: z.string().email('Email inválido.'),
+  suggestion: z.string().min(10, 'La sugerencia debe tener al menos 10 caracteres.'),
+  date: z.string(),
+  status: z.enum(['Pendiente', 'Revisado', 'Implementado']),
+});
+
+type SuggestionFormValues = z.infer<typeof formSchema>;
 
 export default function SuggestionsManagementPage() {
+  const { suggestions, setSuggestions } = useManagement();
+  const { toast } = useToast();
+  const [isEditing, setIsEditing] = useState(false);
+
+  const form = useForm<SuggestionFormValues>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      name: '',
+      email: '',
+      suggestion: '',
+      status: 'Pendiente',
+    },
+  });
+
+  const onSubmit: SubmitHandler<SuggestionFormValues> = (data) => {
+    if (isEditing && data.id) {
+      setSuggestions(prev => prev.map(s => s.id === data.id ? { ...s, ...data, date: new Date().toISOString().split('T')[0] } : s));
+      toast({ title: 'Sugerencia actualizada', description: 'La sugerencia ha sido actualizada.' });
+    } else {
+      const newId = suggestions.length > 0 ? Math.max(...suggestions.map(s => s.id)) + 1 : 1;
+      const newSuggestion = { ...data, id: newId, date: new Date().toISOString().split('T')[0] };
+      setSuggestions(prev => [...prev, newSuggestion]);
+      toast({ title: 'Sugerencia registrada', description: 'Gracias por tu sugerencia.' });
+    }
+    form.reset({ name: '', email: '', suggestion: '', status: 'Pendiente' });
+    setIsEditing(false);
+  };
+
+  const handleEdit = (suggestion: Suggestion) => {
+    form.reset(suggestion);
+    setIsEditing(true);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handleDelete = (id: number) => {
+    setSuggestions(prev => prev.filter(s => s.id !== id));
+    toast({ variant: 'destructive', title: 'Sugerencia eliminada', description: 'La sugerencia ha sido eliminada.' });
+  };
+
+  const handleCancelEdit = () => {
+    form.reset({ name: '', email: '', suggestion: '', status: 'Pendiente' });
+    setIsEditing(false);
+  };
+  
+  const handleStatusChange = (suggestionId: number, newStatus: Suggestion['status']) => {
+    setSuggestions(prev => prev.map(s => s.id === suggestionId ? {...s, status: newStatus} : s));
+  }
+
+  const getStatusBadge = (status: Suggestion['status']) => {
+    switch (status) {
+      case 'Pendiente': return 'bg-yellow-100 text-yellow-800';
+      case 'Revisado': return 'bg-blue-100 text-blue-800';
+      case 'Implementado': return 'bg-green-100 text-green-800';
+      default: return 'bg-gray-100 text-gray-800';
+    }
+  }
+
   return (
     <div className="space-y-8">
       <Card>
         <CardHeader>
-          <CardTitle>Registrar Sugerencia</CardTitle>
+          <CardTitle>{isEditing ? 'Editar' : 'Registrar'} Sugerencia</CardTitle>
           <CardDescription>
-            Añade una nueva sugerencia al sistema.
+            {isEditing ? 'Modifica los detalles de la sugerencia.' : 'Añade una nueva sugerencia al sistema.'}
           </CardDescription>
         </CardHeader>
-        <CardContent className="space-y-6">
-          <div className="space-y-2">
-            <Label htmlFor="name">Nombre</Label>
-            <Input id="name" placeholder="Nombre del usuario" />
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="email">Email</Label>
-            <Input id="email" type="email" placeholder="correo@ejemplo.com" />
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="suggestion">Sugerencia</Label>
-            <Textarea
-              id="suggestion"
-              placeholder="Descripción de la sugerencia"
-            />
-          </div>
-          <Button>Registrar Sugerencia</Button>
+        <CardContent>
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+              <FormField control={form.control} name="name" render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Nombre</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Nombre del usuario" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )} />
+              <FormField control={form.control} name="email" render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Email</FormLabel>
+                  <FormControl>
+                    <Input type="email" placeholder="correo@ejemplo.com" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )} />
+              <FormField control={form.control} name="suggestion" render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Sugerencia</FormLabel>
+                  <FormControl>
+                    <Textarea placeholder="Descripción de la sugerencia" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )} />
+              {isEditing && (
+                 <FormField control={form.control} name="status" render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Estado</FormLabel>
+                    <Select onValueChange={field.onChange} value={field.value}>
+                       <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Estado" />
+                          </SelectTrigger>
+                       </FormControl>
+                      <SelectContent>
+                        <SelectItem value="Pendiente">Pendiente</SelectItem>
+                        <SelectItem value="Revisado">Revisado</SelectItem>
+                        <SelectItem value="Implementado">Implementado</SelectItem>
+                      </SelectContent>
+                    </Select>
+                     <FormMessage />
+                  </FormItem>
+                 )} />
+              )}
+              <div className="flex gap-2">
+                <Button type="submit">{isEditing ? 'Actualizar' : 'Registrar'} Sugerencia</Button>
+                {isEditing && <Button variant="outline" onClick={handleCancelEdit}>Cancelar</Button>}
+              </div>
+            </form>
+          </Form>
         </CardContent>
       </Card>
 
@@ -113,7 +203,7 @@ export default function SuggestionsManagementPage() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {registeredSuggestions.map((suggestion) => (
+              {suggestions.map((suggestion) => (
                 <TableRow key={suggestion.id}>
                   <TableCell>{suggestion.id}</TableCell>
                   <TableCell>{suggestion.name}</TableCell>
@@ -121,20 +211,16 @@ export default function SuggestionsManagementPage() {
                   <TableCell className="max-w-[250px] truncate">{suggestion.suggestion}</TableCell>
                   <TableCell>{suggestion.date}</TableCell>
                   <TableCell>
-                    <Select defaultValue={suggestion.status.toLowerCase()}>
-                      <SelectTrigger className="w-[120px]">
-                        <SelectValue placeholder="Estado" />
+                    <Select value={suggestion.status} onValueChange={(newStatus: Suggestion['status']) => handleStatusChange(suggestion.id, newStatus)}>
+                      <SelectTrigger className="w-[120px] focus:ring-0 border-0 shadow-none">
+                        <SelectValue>
+                           <Badge className={`${getStatusBadge(suggestion.status)} hover:${getStatusBadge(suggestion.status)}`}>{suggestion.status}</Badge>
+                        </SelectValue>
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="pendiente">
-                          <Badge className="bg-yellow-100 text-yellow-800">Pendiente</Badge>
-                        </SelectItem>
-                        <SelectItem value="revisado">
-                          <Badge className="bg-blue-100 text-blue-800">Revisado</Badge>
-                        </SelectItem>
-                        <SelectItem value="implementado">
-                          <Badge className="bg-green-100 text-green-800">Implementado</Badge>
-                        </SelectItem>
+                        <SelectItem value="Pendiente">Pendiente</SelectItem>
+                        <SelectItem value="Revisado">Revisado</SelectItem>
+                        <SelectItem value="Implementado">Implementado</SelectItem>
                       </SelectContent>
                     </Select>
                   </TableCell>
@@ -152,10 +238,24 @@ export default function SuggestionsManagementPage() {
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end">
                         <DropdownMenuLabel>Acciones</DropdownMenuLabel>
-                        <DropdownMenuItem>Ver Detalle</DropdownMenuItem>
-                        <DropdownMenuItem className="text-red-600">
-                          Eliminar
-                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => handleEdit(suggestion)}>Editar</DropdownMenuItem>
+                        <AlertDialog>
+                          <AlertDialogTrigger asChild>
+                            <DropdownMenuItem onSelect={(e) => e.preventDefault()} className="text-red-600">Eliminar</DropdownMenuItem>
+                          </AlertDialogTrigger>
+                          <AlertDialogContent>
+                            <AlertDialogHeader>
+                              <AlertDialogTitle>¿Estás seguro?</AlertDialogTitle>
+                              <AlertDialogDescription>
+                                Esta acción no se puede deshacer. Esto eliminará permanentemente la sugerencia.
+                              </AlertDialogDescription>
+                            </AlertDialogHeader>
+                            <AlertDialogFooter>
+                              <AlertDialogCancel>Cancelar</AlertDialogCancel>
+                              <AlertDialogAction onClick={() => handleDelete(suggestion.id)}>Eliminar</AlertDialogAction>
+                            </AlertDialogFooter>
+                          </AlertDialogContent>
+                        </AlertDialog>
                       </DropdownMenuContent>
                     </DropdownMenu>
                   </TableCell>

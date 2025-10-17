@@ -1,3 +1,4 @@
+
 'use client';
 import { Button } from '@/components/ui/button';
 import {
@@ -32,59 +33,118 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { MoreHorizontal } from 'lucide-react';
+import { useManagement } from '@/components/admin/management-provider';
+import { useState } from 'react';
+import { useForm, SubmitHandler } from 'react-hook-form';
+import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { FunFact } from '@/lib/mock-data';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { useToast } from '@/hooks/use-toast';
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
 
-const registeredFunFacts = [
-  {
-    id: 1,
-    species: 'Ceiba pentandra (Ceiba)',
-    fact: 'La Ceiba era considerada un árbol sagrado por los mayas, quienes creían que conectaba el cielo, la tierra y el inframundo.',
-  },
-  {
-    id: 2,
-    species: 'Handroanthus chrysanthus (Guayacán)',
-    fact: 'El Guayacán puede tardar hasta 10 años en florecer por primera vez, pero cuando lo hace, el espectáculo es inolvidable.',
-  },
-  {
-    id: 3,
-    species: 'Mangifera indica (Mango)',
-    fact: 'El mango es originario de la India y se cultiva desde hace más de 4,000 años. Es conocido como el "rey de las frutas".',
-  },
-];
+
+const formSchema = z.object({
+  id: z.number().optional(),
+  species: z.string().min(1, 'La especie es requerida.'),
+  fact: z.string().min(10, 'El dato curioso debe tener al menos 10 caracteres.'),
+});
+
+type FunFactFormValues = z.infer<typeof formSchema>;
 
 export default function FunFactsManagementPage() {
+  const { funFacts, setFunFacts, species: speciesList } = useManagement();
+  const { toast } = useToast();
+  const [isEditing, setIsEditing] = useState(false);
+
+  const form = useForm<FunFactFormValues>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      species: '',
+      fact: '',
+    },
+  });
+
+  const onSubmit: SubmitHandler<FunFactFormValues> = (data) => {
+    if (isEditing && data.id) {
+      setFunFacts(prev => prev.map(ff => ff.id === data.id ? { ...ff, ...data } : ff));
+      toast({ title: 'Curiosidad actualizada', description: 'El dato curioso ha sido actualizado.' });
+    } else {
+      const newId = funFacts.length > 0 ? Math.max(...funFacts.map(ff => ff.id)) + 1 : 1;
+      setFunFacts(prev => [...prev, { ...data, id: newId }]);
+      toast({ title: 'Curiosidad guardada', description: 'El nuevo dato curioso ha sido guardado.' });
+    }
+    form.reset();
+    setIsEditing(false);
+  };
+
+  const handleEdit = (funFact: FunFact) => {
+    form.reset(funFact);
+    setIsEditing(true);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handleDelete = (id: number) => {
+    setFunFacts(prev => prev.filter(ff => ff.id !== id));
+    toast({ variant: 'destructive', title: 'Curiosidad eliminada', description: 'El dato curioso ha sido eliminado.' });
+  };
+
+  const handleCancelEdit = () => {
+    form.reset();
+    setIsEditing(false);
+  };
+
   return (
     <div className="space-y-8">
       <Card>
         <CardHeader>
-          <CardTitle>Curiosidad</CardTitle>
+          <CardTitle>{isEditing ? 'Editar' : 'Añadir'} Curiosidad</CardTitle>
           <CardDescription>
-            Añade o edita una curiosidad sobre un árbol o especie.
+            {isEditing ? 'Modifica la curiosidad sobre un árbol o especie.' : 'Añade una nueva curiosidad sobre un árbol o especie.'}
           </CardDescription>
         </CardHeader>
-        <CardContent className="space-y-6">
-          <div className="space-y-2">
-            <Label htmlFor="species">Especie Relacionada</Label>
-            <Select>
-              <SelectTrigger id="species">
-                <SelectValue placeholder="Selecciona una especie" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="mango">Mangifera indica (Mango)</SelectItem>
-                <SelectItem value="guayacan">
-                  Handroanthus chrysanthus (Guayacán)
-                </SelectItem>
-                <SelectItem value="ceiba">Ceiba pentandra (Ceiba)</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="fun-fact">Dato Curioso</Label>
-            <Textarea
-              id="fun-fact"
-              placeholder="Escribe aquí el dato curioso..."
-            />
-          </div>
-          <Button>Guardar</Button>
+        <CardContent>
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+              <FormField
+                control={form.control}
+                name="species"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Especie Relacionada</FormLabel>
+                    <Select onValueChange={field.onChange} value={field.value}>
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Selecciona una especie" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {speciesList.map(s => <SelectItem key={s.id} value={`${s.scientificName} (${s.commonName})`}>{s.scientificName} ({s.commonName})</SelectItem>)}
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="fact"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Dato Curioso</FormLabel>
+                    <FormControl>
+                      <Textarea id="fun-fact" placeholder="Escribe aquí el dato curioso..." {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <div className="flex gap-2">
+                <Button type="submit">{isEditing ? 'Actualizar' : 'Guardar'}</Button>
+                {isEditing && <Button variant="outline" onClick={handleCancelEdit}>Cancelar</Button>}
+              </div>
+            </form>
+          </Form>
         </CardContent>
       </Card>
       <Card>
@@ -102,7 +162,7 @@ export default function FunFactsManagementPage() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {registeredFunFacts.map((fact) => (
+              {funFacts.map((fact) => (
                 <TableRow key={fact.id}>
                   <TableCell>{fact.id}</TableCell>
                   <TableCell>{fact.species}</TableCell>
@@ -121,10 +181,24 @@ export default function FunFactsManagementPage() {
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end">
                         <DropdownMenuLabel>Acciones</DropdownMenuLabel>
-                        <DropdownMenuItem>Editar</DropdownMenuItem>
-                        <DropdownMenuItem className="text-red-600">
-                          Eliminar
-                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => handleEdit(fact)}>Editar</DropdownMenuItem>
+                        <AlertDialog>
+                          <AlertDialogTrigger asChild>
+                            <DropdownMenuItem onSelect={(e) => e.preventDefault()} className="text-red-600">Eliminar</DropdownMenuItem>
+                          </AlertDialogTrigger>
+                          <AlertDialogContent>
+                            <AlertDialogHeader>
+                              <AlertDialogTitle>¿Estás seguro?</AlertDialogTitle>
+                              <AlertDialogDescription>
+                                Esta acción no se puede deshacer. Esto eliminará permanentemente el dato curioso.
+                              </AlertDialogDescription>
+                            </AlertDialogHeader>
+                            <AlertDialogFooter>
+                              <AlertDialogCancel>Cancelar</AlertDialogCancel>
+                              <AlertDialogAction onClick={() => handleDelete(fact.id)}>Eliminar</AlertDialogAction>
+                            </AlertDialogFooter>
+                          </AlertDialogContent>
+                        </AlertDialog>
                       </DropdownMenuContent>
                     </DropdownMenu>
                   </TableCell>
