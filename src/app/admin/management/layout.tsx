@@ -2,7 +2,6 @@
 
 import Header from '@/components/admin/header';
 import { AdminSidebar } from '@/components/admin/sidebar';
-import { ManagementProvider } from '@/components/admin/management-provider';
 
 export default function ManagementLayout({
   children,
@@ -10,7 +9,7 @@ export default function ManagementLayout({
   children: React.ReactNode;
 }) {
   return (
-    <ManagementProvider>
+    <>
       <AdminSidebar />
       <div className="flex flex-col sm:gap-4 sm:py-4 transition-[padding] sm:pl-14 group-[.is-expanded]/provider:sm:pl-56">
         <Header />
@@ -18,6 +17,6 @@ export default function ManagementLayout({
           {children}
         </main>
       </div>
-    </ManagementProvider>
+    </>
   );
 }

@@ -4,6 +4,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { ThemeProvider } from '@/components/theme-provider';
 import FloatingPlants from '@/components/landing/floating-plants';
 import QrScannerModal from '@/components/shared/qr-scanner-modal';
+import { ManagementProvider } from '@/components/admin/management-provider';
 
 export const metadata: Metadata = {
   title: 'VerdeQR - Identifica la Naturaleza',
@@ -36,10 +37,12 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <FloatingPlants />
-          {children}
-          <Toaster />
-          <QrScannerModal />
+          <ManagementProvider>
+            <FloatingPlants />
+            {children}
+            <Toaster />
+            <QrScannerModal />
+          </ManagementProvider>
         </ThemeProvider>
       </body>
     </html>
