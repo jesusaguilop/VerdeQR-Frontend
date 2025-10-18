@@ -247,6 +247,7 @@ export type Tree = {
     forestType: string;
     center: string;
     status: 'Activo' | 'Inactivo';
+    imageUrl: string;
 }
 
 export const initialTrees: Tree[] = [
@@ -260,6 +261,7 @@ export const initialTrees: Tree[] = [
     forestType: 'Bosque seco tropical',
     center: 'Centro Biotecnológico del Caribe',
     status: 'Activo',
+    imageUrl: '/img/species/mango.jpg',
   },
   {
     id: 2,
@@ -271,6 +273,7 @@ export const initialTrees: Tree[] = [
     forestType: 'Bosque seco tropical',
     center: 'Centro Biotecnológico del Caribe',
     status: 'Activo',
+    imageUrl: '/img/guayaca-amarillo.jpeg',
   },
   {
     id: 3,
@@ -282,6 +285,7 @@ export const initialTrees: Tree[] = [
     forestType: 'Bosque húmedo tropical',
     center: 'Centro Biotecnológico del Caribe',
     status: 'Activo',
+    imageUrl: '/img/ceiba.jpg',
   },
   {
     id: 4,
@@ -293,6 +297,7 @@ export const initialTrees: Tree[] = [
     forestType: 'Bosque seco tropical',
     center: 'Centro Biotecnológico del Caribe',
     status: 'Activo',
+    imageUrl: '/img/roble.jpg', // Assuming this is Cañaguate for now
   },
   {
     id: 5,
@@ -304,6 +309,7 @@ export const initialTrees: Tree[] = [
     forestType: 'Bosque seco tropical',
     center: 'Centro Biotecnológico del Caribe',
     status: 'Activo',
+    imageUrl: '/img/species/palo-noble.jpg',
   },
   {
     id: 6,
@@ -315,6 +321,7 @@ export const initialTrees: Tree[] = [
     forestType: 'Bosque seco tropical',
     center: 'Centro Biotecnológico del Caribe',
     status: 'Activo',
+    imageUrl: '/img/species/espino-blanco.jpg',
   },
   {
     id: 7,
@@ -326,6 +333,7 @@ export const initialTrees: Tree[] = [
     forestType: 'Bosque seco tropical',
     center: 'Centro Biotecnológico del Caribe',
     status: 'Activo',
+    imageUrl: '/img/Samán.jpg', // Placeholder
   },
   {
     id: 8,
@@ -337,6 +345,7 @@ export const initialTrees: Tree[] = [
     forestType: 'Bosque seco tropical',
     center: 'Centro Biotecnológico del Caribe',
     status: 'Activo',
+    imageUrl: '/img/species/yatu.jpg',
   },
   {
     id: 9,
@@ -348,6 +357,7 @@ export const initialTrees: Tree[] = [
     forestType: 'Bosque seco tropical',
     center: 'Centro Biotecnológico del Caribe',
     status: 'Activo',
+    imageUrl: '/img/species/guasimo.jpg',
   },
   {
     id: 10,
@@ -359,6 +369,7 @@ export const initialTrees: Tree[] = [
     forestType: 'Bosque seco tropical',
     center: 'Centro Biotecnológico del Caribe',
     status: 'Activo',
+    imageUrl: '/img/species/mora-amarilla.jpg',
   }
 ];
 

@@ -61,7 +61,7 @@ export default function TreeDetailPage() {
           <Card className="overflow-hidden shadow-lg">
              <div className="relative w-full aspect-square">
                <Image
-                  src={`/img/species/${tree.species.toLowerCase().replace(/ /g, '-')}.jpg`}
+                  src={tree.imageUrl}
                   alt={`Imagen de ${tree.commonName}`}
                   fill
                   style={{ objectFit: 'cover' }}
