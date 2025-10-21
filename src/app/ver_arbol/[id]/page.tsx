@@ -22,7 +22,7 @@ export default function TreeDetailPage() {
   const { trees, species, treeUses, centers, funFacts } = useManagement();
 
   const tree = trees.find((t) => t.id === parseInt(id as string, 10));
-
+  console.log(tree);
   if (!tree) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[calc(100vh-20rem)] text-center p-4">
