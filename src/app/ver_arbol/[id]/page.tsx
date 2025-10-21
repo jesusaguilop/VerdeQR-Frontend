@@ -22,7 +22,7 @@ export default function TreeDetailPage() {
   const { trees, species, treeUses, centers, funFacts } = useManagement();
 
   const tree = trees.find((t) => t.id === parseInt(id as string, 10));
-
+  console.log(tree);
   if (!tree) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[calc(100vh-20rem)] text-center p-4">
@@ -38,7 +38,7 @@ export default function TreeDetailPage() {
       </div>
     );
   }
-  
+  console.log(tree.imageUrl)
   const treeSpecie = species.find((s) => s.scientificName === tree.species);
   const treeCenter = centers.find((c) => c.name === tree.center);
   const uses = treeUses.filter((u) => u.species === tree.species);
@@ -59,16 +59,16 @@ export default function TreeDetailPage() {
         {/* Left Column */}
         <div className="lg:col-span-1 space-y-8">
           <Card className="overflow-hidden shadow-lg">
-             <div className="relative w-full aspect-square">
-               <Image
-                  src={tree.imageUrl}
-                  alt={`Imagen de ${tree.commonName}`}
-                  fill
-                  style={{ objectFit: 'cover' }}
-                  data-ai-hint="plant sapling"
-                  className="transition-transform duration-300 group-hover:scale-105"
-                />
-             </div>
+            <div className="relative w-full h-80">
+              <Image
+                src={tree.imageUrl}
+                alt={`Imagen de ${tree.commonName}`}
+                fill
+                style={{ objectFit: 'cover' }}
+                data-ai-hint="plant sapling"
+                className="transition-transform duration-300 group-hover:scale-105"
+              />
+            </div>
             <CardHeader>
               <CardTitle className="text-primary font-headline text-2xl">
                 {tree.commonName}
@@ -78,22 +78,22 @@ export default function TreeDetailPage() {
               </p>
             </CardHeader>
             {treeSpecie && (
-                 <CardContent>
-                    <DetailSection title="Especie" icon={Sprout}>
-                        <p className="text-sm text-muted-foreground">{treeSpecie.description}</p>
-                    </DetailSection>
-                 </CardContent>
+              <CardContent>
+                <DetailSection title="Especie" icon={Sprout}>
+                  <p className="text-sm text-muted-foreground">{treeSpecie.description}</p>
+                </DetailSection>
+              </CardContent>
             )}
           </Card>
-           
+
           {treeCenter && (
             <Card>
-                <CardContent className="p-6">
-                    <DetailSection title="Centro de Formación" icon={Building}>
-                        <p className="font-semibold">{tree.center}</p>
-                        <p className="text-sm text-muted-foreground">{treeCenter.address}</p>
-                    </DetailSection>
-                </CardContent>
+              <CardContent className="p-6">
+                <DetailSection title="Centro de Formación" icon={Building}>
+                  <p className="font-semibold">{tree.center}</p>
+                  <p className="text-sm text-muted-foreground">{treeCenter.address}</p>
+                </DetailSection>
+              </CardContent>
             </Card>
           )}
 
@@ -103,66 +103,66 @@ export default function TreeDetailPage() {
         <div className="lg:col-span-2 space-y-8">
           <Card>
             <CardContent className="p-6">
-               <DetailSection title="Descripción General" icon={Info}>
+              <DetailSection title="Descripción General" icon={Info}>
                 <p className="text-muted-foreground leading-relaxed">
                   {tree.description}
                 </p>
               </DetailSection>
             </CardContent>
           </Card>
-           <Card>
+          <Card>
             <CardContent className="p-6">
               <DetailSection title="Características" icon={BookOpen}>
-                 <p className="text-muted-foreground leading-relaxed">
+                <p className="text-muted-foreground leading-relaxed">
                   {tree.characteristics}
                 </p>
               </DetailSection>
             </CardContent>
           </Card>
-           <Card>
+          <Card>
             <CardContent className="p-6">
               <DetailSection title="Tipo de Bosque" icon={Leaf}>
                 <Badge variant="secondary" className="text-base">{tree.forestType}</Badge>
               </DetailSection>
             </CardContent>
           </Card>
-           <Card>
+          <Card>
             <CardContent className="p-6">
               <DetailSection title="Usos del Árbol" icon={BookOpen}>
                 {uses.length > 0 ? (
-                    <div className="flex flex-wrap gap-2">
-                        {uses.map(use => (
-                            <Badge key={use.id} variant="outline" className="text-sm">{use.useName} ({use.category})</Badge>
-                        ))}
-                    </div>
+                  <div className="flex flex-wrap gap-2">
+                    {uses.map(use => (
+                      <Badge key={use.id} variant="outline" className="text-sm">{use.useName} ({use.category})</Badge>
+                    ))}
+                  </div>
                 ) : (
-                    <p className="text-muted-foreground text-sm">No se han registrado usos para esta especie.</p>
+                  <p className="text-muted-foreground text-sm">No se han registrado usos para esta especie.</p>
                 )}
               </DetailSection>
             </CardContent>
           </Card>
-           <Card>
+          <Card>
             <CardContent className="p-6">
               <DetailSection title="Servicios Ecosistémicos" icon={Trees}>
-                 <p className="text-muted-foreground leading-relaxed">
+                <p className="text-muted-foreground leading-relaxed">
                   {tree.ecoServices}
                 </p>
               </DetailSection>
             </CardContent>
           </Card>
-            {relatedFunFacts.length > 0 && (
-                <Card>
-                    <CardContent className="p-6">
-                        <DetailSection title="Datos Curiosos" icon={Sparkles}>
-                            <ul className="space-y-3 list-disc list-inside text-muted-foreground">
-                                {relatedFunFacts.map(fact => (
-                                    <li key={fact.id} className="leading-relaxed">{fact.fact}</li>
-                                ))}
-                            </ul>
-                        </DetailSection>
-                    </CardContent>
-                </Card>
-            )}
+          {relatedFunFacts.length > 0 && (
+            <Card>
+              <CardContent className="p-6">
+                <DetailSection title="Datos Curiosos" icon={Sparkles}>
+                  <ul className="space-y-3 list-disc list-inside text-muted-foreground">
+                    {relatedFunFacts.map(fact => (
+                      <li key={fact.id} className="leading-relaxed">{fact.fact}</li>
+                    ))}
+                  </ul>
+                </DetailSection>
+              </CardContent>
+            </Card>
+          )}
         </div>
       </div>
     </div>
