@@ -261,7 +261,7 @@ export const initialTrees: Tree[] = [
     forestType: 'Bosque seco tropical',
     center: 'Centro Biotecnológico del Caribe',
     status: 'Activo',
-    imageUrl: '/img/species/mango.jpg',
+    imageUrl: '/img/mango.jpg',
   },
   {
     id: 2,
